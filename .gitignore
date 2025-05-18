@@ -1,0 +1,4 @@
+**/*.log
+**/.env
+talos/**/clusterconfig/
+talos/**/talenv.yaml
