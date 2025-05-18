@@ -1,0 +1,26 @@
+# https://taskfile.dev
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: 3
+
+tasks:
+  config:
+    desc: "Generate Talos cluster config YAML files"
+    requires:
+      vars:
+        - CLUSTER
+    dir: "./{{.CLUSTER}}"
+    cmds:
+      - "talhelper genconfig --no-gitignore"
+      - "talhelper gencommand apply -o ./{{.CLUSTER}}/clusterconfig --extra-flags --insecure"
+  reset:
+    desc: "Reset a particular node"
+    requires:
+      vars:
+        - CLUSTER
+        - TALOS_NODE
+    prompt: "Reset {{.TALOS_NODE}}?"
+    cmd: "talosctl --talosconfig ./{{.CLUSTER}}/clusterconfig/talosconfig -n {{.TALOS_NODE}} -e {{.TALOS_NODE}} reset --graceful=false --reboot --system-labels-to-wipe EPHEMERAL --system-labels-to-wipe STATE"
+    preconditions:
+      - test -f ./{{.CLUSTER}}/clusterconfig/talosconfig
+      - talosctl config info >/dev/null 2>&1
