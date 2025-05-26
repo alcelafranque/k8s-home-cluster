@@ -2,7 +2,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/refs/heads/master/pkg/config/schemas/talconfig.json
 
 clusterName: &cluster dorado
-endpoint: https://10.243.2.222:6443
+endpoint: https://10.243.2.55:6443
 allowSchedulingOnControlPlanes: true
 
 talosVersion: "v1.10.2"
@@ -10,7 +10,7 @@ kubernetesVersion: "v1.33.1"
 
 clusterPodNets:
   - 100.64.0.0/16
-  - fd86:d8e7:4cef::/48
+  - fd86:d8e7:4cef::/56
 clusterSvcNets:
   - 100.80.0.0/12
   - fd86:3864:ad47::/112
@@ -18,12 +18,12 @@ clusterSvcNets:
 nodes:
   - hostname: m1
     controlPlane: true
-    ipAddress: 10.243.2.222
+    ipAddress: 10.243.2.55
     installDisk: /dev/mmcblk1
     networkInterfaces:
       - interface: eth0
         addresses:
-          - 10.243.2.222/24
+          - 10.243.2.55/24
         routes:
           - network: 0.0.0.0/0
             gateway: 10.243.2.254
@@ -36,12 +36,12 @@ nodes:
         image: siderolabs/sbc-rockchip
   - hostname: m2
     controlPlane: true
-    ipAddress: 10.243.2.223
+    ipAddress: 10.243.2.56
     installDisk: /dev/mmcblk1
     networkInterfaces:
       - interface: eth0
         addresses:
-          - 10.243.2.223/24
+          - 10.243.2.46/24
         routes:
           - network: 0.0.0.0/0
             gateway: 10.243.2.254
@@ -54,12 +54,12 @@ nodes:
         image: siderolabs/sbc-rockchip
   - hostname: m3
     controlPlane: true
-    ipAddress: 10.243.2.224
+    ipAddress: 10.243.2.57
     installDisk: /dev/mmcblk1
     networkInterfaces:
       - interface: eth0
         addresses:
-          - 10.243.2.224/24
+          - 10.243.2.57/24
         routes:
           - network: 0.0.0.0/0
             gateway: 10.243.2.254
