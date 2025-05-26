@@ -19,7 +19,7 @@ nodes:
   - hostname: m1
     controlPlane: true
     ipAddress: 10.243.2.222
-    installDisk: /dev/sd0
+    installDisk: /dev/mmcblk1
     networkInterfaces:
       - interface: eth0
         addresses:
@@ -37,7 +37,7 @@ nodes:
   - hostname: m2
     controlPlane: true
     ipAddress: 10.243.2.223
-    installDisk: /dev/sd0
+    installDisk: /dev/mmcblk1
     networkInterfaces:
       - interface: eth0
         addresses:
@@ -55,7 +55,7 @@ nodes:
   - hostname: m3
     controlPlane: true
     ipAddress: 10.243.2.224
-    installDisk: /dev/sd0
+    installDisk: /dev/mmcblk1
     networkInterfaces:
       - interface: eth0
         addresses:
