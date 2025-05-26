@@ -24,9 +24,6 @@ nodes:
       - interface: eth0
         addresses:
           - 10.243.2.55/24
-        routes:
-          - network: 0.0.0.0/0
-            gateway: 10.243.2.254
     machineSpec:
       mode: metal
       arch: arm64
@@ -42,9 +39,6 @@ nodes:
       - interface: eth0
         addresses:
           - 10.243.2.46/24
-        routes:
-          - network: 0.0.0.0/0
-            gateway: 10.243.2.254
     machineSpec:
       mode: metal
       arch: arm64
@@ -60,9 +54,6 @@ nodes:
       - interface: eth0
         addresses:
           - 10.243.2.57/24
-        routes:
-          - network: 0.0.0.0/0
-            gateway: 10.243.2.254
     machineSpec:
       mode: metal
       arch: arm64
