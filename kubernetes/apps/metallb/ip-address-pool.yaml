@@ -7,3 +7,4 @@ metadata:
 spec:
   addresses:
     - 10.243.255.0/24
+    - 2001:67c:9ec:f3ff::/64
