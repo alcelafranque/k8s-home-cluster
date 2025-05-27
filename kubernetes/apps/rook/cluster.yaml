@@ -269,13 +269,13 @@ spec:
     nodes:
       - name: "m1"
         devices: # specific devices to use for storage can be specified for each node
-          - name: "/dev/disk/by-id/eui.e8238fa6bf530001001b448b4d105428" # devices can be specified using full udev paths
+          - name: "/dev/nvme0n1" # devices can be specified using full udev paths
       - name: "m2"
         devices: # specific devices to use for storage can be specified for each node
-          - name: "/dev/disk/by-id/eui.e8238fa6bf530001001b448b4d10b1eb" # devices can be specified using full udev paths
+          - name: "/dev/nvme0n1" # devices can be specified using full udev paths
       - name: "m3"
         devices: # specific devices to use for storage can be specified for each node
-          - name: "/dev/disk/by-id/eui.e8238fa6bf530001001b448b4d105538" # devices can be specified using full udev paths
+          - name: "/dev/nvme0n1" # devices can be specified using full udev paths
     scheduleAlways: false
     # when onlyApplyOSDPlacement is false, will merge both placement.All() and placement.osd
     onlyApplyOSDPlacement: false
