@@ -7,5 +7,5 @@ resources:
   - https://raw.githubusercontent.com/rook/rook/v1.17.2/deploy/examples/crds.yaml
   - common.yaml
   - https://raw.githubusercontent.com/rook/rook/v1.17.2/deploy/examples/operator.yaml
-  - https://raw.githubusercontent.com/rook/rook/v1.17.2/deploy/examples/csi/rbd/storageclass.yaml
+  - storageclass.yaml
   - cluster.yaml
