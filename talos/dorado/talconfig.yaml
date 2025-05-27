@@ -3,7 +3,7 @@
 
 clusterName: &cluster dorado
 endpoint: https://10.243.2.55:6443
-allowSchedulingOnControlPlanes: true
+allowSchedulingOnMasters: true
 
 talosVersion: "v1.10.2"
 kubernetesVersion: "v1.33.1"
@@ -31,6 +31,8 @@ nodes:
       overlay:
         name: orangepi-5-plus
         image: siderolabs/sbc-rockchip
+    ingressFirewall:
+      defaultAction: accept
   - hostname: m2
     controlPlane: true
     ipAddress: 10.243.2.56
@@ -46,6 +48,8 @@ nodes:
       overlay:
         name: orangepi-5-plus
         image: siderolabs/sbc-rockchip
+    ingressFirewall:
+      defaultAction: accept
   - hostname: m3
     controlPlane: true
     ipAddress: 10.243.2.57
@@ -61,6 +65,8 @@ nodes:
       overlay:
         name: orangepi-5-plus
         image: siderolabs/sbc-rockchip
+    ingressFirewall:
+      defaultAction: accept
 
 controlPlane:
   nodeLabels:
