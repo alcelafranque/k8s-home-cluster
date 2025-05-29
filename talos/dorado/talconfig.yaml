@@ -33,6 +33,14 @@ nodes:
         image: siderolabs/sbc-rockchip
     ingressFirewall:
       defaultAction: accept
+    userVolumes:
+      - name: longhorn
+        provisioning:
+          minSize: 800GiB
+          diskSelector:
+            match: disk.transport == "nvme"
+        filesystem:
+          type: xfs
   - hostname: m2
     controlPlane: true
     ipAddress: 10.243.2.56
@@ -50,6 +58,14 @@ nodes:
         image: siderolabs/sbc-rockchip
     ingressFirewall:
       defaultAction: accept
+    userVolumes:
+      - name: longhorn
+        provisioning:
+          minSize: 800GiB
+          diskSelector:
+            match: disk.transport == "nvme"
+        filesystem:
+          type: xfs
   - hostname: m3
     controlPlane: true
     ipAddress: 10.243.2.57
@@ -67,6 +83,14 @@ nodes:
         image: siderolabs/sbc-rockchip
     ingressFirewall:
       defaultAction: accept
+    userVolumes:
+      - name: longhorn
+        provisioning:
+          minSize: 800GiB
+          diskSelector:
+            match: disk.transport == "nvme"
+        filesystem:
+          type: xfs
 
 controlPlane:
   nodeLabels:
@@ -91,6 +115,14 @@ patches:
         disabled: true
     machine:
       kubelet:
+        extraMounts:
+          - destination: /var/mnt/longhorn
+            type: bind
+            source: /var/mnt/longhorn
+            options:
+              - bind
+              - rshared
+              - rw
         extraArgs:
           rotate-server-certificates: true
       network:
