@@ -31,6 +31,12 @@ nodes:
       overlay:
         name: orangepi-5-plus
         image: siderolabs/sbc-rockchip
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/nvme-cli
+            - siderolabs/util-linux-tools
+            - siderolabs/iscsi-tools
     ingressFirewall:
       defaultAction: accept
     userVolumes:
@@ -56,6 +62,12 @@ nodes:
       overlay:
         name: orangepi-5-plus
         image: siderolabs/sbc-rockchip
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/nvme-cli
+            - siderolabs/util-linux-tools
+            - siderolabs/iscsi-tools
     ingressFirewall:
       defaultAction: accept
     userVolumes:
@@ -81,6 +93,12 @@ nodes:
       overlay:
         name: orangepi-5-plus
         image: siderolabs/sbc-rockchip
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/nvme-cli
+            - siderolabs/util-linux-tools
+            - siderolabs/iscsi-tools
     ingressFirewall:
       defaultAction: accept
     userVolumes:
@@ -100,7 +118,6 @@ controlPlane:
     customization:
       systemExtensions:
         officialExtensions:
-          - "siderolabs/lldpd"
           - "siderolabs/nvme-cli"
           - "siderolabs/util-linux-tools"
           - "siderolabs/iscsi-tools"
