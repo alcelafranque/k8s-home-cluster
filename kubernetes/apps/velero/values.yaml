@@ -273,7 +273,7 @@ metrics:
     # tlsConfig: {}
   nodeAgentPodMonitor:
     autodetect: true
-    enabled: false
+    enabled: true
     annotations: {}
     additionalLabels: {}
     # ServiceMonitor namespace. Default to Velero namespace.
@@ -478,7 +478,7 @@ configuration:
   defaultSnapshotMoveData:
   # Comma separated list of velero feature flags. default: empty
   # features: EnableCSI
-  features:
+  features: EnableCSI
   # Configures the timeout for provisioning the volume created from the CSI snapshot. Default: 30m
   dataMoverPrepareTimeout:
   # Resource requests/limits to specify for the repository-maintenance job. Optional.
@@ -511,7 +511,7 @@ configuration:
     #       fieldPath: metadata.labels['my_label']
 
   # Set true for backup all pod volumes without having to apply annotation on the pod when used file system backup Default: false.
-  defaultVolumesToFsBackup:
+  defaultVolumesToFsBackup: true
 
   # How often repository maintain is run for repositories by default.
   defaultRepoMaintainFrequency:
@@ -584,7 +584,7 @@ backupsEnabled: true
 snapshotsEnabled: true
 
 # Whether to deploy the node-agent daemonset.
-deployNodeAgent: false
+deployNodeAgent: true
 
 nodeAgent:
   podVolumePath: /var/lib/kubelet/pods
