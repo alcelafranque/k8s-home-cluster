@@ -5,7 +5,7 @@ clusterName: &cluster dorado
 endpoint: https://10.243.2.55:6443
 allowSchedulingOnMasters: true
 
-talosVersion: "v1.10.2"
+talosVersion: "v1.10.3"
 kubernetesVersion: "v1.33.1"
 
 clusterPodNets:
@@ -37,8 +37,6 @@ nodes:
             - siderolabs/nvme-cli
             - siderolabs/util-linux-tools
             - siderolabs/iscsi-tools
-    ingressFirewall:
-      defaultAction: accept
     userVolumes:
       - name: longhorn
         provisioning:
@@ -68,8 +66,6 @@ nodes:
             - siderolabs/nvme-cli
             - siderolabs/util-linux-tools
             - siderolabs/iscsi-tools
-    ingressFirewall:
-      defaultAction: accept
     userVolumes:
       - name: longhorn
         provisioning:
@@ -99,8 +95,6 @@ nodes:
             - siderolabs/nvme-cli
             - siderolabs/util-linux-tools
             - siderolabs/iscsi-tools
-    ingressFirewall:
-      defaultAction: accept
     userVolumes:
       - name: longhorn
         provisioning:
