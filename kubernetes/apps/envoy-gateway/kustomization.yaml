@@ -4,5 +4,4 @@ kind: Kustomization
 resources:
   - gateway-api-crds.yaml
   - envoy-gateway.yaml
-  - generic-gateway.yaml
 
