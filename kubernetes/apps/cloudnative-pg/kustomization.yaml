@@ -13,3 +13,4 @@ helmCharts:
 
 resources:
   - cluster.yaml
+  - https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.26/releases/cnpg-1.26.0.yaml
