@@ -1,0 +1,34 @@
+global:
+  envFrom:
+    - secretRef:
+        name: authentik-secret
+
+server:
+  ingress:
+    enabled: false
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      memory: 512Mi
+
+worker:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      memory: 512Mi
+
+postgresql:
+  enabled: true
+  auth:
+    enablePostgresUser: false
+    existingSecret: authentik-secret
+    secretKeys:
+      userPasswordKey: AUTHENTIK_POSTGRESQL__PASSWORD
+
+redis:
+  enabled: true
+

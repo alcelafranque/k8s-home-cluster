@@ -1,0 +1,83 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: authentik-gateway
+  namespace: authentik
+spec:
+  gatewayClassName: eg
+  listeners:
+  - name: http
+    port: 80
+    protocol: HTTP
+    hostname: idp.lac-coloc.fr
+  - name: https
+    port: 443
+    protocol: HTTPS
+    hostname: idp.lac-coloc.fr
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: idp.lac-coloc.fr-cert
+        namespace: authentik
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: authentik-cert
+  namespace: authentik
+spec:
+  secretName: idp.lac-coloc.fr-cert
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+  dnsNames:
+  - idp.lac-coloc.fr
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: authentik-https-route
+  namespace: authentik
+spec:
+  parentRefs:
+  - name: authentik-gateway
+    namespace: authentik
+    sectionName: https
+  hostnames:
+  - idp.lac-coloc.fr
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /admin
+    backendRefs:
+    - name: authentik-admin
+      port: 80
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: authentik
+      port: 8080
+---
+# HTTPRoute pour HTTP (redirection 301)
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: authentik-http-redirect
+  namespace: authentik
+spec:
+  parentRefs:
+  - name: authentik-gateway
+    namespace: authentik
+    sectionName: http
+  hostnames:
+  - idp.lac-coloc.fr
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https
+        statusCode: 301
