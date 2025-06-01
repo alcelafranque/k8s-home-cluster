@@ -1,38 +1,3 @@
-apiVersion: gateway.networking.k8s.io/v1
-kind: Gateway
-metadata:
-  name: authentik-gateway
-  namespace: authentik
-spec:
-  gatewayClassName: eg
-  listeners:
-  - name: http
-    port: 80
-    protocol: HTTP
-    hostname: idp.lac-coloc.fr
-  - name: https
-    port: 443
-    protocol: HTTPS
-    hostname: idp.lac-coloc.fr
-    tls:
-      mode: Terminate
-      certificateRefs:
-      - kind: Secret
-        name: idp.lac-coloc.fr-cert
-        namespace: authentik
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: authentik-cert
-  namespace: authentik
-spec:
-  secretName: idp.lac-coloc.fr-cert
-  issuerRef:
-    name: letsencrypt
-    kind: ClusterIssuer
-  dnsNames:
-  - idp.lac-coloc.fr
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -41,8 +6,8 @@ metadata:
   namespace: authentik
 spec:
   parentRefs:
-  - name: authentik-gateway
-    namespace: authentik
+  - name: one-gateway-for-all
+    namespace: envoy-gateway-system
     sectionName: https
   hostnames:
   - idp.lac-coloc.fr
@@ -70,8 +35,8 @@ metadata:
   namespace: authentik
 spec:
   parentRefs:
-  - name: authentik-gateway
-    namespace: authentik
+  - name: one-gateway-for-all
+    namespace: envoy-gateway-system
     sectionName: http
   hostnames:
   - idp.lac-coloc.fr

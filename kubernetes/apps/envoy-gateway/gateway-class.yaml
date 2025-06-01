@@ -21,6 +21,3 @@ spec:
     kubernetes:
       envoyDeployment:
         replicas: 2
-      envoyService:
-        type: LoadBalancer
-        ipFamilyPolicy: PreferDualStack
