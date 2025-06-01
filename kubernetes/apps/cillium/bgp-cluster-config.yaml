@@ -1,0 +1,37 @@
+apiVersion: cilium.io/v2alpha1
+kind: CiliumBGPClusterConfig
+metadata:
+  name: cilium-bgp
+spec:
+  nodeSelector:
+    matchLabels:
+      topology.kubernetes.io/zone: dorado
+  bgpInstances:
+  - name: "instance-65531"
+    localASN: 65531
+    peers:
+    - name: "peer-65531-dorado"
+      peerASN: 65531
+      peerAddress: 10.254.243.1
+      peerConfigRef:
+        name: "cilium-peer"
+---
+apiVersion: cilium.io/v2alpha1
+kind: CiliumBGPPeerConfig
+metadata:
+  name: cilium-peer
+spec:
+  timers:
+    holdTimeSeconds: 300
+    keepAliveTimeSeconds: 3
+  families:
+    - afi: ipv4
+      safi: unicast
+      advertisements:
+        matchLabels:
+          advertise: "bgp"
+    - afi: ipv6
+      safi: unicast
+      advertisements:
+        matchLabels:
+          advertise: "bgp"
