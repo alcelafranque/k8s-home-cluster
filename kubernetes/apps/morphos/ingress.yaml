@@ -1,0 +1,41 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: morphos-https-route
+  namespace: morphos
+spec:
+  parentRefs:
+  - name: one-gateway-for-all
+    namespace: envoy-gateway-system
+    sectionName: https
+  hostnames:
+  - morphos.lac-coloc.fr
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: morphos
+      port: 80
+---
+# HTTPRoute pour HTTP (redirection 301)
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: morphos-http-redirect
+  namespace: morphos
+spec:
+  parentRefs:
+  - name: one-gateway-for-all
+    namespace: envoy-gateway-system
+    sectionName: http
+  hostnames:
+  - morphos.lac-coloc.fr
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https
+        statusCode: 301
