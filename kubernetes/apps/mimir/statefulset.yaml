@@ -1,0 +1,63 @@
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: mimir
+  labels:
+    app: mimir
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mimir
+  template:
+    metadata:
+      labels:
+        app: mimir
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: mimir
+          image: docker.io/grafana/mimir:2.12.0
+          args: 
+            - "-target=all"
+            - "-config.file=/etc/mimir/mimir.yaml"
+            - "-config.expand-env=true"
+          envFrom:
+            - secretRef:
+                name: mimir
+          volumeMounts:
+            - name: config
+              mountPath: /etc/mimir
+            - name: storage
+              mountPath: /data
+          ports:
+            - name: mimir
+              containerPort: 9009
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: mimir
+            initialDelaySeconds: 15
+          livenessProbe:
+            httpGet:
+              path: /ready
+              port: mimir
+            initialDelaySeconds: 15
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: config
+          configMap:
+            name: mimir-config
+  volumeClaimTemplates:
+    - metadata:
+        name: storage
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "10Gi"
+
+
+

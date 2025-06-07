@@ -1,0 +1,72 @@
+# Do not use this configuration in production.
+# It is for demonstration purposes only.
+multitenancy_enabled: true
+
+common:
+  storage:
+    backend: s3
+    s3:
+      endpoint: s3-vrc.lac-coloc.fr
+      access_key_id: "${AWS_ACCESS_KEY_ID}"
+      secret_access_key: "${AWS_SECRET_ACCESS_KEY}"
+
+alertmanager:
+  data_dir: /data/alertmanager
+  enable_api: true
+  external_url: /alertmanager
+
+compactor:
+  data_dir: /data/compactor
+  sharding_ring:
+    kvstore:
+      store: memberlist
+
+distributor:
+  ring:
+    instance_addr: 127.0.0.1
+    kvstore:
+      store: memberlist
+
+ruler:
+  enable_api: true
+  rule_path: /data/ruler
+
+ingester:
+  ring:
+    instance_addr: 127.0.0.1
+    kvstore:
+      store: memberlist
+    replication_factor: 1
+    tokens_file_path: /data/ingester/tokens
+
+store_gateway:
+  sharding_ring:
+    tokens_file_path: /data/store_gateway/tokens
+    replication_factor: 1
+
+blocks_storage:
+  bucket_store:
+    sync_dir: /data/tsdb-sync
+  tsdb:
+    dir: /data/tsdb
+    head_compaction_interval: 15m
+    wal_replay_concurrency: 3
+  s3:
+    bucket_name: k8s1-mimir-blocks
+
+ruler_storage:
+  s3:
+    bucket_name: k8s1-mimir-ruler
+
+alertmanager_storage:
+  s3:
+    bucket_name: k8s1-mimir-alertmanager
+
+server:
+  http_listen_port: 9009
+  log_level: info
+
+
+limits:
+  ingestion_rate: 200000
+  ingestion_burst_size: 4000000

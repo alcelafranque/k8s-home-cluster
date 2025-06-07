@@ -1,0 +1,35 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: mimir-https-route
+  namespace: mimir
+spec:
+  parentRefs:
+  - name: one-gateway-for-all
+    namespace: envoy-gateway-system
+    sectionName: https
+  hostnames:
+  - mimir.lac-coloc.fr
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: mimir
+      port: 80
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: mimir
+  namespace: mimir
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: mimir-https-route
+  basicAuth:
+    users:
+      name: mimir
