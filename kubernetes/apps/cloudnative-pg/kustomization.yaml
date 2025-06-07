@@ -13,3 +13,5 @@ helmCharts:
 
 resources:
   - cluster.yaml
+  - secrets.yaml
+  - database.yaml

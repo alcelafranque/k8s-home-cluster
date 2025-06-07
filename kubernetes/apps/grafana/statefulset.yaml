@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: grafana
+  namespace: monitoring
+  labels:
+    app: grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  serviceName: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      securityContext:
+        runAsUser: 472
+        fsGroup: 472
+      initContainers:
+      - name: init-chown-data
+        image: busybox:1
+        securityContext:
+          runAsUser: 0
+        command: ["/bin/chown", "-R", "472:472", "/var/lib/grafana"]
+        volumeMounts:
+        - name: storage
+          mountPath: /var/lib/grafana
+      containers:
+      - name: grafana
+        image: grafana/grafana:12.0.1
+        volumeMounts:
+        - name: config
+          mountPath: "/etc/grafana/grafana.ini"
+          subPath: grafana.ini
+        - name: storage
+          mountPath: "/var/lib/grafana"
+        ports:
+        - name: http
+          containerPort: 3000
+        envFrom:
+        - configMapRef:
+            name: grafana-env
+        - secretRef:
+            name: grafana
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: 3000
+          initialDelaySeconds: 60
+          timeoutSeconds: 30
+          failureThreshold: 10
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 3000
+      volumes:
+      - name: config
+        configMap:
+          name: grafana-config
+  volumeClaimTemplates:
+  - metadata:
+      name: storage
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 5Gi

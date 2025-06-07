@@ -1,0 +1,13 @@
+namespace: monitoring
+resources:
+- secret.yaml
+- service.yaml
+- statefulset.yaml
+- ingress.yaml
+configMapGenerator:
+- name: grafana-env
+  env: grafana.env
+- name: grafana-config
+  files:
+  - grafana.ini
+

@@ -3,7 +3,15 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: cluster-1
+  namespace: cnpg-system
 spec:
   instances: 3
   storage:
     size: 10Gi
+  managed:
+    roles:
+    - name: grafana
+      ensure: present
+      login: true
+      passwordSecret:
+        name: grafana-db-secret
