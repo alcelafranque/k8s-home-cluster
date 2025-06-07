@@ -37,14 +37,6 @@ nodes:
             - siderolabs/nvme-cli
             - siderolabs/util-linux-tools
             - siderolabs/iscsi-tools
-    userVolumes:
-      - name: longhorn
-        provisioning:
-          minSize: 800GiB
-          diskSelector:
-            match: disk.transport == "nvme"
-        filesystem:
-          type: xfs
   - hostname: m2
     controlPlane: true
     ipAddress: 10.243.2.56
@@ -66,14 +58,6 @@ nodes:
             - siderolabs/nvme-cli
             - siderolabs/util-linux-tools
             - siderolabs/iscsi-tools
-    userVolumes:
-      - name: longhorn
-        provisioning:
-          minSize: 800GiB
-          diskSelector:
-            match: disk.transport == "nvme"
-        filesystem:
-          type: xfs
   - hostname: m3
     controlPlane: true
     ipAddress: 10.243.2.57
@@ -95,14 +79,6 @@ nodes:
             - siderolabs/nvme-cli
             - siderolabs/util-linux-tools
             - siderolabs/iscsi-tools
-    userVolumes:
-      - name: longhorn
-        provisioning:
-          minSize: 800GiB
-          diskSelector:
-            match: disk.transport == "nvme"
-        filesystem:
-          type: xfs
 
 controlPlane:
   nodeLabels:
