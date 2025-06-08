@@ -70,3 +70,4 @@ server:
 limits:
   ingestion_rate: 200000
   ingestion_burst_size: 4000000
+  max_global_series_per_user: 3000000
