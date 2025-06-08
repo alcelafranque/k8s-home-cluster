@@ -15,3 +15,8 @@ spec:
       login: true
       passwordSecret:
         name: grafana-db-secret
+    - name: miniflux
+      ensure: present
+      login: true
+      passwordSecret:
+        name: miniflux-db-secret

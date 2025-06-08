@@ -1,0 +1,6 @@
+namespace: miniflux
+resources:
+- secrets.yaml
+- miniflux.yaml
+- service.yaml
+- ingress.yaml
