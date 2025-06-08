@@ -1,0 +1,30 @@
+cluster:
+  name: dorado
+
+destinations:
+  - name: mimir
+    type: prometheus
+    url: http://mimir.monitoring.svc.cluster.local/api/v1/push
+    tenantIdKey: tenantId
+    secret:
+      create: false
+      name: mimir-tenant-secret
+      namespace: monitoring
+
+# Features to enable, which determines what data to collect
+clusterMetrics:
+  enabled: true
+  controlPlane:
+    enabled: true
+  windows-exporter:
+    enabled: false
+    deploy: false
+
+clusterEvents:
+  enabled: false
+
+# Telemetry collector definitions
+alloy-metrics:
+  enabled: true
+alloy-singleton:
+  enabled: true
