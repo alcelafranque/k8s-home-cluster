@@ -32,15 +32,6 @@ nodes:
         name: orangepi-5-plus
         image: siderolabs/sbc-rockchip
       customization:
-        extraKernelArgs:
-          - nvme_core.default_ps_max_latency_us=0
-          - pcie_aspm=off
-          - pcie_port_pm=off
-          - nvme_core.force_apst=0
-          - pci=nomsi
-          - pci=noaer
-          - pcie_link_speed=3
-          - rockchip.pcie_gen=3
         systemExtensions:
           officialExtensions:
             - siderolabs/nvme-cli
@@ -62,15 +53,6 @@ nodes:
         name: orangepi-5-plus
         image: siderolabs/sbc-rockchip
       customization:
-        extraKernelArgs:
-          - nvme_core.default_ps_max_latency_us=0
-          - pcie_aspm=off
-          - pcie_port_pm=off
-          - nvme_core.force_apst=0
-          - pci=nomsi
-          - pci=noaer
-          - pcie_link_speed=3
-          - rockchip.pcie_gen=3
         systemExtensions:
           officialExtensions:
             - siderolabs/nvme-cli
@@ -92,15 +74,6 @@ nodes:
         name: orangepi-5-plus
         image: siderolabs/sbc-rockchip
       customization:
-        extraKernelArgs:
-          - nvme_core.default_ps_max_latency_us=0
-          - pcie_aspm=off
-          - pcie_port_pm=off
-          - nvme_core.force_apst=0
-          - pci=nomsi
-          - pci=noaer
-          - pcie_link_speed=3
-          - rockchip.pcie_gen=3
         systemExtensions:
           officialExtensions:
             - siderolabs/nvme-cli
