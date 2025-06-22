@@ -5,11 +5,7 @@ destinations:
   - name: mimir
     type: prometheus
     url: http://mimir.monitoring.svc.cluster.local/api/v1/push
-    tenantIdKey: tenantId
-    secret:
-      create: false
-      name: mimir-tenant-secret
-      namespace: monitoring
+    tenantId: dorado
 
 # Features to enable, which determines what data to collect
 clusterMetrics:
@@ -19,9 +15,15 @@ clusterMetrics:
   windows-exporter:
     enabled: false
     deploy: false
+  node-exporter:
+    jobLabel: "k8s/node_exporter"
 
 clusterEvents:
   enabled: false
+
+annotationAutodiscovery:
+  enabled: true
+  enableReporting: false
 
 # Telemetry collector definitions
 alloy-metrics:
