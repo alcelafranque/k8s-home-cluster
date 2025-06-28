@@ -1,0 +1,47 @@
+env:
+  TZ: UTC
+  PAPERLESS_OCR_LANGUAGES: fra
+  PAPERLESS_OCR_LANGUAGE: fra
+  PAPERLESS_URL: https://paperless.lafranque.net
+
+service:
+  main:
+    ports:
+      http:
+        port: 8000
+
+ingress:
+  main:
+    enabled: false
+
+persistence:
+  data:
+    enabled: true
+    retain: true
+    mountPath: /usr/src/paperless/data
+    accessMode: ReadWriteOnce
+    size: 10Gi
+  media:
+    enabled: true
+    retain: true
+    mountPath: /usr/src/paperless/media
+    accessMode: ReadWriteOnce
+    size: 10Gi
+  export:
+    enabled: true
+    retain: true
+    mountPath: /usr/src/paperless/export
+    accessMode: ReadWriteOnce
+    size: 10Gi
+  consume:
+    enabled: true
+    retain: true
+    mountPath: /usr/src/paperless/consume
+    accessMode: ReadWriteOnce
+    size: 10Gi
+
+postgresql:
+  enabled: true
+  primary:
+    persistence:
+      enabled: false
