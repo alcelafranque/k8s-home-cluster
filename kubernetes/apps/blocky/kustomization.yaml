@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: blocky
+
+helmCharts:
+  - name: blocky
+    repo: https://johanneskastl.github.io/helm-charts/
+    version: 11.7.2
+    releaseName: blocky
+    namespace: blocky
+    valuesFile: values.yaml
