@@ -21,9 +21,12 @@ nodes:
     ipAddress: 10.243.2.55
     installDisk: /dev/mmcblk1
     networkInterfaces:
-      - interface: eth0
+      - interface: enP4p65s0
         addresses:
           - 10.243.2.55/24
+        routes:
+          - network: "::/0"
+            gateway: "fe80::1"
     machineSpec:
       mode: metal
       arch: arm64
@@ -42,9 +45,12 @@ nodes:
     ipAddress: 10.243.2.56
     installDisk: /dev/mmcblk1
     networkInterfaces:
-      - interface: eth0
+      - interface: enP4p65s0
         addresses:
           - 10.243.2.46/24
+        routes:
+          - network: "::/0"
+            gateway: "fe80::1"
     machineSpec:
       mode: metal
       arch: arm64
@@ -63,9 +69,12 @@ nodes:
     ipAddress: 10.243.2.57
     installDisk: /dev/mmcblk1
     networkInterfaces:
-      - interface: eth0
+      - interface: enP4p65s0
         addresses:
           - 10.243.2.57/24
+        routes:
+          - network: "::/0"
+            gateway: "fe80::1"
     machineSpec:
       mode: metal
       arch: arm64
