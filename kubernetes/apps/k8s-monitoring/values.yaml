@@ -5,6 +5,10 @@ grafana:
 # Désactiver Alertmanager
 alertmanager:
   enabled: false
+prometheusOperator:
+  enabled: true
+  admissionWebhooks:
+    enabled: false
 
 # Configuration de Prometheus
 prometheus:
