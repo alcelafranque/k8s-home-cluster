@@ -2,6 +2,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: blocky
 
+resources:
+  - ingress.yaml
+
 helmCharts:
   - name: blocky
     repo: https://johanneskastl.github.io/helm-charts/
