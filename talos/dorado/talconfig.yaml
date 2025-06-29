@@ -27,6 +27,8 @@ nodes:
         routes:
           - network: "::/0"
             gateway: "fe80::1"
+          - network: "0.0.0.0/0"
+            gateway: "10.243.2.254"
     machineSpec:
       mode: metal
       arch: arm64
@@ -47,10 +49,12 @@ nodes:
     networkInterfaces:
       - interface: enP4p65s0
         addresses:
-          - 10.243.2.46/24
+          - 10.243.2.56/24
         routes:
           - network: "::/0"
             gateway: "fe80::1"
+          - network: "0.0.0.0/0"
+            gateway: "10.243.2.254"
     machineSpec:
       mode: metal
       arch: arm64
@@ -75,6 +79,8 @@ nodes:
         routes:
           - network: "::/0"
             gateway: "fe80::1"
+          - network: "0.0.0.0/0"
+            gateway: "10.243.2.254"
     machineSpec:
       mode: metal
       arch: arm64
