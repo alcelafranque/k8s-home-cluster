@@ -13,6 +13,9 @@ prometheusOperator:
 # Configuration de Prometheus
 prometheus:
   prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelector: {}
+    serviceMonitorNamespaceSelector: {}
     alertingEndpoints: []
     remoteWrite:
       - url: http://mimir.monitoring.svc.cluster.local/api/v1/push
