@@ -62,7 +62,10 @@ config: |
 
   # optional: timeout to query the upstream resolver. Default: 2s
   upstreamTimeout: 2s
-
+  conditional:
+    fallbackUpstream: false
+    mapping:
+      int.lac-coloc.fr: 10.243.2.15
   # optional: use black and white lists to block queries (for example ads, trackers, adult pages etc.)
   blocking:
     # definition of blacklist groups. Can be external link (http/https) or local file
