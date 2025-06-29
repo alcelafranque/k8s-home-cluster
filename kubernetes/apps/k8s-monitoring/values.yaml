@@ -25,6 +25,9 @@ annotationAutodiscovery:
   enabled: true
   enableReporting: false
 
+prometheusOperatorObjects:
+  enabled: true
+
 # Telemetry collector definitions
 alloy-metrics:
   enabled: true

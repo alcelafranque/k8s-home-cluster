@@ -12,3 +12,10 @@ helmCharts:
     releaseName: k8s-monitoring
     valuesFile: values.yaml
     version: 2.1.4
+    includeCRDs: true
+  - name: prometheus-operator-crds
+    repo: https://prometheus-community.github.io/helm-charts
+    version: 21.0.0
+    releaseName: prometheus-operator-crds
+    namespace: monitoring
+    includeCRDs: true
