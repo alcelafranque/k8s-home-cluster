@@ -1,35 +1,16 @@
-cluster:
-  name: dorado
-
-destinations:
-  - name: mimir
-    type: prometheus
-    url: http://mimir.monitoring.svc.cluster.local/api/v1/push
-    tenantId: dorado
-
-# Features to enable, which determines what data to collect
-clusterMetrics:
-  enabled: true
-  controlPlane:
-    enabled: true
-  windows-exporter:
-    enabled: false
-    deploy: false
-  node-exporter:
-    jobLabel: "k8s/node_exporter"
-
-clusterEvents:
+# Désactiver Grafana
+grafana:
   enabled: false
 
-annotationAutodiscovery:
-  enabled: true
-  enableReporting: false
+# Désactiver Alertmanager
+alertmanager:
+  enabled: false
 
-prometheusOperatorObjects:
-  enabled: true
-
-# Telemetry collector definitions
-alloy-metrics:
-  enabled: true
-alloy-singleton:
-  enabled: true
+# Configuration de Prometheus
+prometheus:
+  prometheusSpec:
+    alertingEndpoints: []
+    remoteWrite:
+      - url: http://mimir.monitoring.svc.cluster.local/api/v1/push
+        headers:
+          X-Scope-OrgID: dorado

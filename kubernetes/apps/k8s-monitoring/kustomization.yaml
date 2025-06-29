@@ -6,16 +6,10 @@ resources:
   - secrets.yaml
 
 helmCharts:
-  - name: k8s-monitoring
-    repo: https://grafana.github.io/helm-charts
-    namespace: monitoring
-    releaseName: k8s-monitoring
-    valuesFile: values.yaml
-    version: 2.1.4
-    includeCRDs: true
-  - name: prometheus-operator-crds
+  - name: kube-prometheus-stack
     repo: https://prometheus-community.github.io/helm-charts
-    version: 21.0.0
-    releaseName: prometheus-operator-crds
     namespace: monitoring
+    releaseName: kube-prometheus-stack
+    valuesFile: values.yaml
+    version: 65.1.1
     includeCRDs: true
