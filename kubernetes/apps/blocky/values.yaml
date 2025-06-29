@@ -59,8 +59,6 @@ config: |
       - "https://1.1.1.1/dns-query"
       - "https://1.0.0.1/dns-query"
       - "https://dns.google/dns-query"
-      - "1.1.1.1"
-      - "1.0.0.1"
 
   # optional: timeout to query the upstream resolver. Default: 2s
   upstreamTimeout: 2s
