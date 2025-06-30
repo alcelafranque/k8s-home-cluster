@@ -5,7 +5,7 @@ clusterName: &cluster dorado
 endpoint: https://10.243.2.55:6443
 allowSchedulingOnMasters: true
 
-talosVersion: "v1.10.3"
+talosVersion: "v1.10.4"
 kubernetesVersion: "v1.33.1"
 
 clusterPodNets:
@@ -91,6 +91,30 @@ nodes:
       customization:
         systemExtensions:
           officialExtensions:
+            - siderolabs/nvme-cli
+            - siderolabs/util-linux-tools
+            - siderolabs/iscsi-tools
+  - hostname: w1
+    controlPlane: false
+    ipAddress: 10.243.2.25
+    installDisk: /dev/sda
+    networkInterfaces:
+      - interface: eth0
+        addresses:
+          - 10.243.2.25/24
+        routes:
+          - network: "::/0"
+            gateway: "fe80::1"
+          - network: "0.0.0.0/0"
+            gateway: "10.243.2.254"
+    machineSpec:
+      mode: nocloud
+      arch: amd64
+    schematic:
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/qemu-guest-agent
             - siderolabs/nvme-cli
             - siderolabs/util-linux-tools
             - siderolabs/iscsi-tools
