@@ -69,24 +69,20 @@ config: |
   # optional: use black and white lists to block queries (for example ads, trackers, adult pages etc.)
   blocking:
     # definition of blacklist groups. Can be external link (http/https) or local file
-    blackLists:
+    denylists:
       ads:
         - https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
         - https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
-        - https://mirror1.malwaredomains.com/files/justdomains
         - http://sysctl.org/cameleon/hosts
-        - https://zeustracker.abuse.ch/blocklist.php?download=domainblocklist
         - https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt
         - |
           # inline definition with YAML literal block scalar style
           # hosts format
           someadsdomain.com
-    whiteLists:
+    allowlists:
       ads:
         - |
           dealabs.digidip.net
-      special:
-        - https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews/hosts
     clientGroupsBlock:
       # default will be used, if no special definition for a client name exists
       default:
