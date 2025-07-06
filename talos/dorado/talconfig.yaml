@@ -119,6 +119,11 @@ nodes:
             - siderolabs/util-linux-tools
             - siderolabs/iscsi-tools
 
+worker:
+  nodeLabels:
+    topology.kubernetes.io/region: Paris
+    topology.kubernetes.io/zone: *cluster
+
 controlPlane:
   nodeLabels:
     topology.kubernetes.io/region: Paris
