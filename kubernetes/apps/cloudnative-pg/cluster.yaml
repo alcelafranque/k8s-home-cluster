@@ -20,3 +20,8 @@ spec:
       login: true
       passwordSecret:
         name: miniflux-db-secret
+    - name: paperless
+      ensure: present
+      login: true
+      passwordSecret:
+        name: paperless-db-secret
