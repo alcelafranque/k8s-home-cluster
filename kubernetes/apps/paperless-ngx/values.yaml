@@ -41,7 +41,20 @@ persistence:
     size: 10Gi
 
 postgresql:
+  enabled: false
+redis:
   enabled: true
-  primary:
+  master:
     persistence:
-      enabled: false
+      enabled: true
+
+env:
+  PAPERLESS_DBENGINE: postgresql
+  PAPERLESS_DBHOST: cluster-1-rw.cnpg-system.svc.cluster.local
+  PAPERLESS_DBPORT: "5432"
+  PAPERLESS_DBNAME: paperless
+  PAPERLESS_DBUSER: paperless
+
+envFrom:
+  - secretRef:
+      name: paperless-db-secret

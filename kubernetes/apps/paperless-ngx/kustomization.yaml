@@ -4,6 +4,7 @@ namespace: paperless-ngx
 
 resources:
   - ingress.yaml
+  - secrets.yaml
 
 helmCharts:
   - name: paperless-ngx
