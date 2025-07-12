@@ -37,10 +37,7 @@ persistence:
 postgresql:
   enabled: false
 redis:
-  enabled: true
-  master:
-    persistence:
-      enabled: true
+  enabled: false
 
 env:
   PAPERLESS_DBENGINE: postgresql
@@ -52,6 +49,7 @@ env:
   PAPERLESS_OCR_LANGUAGES: fra
   PAPERLESS_OCR_LANGUAGE: fra
   PAPERLESS_URL: https://paperless.lafranque.net
+  PAPERLESS_REDIS: redis://dragonfly.dragonfly.svc.cluster.local:6379
 
 envFrom:
   - secretRef:
