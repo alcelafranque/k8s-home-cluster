@@ -1,0 +1,23 @@
+# .github/workflows/renovate.yml
+name: Renovate
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # Toutes les 6 heures
+  workflow_dispatch:       # Permet de lancer manuellement
+
+env:
+  RENOVATE_AUTODISCOVER: true
+
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Renovate
+        uses: renovatebot/github-action@v43.0.2
+        with:
+          configurationFile: .github/renovate.json
+          token: ${{ secrets.GITHUB_TOKEN }}
