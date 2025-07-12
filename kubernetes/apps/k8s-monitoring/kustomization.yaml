@@ -2,14 +2,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: monitoring
 
-resources:
-  - secrets.yaml
-
 helmCharts:
-  - name: kube-prometheus-stack
-    repo: https://prometheus-community.github.io/helm-charts
+  - name: k8s-monitoring
+    repo: https://grafana.github.io/helm-charts
+    releaseName: monitoring
     namespace: monitoring
-    releaseName: kube-prometheus-stack
     valuesFile: values.yaml
-    version: 65.1.1
+    version: 3.1.0
     includeCRDs: true

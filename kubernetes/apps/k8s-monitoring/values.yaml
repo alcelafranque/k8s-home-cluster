@@ -1,23 +1,50 @@
-# Désactiver Grafana
-grafana:
-  enabled: false
+cluster:
+  name: dorado
 
-# Désactiver Alertmanager
-alertmanager:
-  enabled: false
-prometheusOperator:
+destinations:
+- name: logs
+  type: loki
+  url: http://loki.monitoring.svc.cluster.local/loki/api/v1/push
+  tenantId: dorado
+- name: metrics
+  type: prometheus
+  tenantId: dorado
+  url: http://mimir.monitoring.svc.cluster.local/api/v1/push
+
+clusterMetrics:
   enabled: true
-  admissionWebhooks:
-    enabled: false
 
-# Configuration de Prometheus
-prometheus:
-  prometheusSpec:
-    serviceMonitorSelectorNilUsesHelmValues: false
-    serviceMonitorSelector: {}
-    serviceMonitorNamespaceSelector: {}
-    alertingEndpoints: []
-    remoteWrite:
-      - url: http://mimir.monitoring.svc.cluster.local/api/v1/push
-        headers:
-          X-Scope-OrgID: dorado
+clusterEvents:
+  enabled: true
+
+podLogs:
+  enabled: true
+
+alloy-metrics:
+  enabled: true
+  enableReporting: false
+
+alloy-singleton:
+  enabled: true
+  enableReporting: false
+
+alloy-logs:
+  enabled: true
+  enableReporting: false
+
+annotationAutodiscovery:
+  enabled: true
+  enableReporting: false
+
+serviceMonitors:
+  enabled: true
+  namespaces: []
+  selector: {}
+
+podMonitors:
+  enabled: true
+  namespaces: []
+  selector: {}
+
+prometheusOperatorObjects:
+  enabled: true
