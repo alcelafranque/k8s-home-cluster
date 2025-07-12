@@ -1,0 +1,76 @@
+---
+# Prometheus Monitor Service (Metrics)
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    control-plane: controller-manager
+    app.kubernetes.io/name: servicemonitor
+    app.kubernetes.io/instance: controller-manager-metrics-monitor
+    app.kubernetes.io/component: metrics
+    app.kubernetes.io/created-by: dragonfly-operator
+    app.kubernetes.io/part-of: dragonfly-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: controller-manager-metrics-monitor
+  namespace: dragonfly
+spec:
+  endpoints:
+    - path: /metrics
+      port: https
+      scheme: https
+      bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      tlsConfig:
+        insecureSkipVerify: true
+  selector:
+    matchLabels:
+      control-plane: controller-manager
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: dragonfly
+  labels:
+    group: dragonfly
+    app: dragonfly
+spec:
+  selector:
+    matchLabels:
+      app: dragonfly
+  podTargetLabels:
+    - app
+  podMetricsEndpoints:
+  - port: admin
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: dragonfly-metrics
+  namespace: dragonfly
+  labels:
+    app: dragonfly
+spec:
+  selector:
+    matchLabels:
+      app: dragonfly
+  endpoints:
+  - port: admin
+    path: /metrics
+    interval: 30s
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dragonfly-metrics
+  namespace: dragonfly
+  labels:
+    app: dragonfly
+spec:
+  selector:
+    app: dragonfly
+  ports:
+  - name: admin
+    port: 9999
+    targetPort: 9999
+    protocol: TCP
+  type: ClusterIP
