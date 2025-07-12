@@ -1,0 +1,13 @@
+namespace: monitoring
+resources:
+  - service.yaml
+  - statefulset.yaml
+  - ingress.yaml
+  - secret.yaml
+
+configmapGenerator:
+  - name: loki-config
+    files:
+      - loki.yaml
+
+
