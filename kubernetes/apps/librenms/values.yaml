@@ -1,0 +1,48 @@
+librenms:
+  existingSecret: librenms
+  timezone: UTC
+  configuration: |
+    $config['distributed_poller_group']          = '0';
+    $config['distributed_poller']                = true;
+
+  # Global setting to run components as privileged, set as a bool
+  # Optionally, the frontend and pollers can be individually run as privileged
+  privileged: false
+
+  frontend:
+    replicas: 1
+
+  poller:
+    replicas: 2
+    privileged: false
+
+  snmp_scanner:
+    enabled: false
+
+
+  rrdcached:
+    persistence:
+      enabled: true
+      journal:
+        size: 2Gi
+      rrdcached:
+        size: 30Gi
+    envs:
+    - name: TZ
+      value: "Europe/Amsterdam"
+    - name: WRITE_JITTER
+      value: '1800'
+    - name: WRITE_TIMEOUT
+      value: '1800'
+
+ingress:
+  enabled: false
+
+mysql:
+  enabled: true
+  auth:
+    username: librenms
+    database: librenms
+
+redis:
+  enabled: true

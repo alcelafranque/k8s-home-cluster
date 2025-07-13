@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: librenms
+
+resources:
+  - ingress.yaml
+  - secrets.yaml
+
+helmCharts:
+  - name: librenms
+    repo: https://www.librenms.org/helm-charts
+    version: 5.0.5
+    releaseName: librenms
+    namespace: librenms
+    valuesFile: values.yaml
