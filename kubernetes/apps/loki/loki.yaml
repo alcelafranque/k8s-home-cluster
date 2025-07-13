@@ -44,6 +44,7 @@ storage_config:
     secret_access_key: "${AWS_SECRET_ACCESS_KEY}"
     bucketnames: k8s1-loki
     region: paris
+    s3forcepathstyle: true
   tsdb_shipper:
     active_index_directory: /data/index
     cache_location: /data/index_cache
