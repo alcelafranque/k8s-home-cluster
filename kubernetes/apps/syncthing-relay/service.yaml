@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: syncthing-relay-service
+  namespace: syncthing-relay
+  labels:
+    app: syncthing-relay
+spec:
+  type: LoadBalancer
+  selector:
+    app: syncthing-relay
+  ports:
+  - name: relay
+    port: 22067
+    targetPort: 22067
+    protocol: TCP
+  - name: status
+    port: 22070
+    targetPort: 22070
+    protocol: TCP
+
+

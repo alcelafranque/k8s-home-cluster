@@ -1,0 +1,64 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: syncthing-relay
+  namespace: syncthing-relay
+  labels:
+    app: syncthing-relay
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: syncthing-relay
+  template:
+    metadata:
+      labels:
+        app: syncthing-relay
+    spec:
+      containers:
+      - name: syncthing-relay
+        image: syncthing/relaysrv:latest
+        command: ["/bin/strelaysrv"]
+        args:
+          - "-pools=https://relays.syncthing.net/endpoint"
+          - "-provided-by='lac-coloc / as62430'"
+          - "-global-rate=100000000"  # 100 MB/s global
+          - "-per-session-rate=70000000" # 70MB/s per session
+          - "-message-timeout=1m30s"
+          - "-network-timeout=3m0s"
+          - "-ping-interval=1m30s"
+          - "-keys=/etc/strelaysrv"
+          - "-status-srv=:22070"
+        ports:
+        - containerPort: 22067
+          protocol: TCP
+          name: relay
+        - containerPort: 22070
+          protocol: TCP
+          name: status
+        volumeMounts:
+        - name: relay-keys
+          mountPath: /etc/strelaysrv
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /status
+            port: 22070
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /status
+            port: 22070
+          initialDelaySeconds: 10
+          periodSeconds: 10
+      volumes:
+      - name: relay-keys
+        emptyDir: {}
