@@ -17,6 +17,11 @@ clusterMetrics:
 clusterEvents:
   enabled: true
 
+metrics:
+  node-exporter:
+    metricsTuning:
+      useIntegrationAllowList: true
+
 podLogs:
   enabled: true
 
