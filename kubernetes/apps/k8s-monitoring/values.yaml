@@ -13,14 +13,19 @@ destinations:
 
 clusterMetrics:
   enabled: true
+  node-exporter:
+    jobLabel: node-exporter
+    metricsTuning:
+      includeMetrics:
+        - node_uname_info
+        - node_time_seconds
+        - node_disk_io_time_seconds_total
+        - node_disk_io_time_weighted_seconds_total
+        - node_load1
+        - node_vmstat_pgmajfault
 
 clusterEvents:
   enabled: true
-
-metrics:
-  node-exporter:
-    metricsTuning:
-      useIntegrationAllowList: true
 
 podLogs:
   enabled: true
