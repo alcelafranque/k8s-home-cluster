@@ -11,6 +11,7 @@ spec:
     sectionName: https
   hostnames:
   - mimir.lac-coloc.fr
+  - mimir.k8s1.scw.lac-coloc.fr
   rules:
   - matches:
     - path:
