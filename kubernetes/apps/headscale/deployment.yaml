@@ -18,7 +18,7 @@ spec:
         component: server
     spec:
       containers:
-        - image: headscale/headscale:0.22.3
+        - image: headscale/headscale:v0.26.1
           args:
             - serve
           imagePullPolicy: IfNotPresent
