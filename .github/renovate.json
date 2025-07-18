@@ -18,15 +18,14 @@
     "docker/**/compose.yaml"
   ],
   "helm-values": {
-    "fileMatch": [
-      "(^|/)kubernetes/.+\\.ya?ml$"
+    "managerFilePatterns": [
+      "/(^|/)kubernetes/.+\\.ya?ml$/"
     ]
   },
   "kubernetes": {
-    "fileMatch": [
-      "(^|/)talos/.+\\.ya?ml$",
-      "(^|/)kubernetes/.+\\.ya?ml$"
+    "managerFilePatterns": [
+      "/(^|/)talos/.+\\.ya?ml$/",
+      "/(^|/)kubernetes/.+\\.ya?ml$/"
     ]
   }
 }
-
