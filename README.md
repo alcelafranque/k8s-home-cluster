@@ -17,6 +17,23 @@ This repository contains:
 - **Kubernetes** - The orchestration platform
 - **Talos** - For managing Kubernetes cluster / nodes
 
+## 🖥️ Hardware Setup
+
+My cluster runs on a mix of ARM and x86 hardware, optimized for low power consumption and cost efficiency:
+
+### Master/Worker Nodes
+- **3x Orange Pi 5 Plus (16GB RAM)**
+  - ARM-based SBCs fully supported by Talos Linux
+  - Very low power consumption (~6-12W per board)
+  - 8-core Rockchip RK3588 CPU
+  - Support for NVMe 2280
+  - Ethernet 2.5GBASE-T
+
+### Additional Worker Node
+- **1x Mini PC (Ryzen 4700U)**
+  - Running as VMs on a no-name mini PC
+  - x86 architecture for workloads that require it
+
 ## 📚 Learning Journey
 
 This is a living project where I'm constantly:
