@@ -3,6 +3,39 @@ auth_enabled: false
 
 server:
   http_listen_port: 3100
+  http_server_read_timeout: 600s
+  http_server_write_timeout: 600s
+  http_server_idle_timeout: 600s
+  grpc_server_max_recv_msg_size: 104857600
+  grpc_server_max_send_msg_size: 104857600
+
+querier:
+  engine:
+    max_look_back_period: 0s
+
+limits_config:
+  retention_period: 8760h
+  max_query_length: 0h
+  max_query_parallelism: 10
+  max_entries_limit_per_query: 10000
+  max_streams_per_user: 10000
+  max_global_streams_per_user: 10000
+  max_chunks_per_query: 2000000
+  max_query_series: 500
+  max_query_lookback: 0s
+  query_timeout: 5m
+
+query_range:
+  align_queries_with_step: true
+  cache_results: true
+  max_retries: 5
+  parallelise_shardable_queries: true
+  results_cache:
+    cache:
+      embedded_cache:
+        enabled: true
+        max_size_mb: 200
+        ttl: 1h
 
 common:
   ring:
@@ -13,9 +46,10 @@ common:
   path_prefix: /data
 
 ingester:
-  chunk_idle_period: 3m
+  chunk_idle_period: 5m
   chunk_block_size: 262144
   chunk_retain_period: 1m
+  max_chunk_age: 2h
   lifecycler:
     ring:
       kvstore:
@@ -25,7 +59,9 @@ ingester:
 compactor:
   working_directory: /data/compactor
   delete_request_store: s3
-  compaction_interval: 5m
+  compaction_interval: 10m
+  retention_enabled: true
+  retention_delete_delay: 2h
 
 schema_config:
   configs:
@@ -48,5 +84,3 @@ storage_config:
   tsdb_shipper:
     active_index_directory: /data/index
     cache_location: /data/index_cache
-
-
