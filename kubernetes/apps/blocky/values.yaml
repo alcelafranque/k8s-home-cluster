@@ -92,6 +92,13 @@ config: |
       ads:
         - |
           dealabs.digidip.net
+          subsplease.org
+          nyaa.si
+          acg.rip
+          share.dmhy.org
+          click.discord.com
+          1337x.to
+          rarbg.to
     clientGroupsBlock:
       # default will be used, if no special definition for a client name exists
       default:
