@@ -6,9 +6,9 @@ resources:
   - ingress.yaml
 
 helmCharts:
-  - name: jellyseerr
-    repo: oci://ghcr.io/fallenbagel/jellyseerr/jellyseerr-chart
-    namespace: jellyfin
+  - name: app-template
+    repo: https://bjw-s-labs.github.io/helm-charts/
+    version: 4.1.2
     releaseName: jellyseerr
+    namespace: jellyseerr
     valuesFile: values.yaml
-    version: 1.9.2
