@@ -5,6 +5,9 @@ image:
   tag: ""
   pullPolicy: Always
 
+nodeSelector:
+  beta.kubernetes.io/arch: amd64
+
 serviceAccount:
   create: true
   automount: true
@@ -19,7 +22,7 @@ ingress:
 
 resources:
   limits:
-    memory: 2048Mi
+    memory: 4096Mi
   requests:
     cpu: 100m
     memory: 128Mi
