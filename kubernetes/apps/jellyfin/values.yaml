@@ -1,0 +1,60 @@
+replicaCount: 1
+
+image:
+  repository: docker.io/jellyfin/jellyfin
+  tag: ""
+  pullPolicy: Always
+
+serviceAccount:
+  create: true
+  automount: true
+
+service:
+  type: ClusterIP
+  port: 8096
+  portName: service
+
+ingress:
+  enabled: false
+
+resources:
+  limits:
+    memory: 2048Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+# -- Configure liveness probe for Jellyfin.
+livenessProbe:
+  initialDelaySeconds: 10
+  tcpSocket:
+    port: http
+
+readinessProbe:
+  initialDelaySeconds: 10
+  tcpSocket:
+    port: http
+
+jellyfin:
+  enableDLNA: false
+
+persistence:
+  config:
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 5Gi
+  media:
+    enabled: true
+    type: pvc
+    existingClaim: nfs-media-pvc
+
+# -- Configuration for metrics collection and monitoring
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    interval: 30s
+    scrapeTimeout: 30s
+    path: /metrics
+    port: 8096
+    scheme: http
