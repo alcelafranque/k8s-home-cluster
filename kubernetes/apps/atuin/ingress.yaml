@@ -1,0 +1,42 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: atuin-https-route
+  namespace: atuin
+spec:
+  parentRefs:
+  - name: one-gateway-for-all
+    namespace: envoy-gateway-system
+    sectionName: https
+  hostnames:
+  - atuin.lac-coloc.fr
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: atuin
+      namespace: atuin
+      port: 8888
+---
+# HTTPRoute pour HTTP (redirection 301)
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: atuin-http-redirect
+  namespace: atuin
+spec:
+  parentRefs:
+  - name: one-gateway-for-all
+    namespace: envoy-gateway-system
+    sectionName: http
+  hostnames:
+  - atuin.lac-coloc.fr
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https
+        statusCode: 301
