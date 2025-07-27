@@ -1,0 +1,55 @@
+controllers:
+  actual:
+    pod:
+      securityContext:
+        runAsUser: 2000
+        runAsGroup: 2000
+        fsGroup: 2000
+        fsGroupChangePolicy: "OnRootMismatch"
+
+    containers:
+      app:
+        image:
+          repository: ghcr.io/actualbudget/actual-server
+          tag: 25.7.1
+        env:
+          ACTUAL_PORT: &httpPort 5006
+        probes:
+          liveness:
+            enabled: true
+          readiness:
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /
+                port: *httpPort
+              initialDelaySeconds: 0
+              periodSeconds: 10
+              timeoutSeconds: 1
+              failureThreshold: 3
+        resources:
+          requests:
+            cpu: 12m
+            memory: 128M
+          limits:
+            memory: 512M
+
+service:
+  app:
+    ports:
+      http:
+        port: *httpPort
+
+persistence:
+  data:
+    suffix: data
+    type: persistentVolumeClaim
+    storageClass: ceph-block
+    accessMode: ReadWriteOnce
+    size: 5Gi
+    advancedMounts:
+      actual:
+        app:
+          - path: /data
+
