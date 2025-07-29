@@ -5,20 +5,6 @@
 # Labels settings in namespace
 namespace:
   labels: {}
-    # Enforce Pod Security Standards with Namespace Labels
-    # https://kubernetes.io/docs/tasks/configure-pod-container/enforce-standards-namespace-labels/
-    # - key: pod-security.kubernetes.io/enforce
-    #   value: privileged
-    # - key: pod-security.kubernetes.io/enforce-version
-    #   value: latest
-    # - key: pod-security.kubernetes.io/audit
-    #   value: privileged
-    # - key: pod-security.kubernetes.io/audit-version
-    #   value: latest
-    # - key: pod-security.kubernetes.io/warn
-    #   value: privileged
-    # - key: pod-security.kubernetes.io/warn-version
-    #   value: latest
     # https://kubernetes.io/docs/tasks/configure-pod-container/enforce-standards-namespace-labels/
     # - key: pod-security.kubernetes.io/audit
     #   value: privileged
@@ -265,7 +251,7 @@ metrics:
 
   serviceMonitor:
     autodetect: true
-    enabled: false
+    enabled: true
     annotations: {}
     additionalLabels: {}
 
@@ -408,20 +394,20 @@ configuration:
 
   # Parameters for the VolumeSnapshotLocation(s). Configure multiple by adding other element(s) to the volumeSnapshotLocation slice.
   # See https://velero.io/docs/v1.6/api-types/volumesnapshotlocation/
-  volumeSnapshotLocation:
+  volumeSnapshotLocation: []
     # name is the name of the volume snapshot location where snapshots are being taken. Required.
-  - name: default
+    # - name: default
     # provider is the name for the volume snapshot provider.
-    provider: aws
-    credential:
+    # provider: aws
+    # credential:
       # name of the secret used by this volumeSnapshotLocation.
-      name:
+      # name:
       # name of key that contains the secret data to be used.
-      key:
+      # key:
     # Additional provider-specific configuration. See link above
     # for details of required/optional fields for your provider.
-    config:
-      region: minio
+    # config:
+      # region: minio
   #    apiTimeout:
   #    resourceGroup:
   #    The ID of the subscription where volume snapshots should be stored, if different from the cluster’s subscription. If specified, also requires `configuration.volumeSnapshotLocation.config.resourceGroup`to be set. (Azure only)
@@ -431,7 +417,7 @@ configuration:
   #    project:
 
     # annotations allows adding arbitrary annotations to this VolumeSnapshotLocation resource. Optional.
-    annotations: {}
+    # annotations: {}
 
   # These are server-level settings passed as CLI flags to the `velero server` command. Velero
   # uses default values if they're not passed in, so they only need to be explicitly specified
@@ -521,7 +507,7 @@ configuration:
     #       fieldPath: metadata.labels['my_label']
 
   # Set true for backup all pod volumes without having to apply annotation on the pod when used file system backup Default: false.
-  defaultVolumesToFsBackup: true
+  defaultVolumesToFsBackup: false
 
   # How often repository maintain is run for repositories by default.
   defaultRepoMaintainFrequency:
@@ -692,29 +678,64 @@ nodeAgent:
   updateStrategy: {}
 
 # Backup schedules to create.
-# Eg:
-# schedules:
-#   mybackup:
-#     disabled: false
-#     labels:
-#       myenv: foo
-#     annotations:
-#       myenv: foo
-#     schedule: "0 0 * * *"
-#     useOwnerReferencesInBackup: false
-#     paused: false
-#     skipImmediately: false
-#     template:
-#       ttl: "240h"
-#       storageLocation: default
-#       includedNamespaces:
-#       - foo
-#       # See: https://velero.io/docs/v1.14/resource-filtering/#excludes
-#       excludedNamespaceScopedResources:
-#       - persistentVolumeClaims
-#       excludedClusterScopedResources:
-#       - persistentVolumes
-schedules: {}
+schedules:
+  daily-incremental:
+    disabled: false
+    labels:
+      backup-type: incremental
+    schedule: "0 2 * * *"
+    useOwnerReferencesInBackup: false
+    paused: false
+    skipImmediately: false
+    template:
+      ttl: "720h"
+      storageLocation: default
+      includedClusterResources:
+      - '*'
+      excludedNamespaces:
+      - kube-system
+      - kube-public
+      - kube-node-lease
+      - velero
+      - rook-ceph
+      - ceph-system
+      - rook-ceph-system
+      excludedNamespaceScopedResources:
+      - events
+      - events.events.k8s.io
+      excludedClusterResources:
+      - nodes
+      - events
+      - events.events.k8s.io
+
+  weekly-full:
+    disabled: false
+    labels:
+      backup-type: full
+    schedule: "0 1 * * 0"
+    useOwnerReferencesInBackup: false
+    paused: false
+    skipImmediately: false
+    template:
+      ttl: "4320h"
+      storageLocation: default
+      includedClusterResources:
+      - '*'
+      excludedNamespaces:
+      - kube-system
+      - kube-public
+      - kube-node-lease
+      - velero
+      - rook-ceph
+      - ceph-system
+      - rook-ceph-system
+      excludedNamespaceScopedResources:
+      - events
+      - events.events.k8s.io
+      excludedClusterResources:
+      - nodes
+      - events
+      - events.events.k8s.io
 
 # Velero ConfigMaps.
 # Eg:
