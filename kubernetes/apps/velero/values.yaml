@@ -506,7 +506,7 @@ configuration:
     #       fieldPath: metadata.labels['my_label']
 
   # Set true for backup all pod volumes without having to apply annotation on the pod when used file system backup Default: false.
-  defaultVolumesToFsBackup: false
+  defaultVolumesToFsBackup: true
 
   # How often repository maintain is run for repositories by default.
   defaultRepoMaintainFrequency:
