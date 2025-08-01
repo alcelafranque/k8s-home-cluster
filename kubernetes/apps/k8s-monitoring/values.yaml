@@ -16,13 +16,7 @@ clusterMetrics:
   node-exporter:
     jobLabel: node-exporter
     metricsTuning:
-      includeMetrics:
-        - node_uname_info
-        - node_time_seconds
-        - node_disk_io_time_seconds_total
-        - node_disk_io_time_weighted_seconds_total
-        - node_load1
-        - node_vmstat_pgmajfault
+      useIntegrationAllowList: true
 
 clusterEvents:
   enabled: true
