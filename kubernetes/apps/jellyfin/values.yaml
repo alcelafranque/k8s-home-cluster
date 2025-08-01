@@ -5,6 +5,9 @@ image:
   tag: ""
   pullPolicy: Always
 
+podAnnotations:
+  backup.velero.io/backup-volumes-excludes: media
+
 nodeSelector:
   beta.kubernetes.io/arch: amd64
 
