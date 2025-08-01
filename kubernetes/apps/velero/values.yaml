@@ -306,8 +306,7 @@ metrics:
 
 kubectl:
   image:
-    repository: rancher/kubectl
-    tag: v1.33.3
+    repository: docker.io/bitnami/kubectl
     # Digest value example: sha256:d238835e151cec91c6a811fe3a89a66d3231d9f64d09e5f3c49552672d271f38.
     # If used, it will take precedence over the kubectl.image.tag.
     # digest:
@@ -328,7 +327,7 @@ kubectl:
   extraVolumeMounts: []
 
 # This job upgrades the CRDs.
-upgradeCRDs: false
+upgradeCRDs: true
 
 # This job is meant primarily for cleaning up CRDs on CI systems.
 # Using this on production systems, especially those that have multiple releases of Velero, will be destructive.
@@ -474,7 +473,7 @@ configuration:
   defaultSnapshotMoveData:
   # Comma separated list of velero feature flags. default: empty
   # features: EnableCSI
-  features: EnableCSI
+  # features: EnableCSI
   # Configures the timeout for provisioning the volume created from the CSI snapshot. Default: 30m
   dataMoverPrepareTimeout:
   # Resource requests/limits to specify for the repository-maintenance job. Optional.
@@ -690,8 +689,6 @@ schedules:
     template:
       ttl: "720h"
       storageLocation: default
-      includedClusterResources:
-      - '*'
       excludedNamespaces:
       - kube-system
       - kube-public
@@ -700,13 +697,10 @@ schedules:
       - rook-ceph
       - ceph-system
       - rook-ceph-system
-      excludedNamespaceScopedResources:
+      excludedResources:
       - events
       - events.events.k8s.io
-      excludedClusterResources:
       - nodes
-      - events
-      - events.events.k8s.io
 
   weekly-full:
     disabled: false
@@ -719,8 +713,6 @@ schedules:
     template:
       ttl: "4320h"
       storageLocation: default
-      includedClusterResources:
-      - '*'
       excludedNamespaces:
       - kube-system
       - kube-public
@@ -729,13 +721,10 @@ schedules:
       - rook-ceph
       - ceph-system
       - rook-ceph-system
-      excludedNamespaceScopedResources:
+      excludedResources:
       - events
       - events.events.k8s.io
-      excludedClusterResources:
       - nodes
-      - events
-      - events.events.k8s.io
 
 # Velero ConfigMaps.
 # Eg:
