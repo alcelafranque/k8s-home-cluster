@@ -11,6 +11,7 @@ spec:
     kind: ClusterIssuer
   dnsNames:
   - "*.lac-coloc.fr"
+  - "*.k8s1.scw.lac-coloc.fr"
   - "*.lafranque.net"
   - "*.lafranque.fr"
   - "*.as62430.net"
