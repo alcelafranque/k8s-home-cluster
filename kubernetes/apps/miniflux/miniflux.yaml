@@ -1,9 +1,10 @@
-
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: miniflux
+  labels:
+    app.kubernetes.io/name: miniflux
 spec:
   selector:
       matchLabels:

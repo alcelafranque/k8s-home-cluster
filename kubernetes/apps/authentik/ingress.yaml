@@ -2,8 +2,12 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: authentik-https-route
+  name: authentik
   namespace: authentik
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/icon: authentik.png
+    gethomepage.dev/name: Authentik
 spec:
   parentRefs:
   - name: one-gateway-for-all

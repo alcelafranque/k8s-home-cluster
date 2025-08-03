@@ -1,0 +1,63 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.26.1-standalone-strict/configmap-v1.json
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage-config
+  labels:
+    app.kubernetes.io/name: homepage
+data:
+  bookmarks.yaml: |
+    ---
+    - self hosted:
+        - Bitwarden:
+            - icon: bitwarden
+              href: https://bw.lac-coloc.fr
+        - LibreNMS:
+            - icon: librenms
+              href: https://librenms.lac-coloc.fr
+  docker.yaml: |
+    ---
+  kubernetes.yaml: |
+    ---
+    mode: cluster
+    route: gateway
+    gateway: "true"
+
+  services.yaml: |
+    ---
+
+  settings.yaml: |
+    ---
+    title: Lac'coloc Apps
+    theme: light
+    color: slate
+    headerStyle: boxedWidgets
+    target: _blank
+    layout:
+      Home:
+        style: row
+        columns: 4
+        icon: mdi-home
+      selfhosted:
+        style: row
+        columns: 4
+        icon: mdi-home
+      Media:
+        style: row
+        columns: 4
+        icon: mdi-multimedia
+      Monitoring:
+        style: row
+        columns: 4
+        icon: mdi-download-circle
+    quicklaunch:
+      searchDescription: true
+      hideInternetSearch: true
+      hideVisitURL: true
+
+  widgets.yaml: |
+    - search:
+        provider: [brave, bing]
+        focus: false
+        target: _blank

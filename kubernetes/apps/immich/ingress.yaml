@@ -2,8 +2,13 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: immich-https-route
+  name: immich
   namespace: immich
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/icon: immich.png
+    gethomepage.dev/name: Immich
+    gethomepage.dev/pod-selector: "app.kubernetes.io/name=server"
 spec:
   parentRefs:
   - name: one-gateway-for-all
