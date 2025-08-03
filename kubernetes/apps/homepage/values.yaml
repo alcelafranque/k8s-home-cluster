@@ -1,0 +1,50 @@
+controllers:
+  homepage:
+    annotations:
+      reloader.stakater.com/auto: "true"
+    containers:
+      app:
+        image:
+          repository: ghcr.io/gethomepage/homepage
+          tag: v1.4.2
+        resources:
+          requests:
+            cpu: 25m
+            memory: 50Mi
+        env:
+          LOG_TARGETS: stdout
+          HOMEPAGE_ALLOWED_HOSTS: homepage.lac-coloc.fr
+        envFrom:
+          - secretRef:
+              name: homepage-secret
+    serviceAccount:
+      identifier: homepage
+
+service:
+  app:
+    controller: *app
+    ports:
+      http:
+        port: 3000
+
+persistence:
+  config:
+    enabled: true
+    type: configMap
+    name: homepage-config
+    globalMounts:
+      - subPath: bookmarks.yaml
+        path: /app/config/bookmarks.yaml
+      - subPath: docker.yaml
+        path: /app/config/docker.yaml
+      - subPath: kubernetes.yaml
+        path: /app/config/kubernetes.yaml
+      - subPath: services.yaml
+        path: /app/config/services.yaml
+      - subPath: settings.yaml
+        path: /app/config/settings.yaml
+      - subPath: widgets.yaml
+        path: /app/config/widgets.yaml
+
+serviceAccount:
+  homepage: {}
