@@ -26,8 +26,8 @@ spec:
       login: true
       passwordSecret:
         name: paperless-db-secret
-    - name: mealie
+    - name: mealie2
       ensure: present
       login: true
       passwordSecret:
-        name: mealie-db-secret
+        name: mealie2-db-secret
