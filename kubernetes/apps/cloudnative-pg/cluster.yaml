@@ -6,6 +6,7 @@ metadata:
   namespace: cnpg-system
 spec:
   instances: 3
+  enableSuperuserAccess: false
   storage:
     size: 10Gi
   managed:
@@ -25,3 +26,8 @@ spec:
       login: true
       passwordSecret:
         name: paperless-db-secret
+    - name: mealie
+      ensure: present
+      login: true
+      passwordSecret:
+        name: mealie-db-secret
