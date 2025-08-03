@@ -2,8 +2,12 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: morphos-https-route
+  name: morphos
   namespace: morphos
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/icon: morphos.png
+    gethomepage.dev/name: Morphos
 spec:
   parentRefs:
   - name: one-gateway-for-all

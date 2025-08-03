@@ -3,8 +3,6 @@ kind: StatefulSet
 metadata:
   name: grafana
   namespace: monitoring
-  labels:
-    app: grafana
 spec:
   replicas: 1
   selector:
@@ -15,6 +13,7 @@ spec:
     metadata:
       labels:
         app: grafana
+        app.kubernetes.io/name: grafana
     spec:
       securityContext:
         runAsUser: 472

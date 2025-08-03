@@ -2,42 +2,38 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: actual
-  namespace: actual
-  annotations:
-    gethomepage.dev/enabled: "false"
-    gethomepage.dev/icon: actual.png
-    gethomepage.dev/name: Actual
+  name: homepage-https-route
+  namespace: homepage
 spec:
   parentRefs:
   - name: one-gateway-for-all
     namespace: envoy-gateway-system
     sectionName: https
   hostnames:
-  - actual.lafranque.net
+  - homepage.lac-coloc.fr
   rules:
   - matches:
     - path:
         type: PathPrefix
         value: /
     backendRefs:
-    - name: actual
-      namespace: actual
-      port: 5006
+    - name: homepage
+      namespace: homepage
+      port: 3000
 ---
 # HTTPRoute pour HTTP (redirection 301)
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: actual-http-redirect
-  namespace: actual
+  name: homepage-http-redirect
+  namespace: homepage
 spec:
   parentRefs:
   - name: one-gateway-for-all
     namespace: envoy-gateway-system
     sectionName: http
   hostnames:
-  - actual.lafranque.net
+  - homepage.lac-coloc.fr
   rules:
   - filters:
     - type: RequestRedirect
