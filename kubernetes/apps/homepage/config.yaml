@@ -37,20 +37,22 @@ data:
     layout:
       Home:
         style: row
-        columns: 4
-        icon: mdi-home
+        columns: 3
       selfhosted:
         style: row
-        columns: 4
-        icon: mdi-home
+        columns: 3
+      Tools:
+        style: row
+        columns: 3
       Media:
         style: row
-        columns: 4
-        icon: mdi-multimedia
+        columns: 3
       Monitoring:
         style: row
-        columns: 4
-        icon: mdi-download-circle
+        columns: 3
+      Random:
+        style: row
+        columns: 3
     quicklaunch:
       searchDescription: true
       hideInternetSearch: true

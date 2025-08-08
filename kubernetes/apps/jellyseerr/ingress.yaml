@@ -8,6 +8,8 @@ metadata:
     gethomepage.dev/enabled: "true"
     gethomepage.dev/icon: jellyseerr.png
     gethomepage.dev/name: Jellyseerr
+    gethomepage.dev/group: Media
+    gethomepage.dev/description: "Media request service"
 spec:
   parentRefs:
   - name: one-gateway-for-all

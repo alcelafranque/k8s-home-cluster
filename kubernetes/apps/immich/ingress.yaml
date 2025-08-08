@@ -9,6 +9,8 @@ metadata:
     gethomepage.dev/icon: immich.png
     gethomepage.dev/name: Immich
     gethomepage.dev/pod-selector: "app.kubernetes.io/name=server"
+    gethomepage.dev/group: Media
+    gethomepage.dev/description: "Photo and Video management"
 spec:
   parentRefs:
   - name: one-gateway-for-all

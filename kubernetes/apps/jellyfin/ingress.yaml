@@ -15,6 +15,8 @@ metadata:
     gethomepage.dev/widget.expandOneStreamToTwoRows: false
     gethomepage.dev/widget.key: '{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}'
     gethomepage.dev/widget.url: http://jellyfin.jellyfin.svc.cluster.local:8096
+    gethomepage.dev/group: Media
+    gethomepage.dev/description: "Media server"
 spec:
   parentRefs:
   - name: one-gateway-for-all

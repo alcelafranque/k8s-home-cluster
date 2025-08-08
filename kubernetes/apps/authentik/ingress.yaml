@@ -8,6 +8,8 @@ metadata:
     gethomepage.dev/enabled: "true"
     gethomepage.dev/icon: authentik.png
     gethomepage.dev/name: Authentik
+    gethomepage.dev/group: Tools
+    gethomepage.dev/description: "Identity Provider & SSO"
 spec:
   parentRefs:
   - name: one-gateway-for-all

@@ -8,6 +8,8 @@ metadata:
     gethomepage.dev/enabled: "true"
     gethomepage.dev/icon: morphos.png
     gethomepage.dev/name: Morphos
+    gethomepage.dev/description: "File converter server"
+    gethomepage.dev/group: Tools
 spec:
   parentRefs:
   - name: one-gateway-for-all

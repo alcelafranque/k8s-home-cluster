@@ -8,6 +8,8 @@ metadata:
     gethomepage.dev/enabled: "true"
     gethomepage.dev/icon: miniflux.png
     gethomepage.dev/name: Miniflux
+    gethomepage.dev/group: Random
+    gethomepage.dev/description: "Feed reader"
 spec:
   parentRefs:
   - name: one-gateway-for-all
