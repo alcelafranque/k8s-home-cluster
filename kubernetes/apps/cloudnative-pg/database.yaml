@@ -30,14 +30,3 @@ spec:
     name: cluster-1
   name: paperless
   owner: paperless
----
-apiVersion: postgresql.cnpg.io/v1
-kind: Database
-metadata:
-  name: mealie2
-  namespace: cnpg-system
-spec:
-  cluster:
-    name: cluster-1
-  name: mealie2
-  owner: mealie2

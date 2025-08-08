@@ -4,7 +4,6 @@ namespace: mealie
 
 resources:
   - ingress.yaml
-  - secrets.yaml
 
 helmCharts:
   - name: app-template
