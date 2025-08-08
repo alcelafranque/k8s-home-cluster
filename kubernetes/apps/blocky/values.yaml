@@ -99,6 +99,7 @@ config: |
           click.discord.com
           1337x.to
           rarbg.to
+          torrent9.to
     clientGroupsBlock:
       # default will be used, if no special definition for a client name exists
       default:
