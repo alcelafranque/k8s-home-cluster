@@ -17,6 +17,9 @@ controllers:
           WORKERS_PER_CORE: 1
           MAX_WORKERS: 1
           WEB_CONCURRENCY: 1
+        envFrom:
+          - secretRef:
+              name: mealie
 
         resources:
           requests:
