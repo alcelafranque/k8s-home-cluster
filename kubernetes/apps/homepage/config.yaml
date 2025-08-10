@@ -13,9 +13,23 @@ data:
         - Bitwarden:
             - icon: bitwarden
               href: https://bw.lac-coloc.fr
+              description: "Password manager"
         - LibreNMS:
             - icon: librenms
               href: https://librenms.lac-coloc.fr
+              description: "Network monitoring"
+        - Radarr:
+            - icon: radarr
+              href: https://radarr.lac-coloc.fr
+              description: "Movie organizer"
+        - Sonarr:
+            - icon: sonarr
+              href: https://sonarr.lac-coloc.fr
+              description: "Serie organizer"
+        - Bittorrent:
+            - icon: qbittorrent
+              href: https://bittorrent.lac-coloc.fr
+              description: "BitTorrent client"
   docker.yaml: |
     ---
   kubernetes.yaml: |
@@ -59,7 +73,28 @@ data:
       hideVisitURL: true
 
   widgets.yaml: |
+    - openmeteo:
+        label: Paris
+        latitude: 48.8534100
+        longitude: 2.3488000
+        timezone: Europe/Paris
+        units: metric
+        cache: 5
+        maximumFractionDigits: 1
+    - kubernetes:
+        cluster:
+          cpu: true
+          memory: true
+          show: true
+          showLabel: true
+        nodes:
+          cpu: true
+          memory: true
+          show: false
+          showLabel: true
     - search:
-        provider: [brave, bing]
-        focus: false
+        provider: custom
+        url: https://kagi.com/search?q=
         target: _blank
+        suggestionUrl: https://kagi.com/api/autosuggest?q=
+        showSearchSuggestions: true
