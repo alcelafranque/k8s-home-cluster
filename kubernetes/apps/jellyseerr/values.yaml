@@ -4,7 +4,7 @@ controllers:
       app:
         image:
           repository: fallenbagel/jellyseerr
-          tag: 2.7.2
+          tag: 2.7.3
         env:
           TZ: Europe/Paris
           LOG_LEVEL: "info"
