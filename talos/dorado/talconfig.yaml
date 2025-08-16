@@ -146,14 +146,6 @@ patches:
         disabled: true
     machine:
       kubelet:
-        extraMounts:
-          - destination: /var/mnt/longhorn
-            type: bind
-            source: /var/mnt/longhorn
-            options:
-              - bind
-              - rshared
-              - rw
         extraArgs:
           rotate-server-certificates: true
       network:
