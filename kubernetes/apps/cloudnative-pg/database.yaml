@@ -30,3 +30,14 @@ spec:
     name: cluster-1
   name: paperless
   owner: paperless
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: jellystat
+  namespace: cnpg-system
+spec:
+  cluster:
+    name: cluster-1
+  name: jellystat
+  owner: jellystat

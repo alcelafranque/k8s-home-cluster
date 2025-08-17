@@ -26,3 +26,8 @@ spec:
       login: true
       passwordSecret:
         name: paperless-db-secret
+    - name: jellystat
+      ensure: present
+      login: true
+      passwordSecret:
+        name: jellystat-db-secret
