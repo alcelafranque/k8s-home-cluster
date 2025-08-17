@@ -42,7 +42,7 @@ spec:
   - jellystat.lac-coloc.fr
   rules:
   - filters:
-    - type: jellystatRedirect
-      jellystatRedirect:
+    - type: RequestRedirect
+      requestRedirect:
         scheme: https
         statusCode: 301

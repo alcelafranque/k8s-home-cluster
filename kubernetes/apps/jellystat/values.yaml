@@ -10,22 +10,21 @@ controllers:
         envFrom:
           - secretRef:
               name: jellystat
-              probes:
-        liveness: &probes
+        probes:
+          liveness: &probes
             enabled: true
             custom: true
             spec:
               httpGet:
-                path: /api/v1/status
+                path: /
                 port: 3000
               initialDelaySeconds: 0
               periodSeconds: 10
               timeoutSeconds: 1
               failureThreshold: 3
-        readiness: *probes
+          readiness: *probes
         securityContext:
           allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: true
           capabilities: { drop: ["ALL"] }
         resources:
           requests:
