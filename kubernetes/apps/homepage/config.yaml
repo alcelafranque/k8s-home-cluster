@@ -30,6 +30,10 @@ data:
             - icon: qbittorrent
               href: https://bittorrent.lac-coloc.fr
               description: "BitTorrent client"
+        - Home Assistant Cly:
+            - icon: home-assistant
+              href: https://ha.cly.lac-coloc.fr
+              description: "Home automation"
   docker.yaml: |
     ---
   kubernetes.yaml: |
