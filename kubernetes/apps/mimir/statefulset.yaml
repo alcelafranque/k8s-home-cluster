@@ -17,7 +17,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
         - name: mimir
-          image: docker.io/grafana/mimir:2.17.0
+          image: docker.io/grafana/mimir:2.17.1
           args: 
             - "-target=all"
             - "-config.file=/etc/mimir/mimir.yaml"
