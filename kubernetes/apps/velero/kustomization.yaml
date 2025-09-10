@@ -10,5 +10,5 @@ helmCharts:
     repo: https://vmware-tanzu.github.io/helm-charts
     includeCRDs: true
     valuesFile: values.yaml
-    version: 10.1.1
+    version: 10.1.2
 
