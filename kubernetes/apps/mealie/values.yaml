@@ -7,7 +7,7 @@ controllers:
       app:
         image:
           repository: ghcr.io/mealie-recipes/mealie
-          tag: v3.2.1
+          tag: v3.3.0
         env:
           BASE_URL: https://mealie.lafranque.net
           ALLOW_SIGNUP: true
