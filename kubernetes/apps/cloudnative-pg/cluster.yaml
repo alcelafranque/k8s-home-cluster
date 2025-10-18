@@ -31,3 +31,29 @@ spec:
       login: true
       passwordSecret:
         name: jellystat-db-secret
+  backup:
+    barmanObjectStore:
+      destinationPath: "s3://backup-k8s-psql-default"
+      endpointURL: "https://s3-mdz.lac-coloc.fr"
+      s3Credentials:
+        accessKeyId:
+          name: s3-psql-default
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: s3-psql-default
+          key: ACCESS_SECRET_KEY
+      data:
+        compression: bzip2
+      wal:
+        compression: bzip2
+    retentionPolicy: "30d"
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: immich-default
+spec:
+  schedule: "11 12 3 * *"
+  backupOwnerReference: self
+  cluster:
+    name: cluster-1
