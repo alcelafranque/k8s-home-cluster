@@ -32,6 +32,9 @@ spec:
         # - CREATE EXTENSION IF NOT EXISTS "vector";
         # - ALTER ROLE "immich" WITH "superuser";
 
+  storage:
+    size: 10Gi
+
   managed:
     roles:
       - name: immich
@@ -41,5 +44,29 @@ spec:
         passwordSecret:
           name: immich-db-secret
 
-  storage:
-    size: 10Gi
+  backup:
+    barmanObjectStore:
+      destinationPath: "s3://backup-k8s-psql-immich"
+      endpointURL: "https://s3-mdz.lac-coloc.fr"
+      s3Credentials:
+        accessKeyId:
+          name: s3-immich
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: s3-immich
+          key: ACCESS_SECRET_KEY
+      data:
+        compression: bzip2
+      wal:
+        compression: bzip2
+    retentionPolicy: "30d"
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: immich-postgres
+spec:
+  schedule: "11 12 3 * *"
+  backupOwnerReference: self
+  cluster:
+    name: immich-postgres
