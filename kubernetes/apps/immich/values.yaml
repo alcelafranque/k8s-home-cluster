@@ -1,15 +1,22 @@
-env:
-  REDIS_HOSTNAME: dragonfly.dragonfly.svc.cluster.local
-  REDIS_PORT: "6379"
-  REDIS_DBINDEX: "2"
-  DB_HOSTNAME: immich-postgres-rw
-  DB_USERNAME: immich
-  DB_DATABASE_NAME: immich
-  DB_PASSWORD:
-    valueFrom:
-      secretKeyRef:
-        name: immich-db-secret
-        key: password
+controllers:
+  main:
+    containers:
+      main:
+        image:
+          repository: ghcr.io/immich-app/immich-server
+          tag: v2.1.0
+        env:
+          REDIS_HOSTNAME: dragonfly.dragonfly.svc.cluster.local
+          REDIS_PORT: "6379"
+          REDIS_DBINDEX: "2"
+          DB_HOSTNAME: immich-postgres-rw
+          DB_USERNAME: immich
+          DB_DATABASE_NAME: immich
+          DB_PASSWORD:
+            valueFrom:
+              secretKeyRef:
+                name: immich-db-secret
+                key: password
 
 immich:
   metrics:
@@ -17,12 +24,6 @@ immich:
   persistence:
     library:
       existingClaim: immich-library-pvc
-
-postgresql:
-  enabled: false
-
-redis:
-  enabled: false
 
 server:
   enabled: true
@@ -46,5 +47,5 @@ machine-learning:
     cache:
       enabled: true
       size: 20Gi
-      type: pvc
+      type: persistentVolumeClaim
       accessMode: ReadWriteOnce
