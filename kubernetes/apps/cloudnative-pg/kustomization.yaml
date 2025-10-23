@@ -9,7 +9,7 @@ helmCharts:
     releaseName: cnpg
     repo: https://cloudnative-pg.github.io/charts
     includeCRDs: true
-    version: 0.26.0
+    version: 0.26.1
 
 resources:
   - cluster.yaml
