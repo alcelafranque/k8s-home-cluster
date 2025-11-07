@@ -18,11 +18,11 @@ spec:
     spec:
       containers:
       - name: syncthing-relay
-        image: syncthing/relaysrv:latest
+        image: syncthing/relaysrv:2.0.11
         command: ["/bin/strelaysrv"]
         args:
           - "-pools=https://relays.syncthing.net/endpoint"
-          - "-provided-by='lac-coloc / as62430'"
+          - "-provided-by=lac-coloc / as62430"
           - "-global-rate=100000000"  # 100 MB/s global
           - "-per-session-rate=70000000" # 70MB/s per session
           - "-message-timeout=1m30s"
