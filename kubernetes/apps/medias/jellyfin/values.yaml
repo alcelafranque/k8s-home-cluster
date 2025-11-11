@@ -47,8 +47,8 @@ jellyfin:
 persistence:
   config:
     enabled: true
-    accessMode: ReadWriteOnce
-    size: 20Gi
+    type: pvc
+    existingClaim: jellyfin-config
   media:
     enabled: true
     type: pvc
