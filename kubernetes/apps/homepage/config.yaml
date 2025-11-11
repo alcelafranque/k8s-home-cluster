@@ -18,14 +18,6 @@ data:
             - icon: librenms
               href: https://librenms.lac-coloc.fr
               description: "Network monitoring"
-        - Radarr:
-            - icon: radarr
-              href: https://radarr.lac-coloc.fr
-              description: "Movie organizer"
-        - Sonarr:
-            - icon: sonarr
-              href: https://sonarr.lac-coloc.fr
-              description: "Serie organizer"
         - Bittorrent:
             - icon: qbittorrent
               href: https://bittorrent.lac-coloc.fr
