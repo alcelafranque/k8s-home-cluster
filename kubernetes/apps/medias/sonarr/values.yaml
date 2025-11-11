@@ -4,7 +4,7 @@ controllers:
       app:
         image:
           repository: lscr.io/linuxserver/sonarr
-          tag: latest
+          tag: 4.0.16
         env:
           TZ: Europe/Paris
           PUID: "1000"

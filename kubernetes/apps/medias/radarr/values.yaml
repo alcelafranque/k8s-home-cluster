@@ -4,7 +4,7 @@ controllers:
       app:
         image:
           repository: lscr.io/linuxserver/radarr
-          tag: latest
+          tag: 6.0.4-nightly
         env:
           TZ: Europe/Paris
           PUID: "1000"

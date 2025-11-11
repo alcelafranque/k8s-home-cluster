@@ -4,7 +4,7 @@ controllers:
       app:
         image:
           repository: lscr.io/linuxserver/prowlarr
-          tag: latest
+          tag: 2.2.0-nightly
         env:
           TZ: Europe/Paris
           PUID: "1000"
