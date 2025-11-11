@@ -11,4 +11,3 @@ resources:
   - ./lidarr
   - ./prowlarr
   - ./flaresolverr
-  - ./discarr
