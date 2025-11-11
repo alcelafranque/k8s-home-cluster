@@ -12,4 +12,4 @@ helmCharts:
     namespace: medias
     releaseName: jellyfin
     valuesFile: values.yaml
-    version: 2.4.0
+    version: 2.5.0
