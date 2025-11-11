@@ -1,0 +1,48 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: huntarr
+  namespace: medias
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/icon: huntarr.png
+    gethomepage.dev/name: Huntarr
+    gethomepage.dev/group: Media
+    gethomepage.dev/description: "Automated media library search"
+spec:
+  parentRefs:
+  - name: one-gateway-for-all
+    namespace: envoy-gateway-system
+    sectionName: https
+  hostnames:
+  - huntarr.lac-coloc.fr
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: huntarr
+      namespace: medias
+      port: 9705
+---
+# HTTPRoute pour HTTP (redirection 301)
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: huntarr-http-redirect
+  namespace: medias
+spec:
+  parentRefs:
+  - name: one-gateway-for-all
+    namespace: envoy-gateway-system
+    sectionName: http
+  hostnames:
+  - huntarr.lac-coloc.fr
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https
+        statusCode: 301
