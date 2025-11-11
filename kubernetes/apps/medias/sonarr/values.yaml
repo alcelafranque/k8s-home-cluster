@@ -1,0 +1,61 @@
+controllers:
+  sonarr:
+    containers:
+      app:
+        image:
+          repository: lscr.io/linuxserver/sonarr
+          tag: latest
+        env:
+          TZ: Europe/Paris
+          PUID: "1000"
+          PGID: "1000"
+          UMASK: "002"
+        probes:
+          liveness: &probes
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /ping
+                port: 8989
+              initialDelaySeconds: 30
+              periodSeconds: 10
+              timeoutSeconds: 5
+              failureThreshold: 3
+          readiness: *probes
+        resources:
+          requests:
+            cpu: 10m
+            memory: 250Mi
+          limits:
+            memory: 2Gi
+
+defaultPodOptions:
+  securityContext:
+    runAsNonRoot: false
+    runAsUser: 0
+    fsGroup: 1000
+    fsGroupChangePolicy: OnRootMismatch
+
+service:
+  app:
+    controller: sonarr
+    ports:
+      http:
+        port: 8989
+
+persistence:
+  config:
+    suffix: config
+    type: persistentVolumeClaim
+    storageClass: ceph-block
+    accessMode: ReadWriteOnce
+    size: 5Gi
+    globalMounts:
+      - path: /config
+  data:
+    type: persistentVolumeClaim
+    existingClaim: nfs-media-pvc
+    globalMounts:
+      - path: /data
+        subPath: data

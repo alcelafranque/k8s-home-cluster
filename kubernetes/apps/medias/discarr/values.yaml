@@ -1,0 +1,64 @@
+controllers:
+  discarr:
+    containers:
+      app:
+        image:
+          repository: ghcr.io/jugbot/discarr
+          tag: latest
+        env:
+          TZ: Europe/Paris
+          PUID: "1000"
+          PGID: "1000"
+          LOG_LEVEL: info
+          CRON_SCHEDULE: "* * * * *"
+          JELLYSEER_URL: https://request.lac-coloc.fr
+          JELLYSEER_PUBLIC_URL: https://request.lac-coloc.fr
+        envFrom:
+          - secretRef:
+              name: discarr
+        probes:
+          liveness:
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /
+                port: 3000
+              initialDelaySeconds: 30
+              periodSeconds: 10
+              timeoutSeconds: 5
+              failureThreshold: 3
+          readiness:
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /
+                port: 3000
+              initialDelaySeconds: 30
+              periodSeconds: 10
+              timeoutSeconds: 5
+              failureThreshold: 3
+        resources:
+          requests:
+            cpu: 10m
+            memory: 128Mi
+          limits:
+            memory: 512Mi
+
+service:
+  app:
+    controller: discarr
+    ports:
+      http:
+        port: 3000
+
+persistence:
+  config:
+    suffix: data
+    type: persistentVolumeClaim
+    storageClass: ceph-block
+    accessMode: ReadWriteOnce
+    size: 1Gi
+    globalMounts:
+      - path: /data

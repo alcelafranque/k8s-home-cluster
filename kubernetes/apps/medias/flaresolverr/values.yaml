@@ -1,0 +1,38 @@
+controllers:
+  flaresolverr:
+    containers:
+      app:
+        image:
+          repository: 21hsmw/flaresolverr
+          tag: nodriver
+        env:
+          TZ: Europe/Paris
+          LOG_LEVEL: info
+          LOG_HTML: "false"
+          CAPTCHA_SOLVER: none
+        probes:
+          liveness: &probes
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /
+                port: 8191
+              initialDelaySeconds: 30
+              periodSeconds: 10
+              timeoutSeconds: 5
+              failureThreshold: 3
+          readiness: *probes
+        resources:
+          requests:
+            cpu: 10m
+            memory: 250Mi
+          limits:
+            memory: 2Gi
+
+service:
+  app:
+    controller: flaresolverr
+    ports:
+      http:
+        port: 8191
