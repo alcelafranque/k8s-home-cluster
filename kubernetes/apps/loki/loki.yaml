@@ -75,7 +75,7 @@ schema_config:
 
 storage_config:
   aws:
-    endpoint: s3-vrc.lac-coloc.fr
+    endpoint: https://s3-vrc.lac-coloc.fr
     access_key_id: "${AWS_ACCESS_KEY_ID}"
     secret_access_key: "${AWS_SECRET_ACCESS_KEY}"
     bucketnames: k8s1-loki
