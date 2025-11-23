@@ -6,10 +6,10 @@ metadata:
   name: envoy-gateway
   namespace: 'envoy-gateway-system'
   labels:
-    helm.sh/chart: gateway-helm-v0.0.0-latest
+    helm.sh/chart: gateway-helm-1.6.0
     app.kubernetes.io/name: gateway-helm
     app.kubernetes.io/instance: eg
-    app.kubernetes.io/version: "latest"
+    app.kubernetes.io/version: "v1.6.0"
     app.kubernetes.io/managed-by: Helm
 ---
 # Source: gateway-helm/templates/envoy-gateway-config.yaml
@@ -19,10 +19,10 @@ metadata:
   name: envoy-gateway-config
   namespace: 'envoy-gateway-system'
   labels:
-    helm.sh/chart: gateway-helm-v0.0.0-latest
+    helm.sh/chart: gateway-helm-1.6.0
     app.kubernetes.io/name: gateway-helm
     app.kubernetes.io/instance: eg
-    app.kubernetes.io/version: "latest"
+    app.kubernetes.io/version: "v1.6.0"
     app.kubernetes.io/managed-by: Helm
 data:
   envoy-gateway.yaml: |
@@ -38,7 +38,7 @@ data:
       kubernetes:
         rateLimitDeployment:
           container:
-            image: docker.io/envoyproxy/ratelimit:master
+            image: docker.io/envoyproxy/ratelimit:99d85510
           patch:
             type: StrategicMerge
             value:
@@ -49,7 +49,7 @@ data:
                     - imagePullPolicy: IfNotPresent
                       name: envoy-ratelimit
         shutdownManager:
-          image: docker.io/envoyproxy/gateway-dev:latest
+          image: docker.io/envoyproxy/gateway:v1.6.0
       type: Kubernetes
 ---
 # Source: gateway-helm/templates/envoy-gateway-rbac.yaml
@@ -205,10 +205,10 @@ metadata:
   name: eg-gateway-helm-infra-manager
   namespace: 'envoy-gateway-system'
   labels:
-    helm.sh/chart: gateway-helm-v0.0.0-latest
+    helm.sh/chart: gateway-helm-1.6.0
     app.kubernetes.io/name: gateway-helm
     app.kubernetes.io/instance: eg
-    app.kubernetes.io/version: "latest"
+    app.kubernetes.io/version: "v1.6.0"
     app.kubernetes.io/managed-by: Helm
 rules:
 - apiGroups:
@@ -220,6 +220,7 @@ rules:
   verbs:
   - create
   - get
+  - list
   - delete
   - deletecollection
   - patch
@@ -243,9 +244,18 @@ rules:
   verbs:
   - create
   - get
+  - list
   - delete
   - deletecollection
   - patch
+- apiGroups:
+  - certificates.k8s.io
+  resources:
+  - clustertrustbundles
+  verbs:
+  - list
+  - get
+  - watch
 ---
 # Source: gateway-helm/templates/leader-election-rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -254,10 +264,10 @@ metadata:
   name: eg-gateway-helm-leader-election-role
   namespace: 'envoy-gateway-system'
   labels:
-    helm.sh/chart: gateway-helm-v0.0.0-latest
+    helm.sh/chart: gateway-helm-1.6.0
     app.kubernetes.io/name: gateway-helm
     app.kubernetes.io/instance: eg
-    app.kubernetes.io/version: "latest"
+    app.kubernetes.io/version: "v1.6.0"
     app.kubernetes.io/managed-by: Helm
 rules:
 - apiGroups:
@@ -299,10 +309,10 @@ metadata:
   name: eg-gateway-helm-infra-manager
   namespace: 'envoy-gateway-system'
   labels:
-    helm.sh/chart: gateway-helm-v0.0.0-latest
+    helm.sh/chart: gateway-helm-1.6.0
     app.kubernetes.io/name: gateway-helm
     app.kubernetes.io/instance: eg
-    app.kubernetes.io/version: "latest"
+    app.kubernetes.io/version: "v1.6.0"
     app.kubernetes.io/managed-by: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -320,10 +330,10 @@ metadata:
   name: eg-gateway-helm-leader-election-rolebinding
   namespace: 'envoy-gateway-system'
   labels:
-    helm.sh/chart: gateway-helm-v0.0.0-latest
+    helm.sh/chart: gateway-helm-1.6.0
     app.kubernetes.io/name: gateway-helm
     app.kubernetes.io/instance: eg
-    app.kubernetes.io/version: "latest"
+    app.kubernetes.io/version: "v1.6.0"
     app.kubernetes.io/managed-by: Helm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -342,12 +352,13 @@ metadata:
   namespace: 'envoy-gateway-system'
   labels:
     control-plane: envoy-gateway
-    helm.sh/chart: gateway-helm-v0.0.0-latest
+    helm.sh/chart: gateway-helm-1.6.0
     app.kubernetes.io/name: gateway-helm
     app.kubernetes.io/instance: eg
-    app.kubernetes.io/version: "latest"
+    app.kubernetes.io/version: "v1.6.0"
     app.kubernetes.io/managed-by: Helm
 spec:
+  type: ClusterIP
   selector:
     control-plane: envoy-gateway
     app.kubernetes.io/name: gateway-helm
@@ -377,10 +388,10 @@ metadata:
   namespace: 'envoy-gateway-system'
   labels:
     control-plane: envoy-gateway
-    helm.sh/chart: gateway-helm-v0.0.0-latest
+    helm.sh/chart: gateway-helm-1.6.0
     app.kubernetes.io/name: gateway-helm
     app.kubernetes.io/instance: eg
-    app.kubernetes.io/version: "latest"
+    app.kubernetes.io/version: "v1.6.0"
     app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
@@ -411,8 +422,8 @@ spec:
               fieldPath: metadata.namespace
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: cluster.local
-        image: docker.io/envoyproxy/gateway-dev:latest
-        imagePullPolicy: Always
+        image: docker.io/envoyproxy/gateway:v1.6.0
+        imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
             path: /healthz
@@ -480,10 +491,10 @@ metadata:
   name: eg-gateway-helm-certgen
   namespace: 'envoy-gateway-system'
   labels:
-    helm.sh/chart: gateway-helm-v0.0.0-latest
+    helm.sh/chart: gateway-helm-1.6.0
     app.kubernetes.io/name: gateway-helm
     app.kubernetes.io/instance: eg
-    app.kubernetes.io/version: "latest"
+    app.kubernetes.io/version: "v1.6.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
     "helm.sh/hook": pre-install, pre-upgrade
@@ -495,10 +506,10 @@ kind: ClusterRole
 metadata:
   name: 'eg-gateway-helm-certgen:envoy-gateway-system'
   labels:
-    helm.sh/chart: gateway-helm-v0.0.0-latest
+    helm.sh/chart: gateway-helm-1.6.0
     app.kubernetes.io/name: gateway-helm
     app.kubernetes.io/instance: eg
-    app.kubernetes.io/version: "latest"
+    app.kubernetes.io/version: "v1.6.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
     "helm.sh/hook": pre-install, pre-upgrade
@@ -528,10 +539,10 @@ kind: ClusterRoleBinding
 metadata:
   name: 'eg-gateway-helm-certgen:envoy-gateway-system'
   labels:
-    helm.sh/chart: gateway-helm-v0.0.0-latest
+    helm.sh/chart: gateway-helm-1.6.0
     app.kubernetes.io/name: gateway-helm
     app.kubernetes.io/instance: eg
-    app.kubernetes.io/version: "latest"
+    app.kubernetes.io/version: "v1.6.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
     "helm.sh/hook": pre-install, pre-upgrade
@@ -552,10 +563,10 @@ metadata:
   name: eg-gateway-helm-certgen
   namespace: 'envoy-gateway-system'
   labels:
-    helm.sh/chart: gateway-helm-v0.0.0-latest
+    helm.sh/chart: gateway-helm-1.6.0
     app.kubernetes.io/name: gateway-helm
     app.kubernetes.io/instance: eg
-    app.kubernetes.io/version: "latest"
+    app.kubernetes.io/version: "v1.6.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
     "helm.sh/hook": pre-install, pre-upgrade
@@ -577,10 +588,10 @@ metadata:
   name: eg-gateway-helm-certgen
   namespace: 'envoy-gateway-system'
   labels:
-    helm.sh/chart: gateway-helm-v0.0.0-latest
+    helm.sh/chart: gateway-helm-1.6.0
     app.kubernetes.io/name: gateway-helm
     app.kubernetes.io/instance: eg
-    app.kubernetes.io/version: "latest"
+    app.kubernetes.io/version: "v1.6.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
     "helm.sh/hook": pre-install, pre-upgrade
@@ -601,10 +612,10 @@ metadata:
   name: eg-gateway-helm-certgen
   namespace: 'envoy-gateway-system'
   labels:
-    helm.sh/chart: gateway-helm-v0.0.0-latest
+    helm.sh/chart: gateway-helm-1.6.0
     app.kubernetes.io/name: gateway-helm
     app.kubernetes.io/instance: eg
-    app.kubernetes.io/version: "latest"
+    app.kubernetes.io/version: "v1.6.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
     "helm.sh/hook": pre-install, pre-upgrade
@@ -629,8 +640,8 @@ spec:
               fieldPath: metadata.namespace
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: cluster.local
-        image: docker.io/envoyproxy/gateway-dev:latest
-        imagePullPolicy: Always
+        image: docker.io/envoyproxy/gateway:v1.6.0
+        imagePullPolicy: IfNotPresent
         name: envoy-gateway-certgen
         securityContext:
           allowPrivilegeEscalation: false
@@ -659,10 +670,10 @@ metadata:
     "helm.sh/hook-weight": "-1"
   labels:
     app.kubernetes.io/component: topology-injector
-    helm.sh/chart: gateway-helm-v0.0.0-latest
+    helm.sh/chart: gateway-helm-1.6.0
     app.kubernetes.io/name: gateway-helm
     app.kubernetes.io/instance: eg
-    app.kubernetes.io/version: "latest"
+    app.kubernetes.io/version: "v1.6.0"
     app.kubernetes.io/managed-by: Helm
 webhooks:
   - name: topology.webhook.gateway.envoyproxy.io
