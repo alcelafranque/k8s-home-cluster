@@ -1,0 +1,59 @@
+# Home Assistant Configuration
+replicaCount: 1
+
+image:
+  repository: ghcr.io/home-assistant/home-assistant
+  tag: "2025.11"
+  pullPolicy: Always
+
+# Network Configuration
+# hostNetwork: false is recommended when not using auto-discovery
+hostNetwork: true
+
+service:
+  type: ClusterIP
+  port: 8123
+
+# Persistence Configuration
+persistence:
+  enabled: true
+  existingClaim: homeassistant-config-pvc
+
+# Configuration for reverse proxy
+configuration:
+  # Enable or disable the configuration setup for Home Assistant
+  enabled: true
+  # Force init will merge the current configuration file with the default configuration on every start
+  # This is useful when you want to ensure that the configuration file is always up to date
+  forceInit: false
+  # List of trusted proxies in the format of CIDR notation in a case of using a reverse proxy
+  # Here is the list of the most common private IP ranges, use your list of possible trusted proxies, usually, it's the IP of the reverse proxy
+  trusted_proxies:
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+    - 127.0.0.0/8
+    - 100.64.0.0/10
+
+# Disable default ingress (we use Envoy Gateway HTTPRoute instead)
+ingress:
+  enabled: false
+  external: true
+
+# Resources
+resources:
+  requests:
+    cpu: 100m
+    memory: 512Mi
+  limits:
+    memory: 2Gi
+
+# Timezone
+env:
+  - name: TZ
+    value: "Europe/Paris"
+
+# Service Monitor for Prometheus (optional)
+serviceMonitor:
+  enabled: true
+  interval: 30s
