@@ -8,7 +8,7 @@ resources:
 helmCharts:
   - name: gitlab-runner
     repo: https://charts.gitlab.io
-    version: 0.83.2
+    version: 0.83.3
     releaseName: gitlab-runner
     namespace: gitlab-runner
     valuesFile: values.yaml
