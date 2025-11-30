@@ -50,7 +50,7 @@ configuration:
     config:
       region: minio
       s3ForcePathStyle: true
-      s3Url: https://s3-vrc.lac-coloc.fr
+      s3Url: https://s3-mdz.lac-coloc.fr
     #  kmsKeyId:
     #  resourceGroup:
     #  The ID of the subscription containing the storage account, if different from the cluster’s subscription. (Azure only)
