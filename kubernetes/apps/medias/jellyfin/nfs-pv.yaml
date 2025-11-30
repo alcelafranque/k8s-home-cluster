@@ -25,7 +25,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: nfs-media-pvc
   annotations:
-    backup.velero.io/backup-volumes-excludes: nfs-media-pvc
+    velero.io/exclude-from-backup: true
 spec:
   accessModes:
     - ReadWriteMany
