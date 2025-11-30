@@ -30,6 +30,8 @@ controllers:
             memory: 2Gi
 
 defaultPodOptions:
+  annotations:
+    backup.velero.io/backup-volumes-excludes: data
   securityContext:
     runAsNonRoot: false
     runAsUser: 0
