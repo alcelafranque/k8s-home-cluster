@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: docker.io/jellyfin/jellyfin
-  tag: 10.11.3
+  tag: 10.11.4
   pullPolicy: Always
 
 podAnnotations:
