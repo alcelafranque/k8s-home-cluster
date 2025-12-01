@@ -9,7 +9,7 @@ metadata:
 data:
   bookmarks.yaml: |
     ---
-    - self hosted:
+    - Self hosted:
         - Bitwarden:
             - icon: bitwarden
               href: https://bw.lac-coloc.fr
@@ -44,7 +44,7 @@ data:
       Home:
         style: row
         columns: 3
-      selfhosted:
+      Selfhosted:
         style: row
         columns: 3
       Tools:
