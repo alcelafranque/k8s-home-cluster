@@ -22,6 +22,10 @@ data:
             - icon: qbittorrent
               href: https://bittorrent.lac-coloc.fr
               description: "BitTorrent client"
+        - Kirby:
+            - icon: valetudo
+              href: https://kirby.lac-coloc.fr
+              description: "Robot vacuum"
   docker.yaml: |
     ---
   kubernetes.yaml: |
