@@ -5,7 +5,7 @@ clusterName: &cluster dorado
 endpoint: https://10.243.2.55:6443
 allowSchedulingOnMasters: true
 
-talosVersion: "v1.11.4"
+talosVersion: "v1.11.6"
 kubernetesVersion: "v1.34.1"
 
 clusterPodNets:
@@ -18,12 +18,12 @@ clusterSvcNets:
 nodes:
   - hostname: m1
     controlPlane: true
-    ipAddress: 10.243.2.55
+    ipAddress: 10.243.2.58
     installDisk: /dev/mmcblk1
     networkInterfaces:
       - interface: enP4p65s0
         addresses:
-          - 10.243.2.55/24
+          - 10.243.2.58/24
         routes:
           - network: "::/0"
             gateway: "fe80::1"
