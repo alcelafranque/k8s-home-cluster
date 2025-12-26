@@ -4,3 +4,4 @@ namespace: home
 
 resources:
   - ./homeassistant
+  - ./node-red
