@@ -4,6 +4,7 @@ namespace: node-red
 
 resources:
   - ingress.yaml
+  - secret.yaml
 
 helmCharts:
   - name: app-template
