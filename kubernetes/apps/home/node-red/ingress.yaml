@@ -8,7 +8,8 @@ metadata:
     gethomepage.dev/enabled: "true"
     gethomepage.dev/icon: node-red.png
     gethomepage.dev/name: Node-RED
-    gethomepage.dev/group: Home
+    gethomepage.dev/group: Home Automation
+    gethomepage.dev/pod-selector: "app.kubernetes.io/name=node-red"
     gethomepage.dev/description: "Flow-based programming for IoT"
 spec:
   parentRefs:
