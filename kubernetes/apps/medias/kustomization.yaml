@@ -10,6 +10,7 @@ resources:
   - ./radarr
   - ./lidarr
   - ./prowlarr
+  - ./bazarr
   - ./flaresolverr
   - ./huntarr
   - ./cross-seed
