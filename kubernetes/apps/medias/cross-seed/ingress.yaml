@@ -1,0 +1,48 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: cross-seed
+  namespace: medias
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/icon: cross-seed.png
+    gethomepage.dev/name: Cross-Seed
+    gethomepage.dev/group: Media
+    gethomepage.dev/description: "Cross-seeding automation"
+spec:
+  parentRefs:
+  - name: one-gateway-for-all
+    namespace: envoy-gateway-system
+    sectionName: https
+  hostnames:
+  - cross-seed.lac-coloc.fr
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: cross-seed
+      namespace: medias
+      port: 2468
+---
+# HTTPRoute pour HTTP (redirection 301)
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: cross-seed-http-redirect
+  namespace: medias
+spec:
+  parentRefs:
+  - name: one-gateway-for-all
+    namespace: envoy-gateway-system
+    sectionName: http
+  hostnames:
+  - cross-seed.lac-coloc.fr
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https
+        statusCode: 301

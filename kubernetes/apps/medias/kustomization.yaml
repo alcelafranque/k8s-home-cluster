@@ -12,3 +12,4 @@ resources:
   - ./prowlarr
   - ./flaresolverr
   - ./huntarr
+  - ./cross-seed

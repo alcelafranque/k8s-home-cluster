@@ -1,0 +1,62 @@
+controllers:
+  cross-seed:
+    containers:
+      app:
+        image:
+          repository: ghcr.io/cross-seed/cross-seed
+          tag: 6.13.6-2
+        args:
+          - daemon
+        env:
+          TZ: Europe/Paris
+        probes:
+          liveness: &probes
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /api/ping
+                port: 2468
+              initialDelaySeconds: 30
+              periodSeconds: 10
+              timeoutSeconds: 5
+              failureThreshold: 3
+          readiness: *probes
+        resources:
+          requests:
+            cpu: 10m
+            memory: 128Mi
+          limits:
+            memory: 512Mi
+
+defaultPodOptions:
+  annotations:
+    backup.velero.io/backup-volumes-excludes: data
+  securityContext:
+    runAsNonRoot: false
+    runAsUser: 0
+    fsGroup: 1000
+    fsGroupChangePolicy: OnRootMismatch
+
+service:
+  app:
+    controller: cross-seed
+    ports:
+      http:
+        port: 2468
+
+persistence:
+  config:
+    suffix: config
+    type: persistentVolumeClaim
+    storageClass: ceph-block
+    accessMode: ReadWriteOnce
+    size: 1Gi
+    globalMounts:
+      - path: /config
+  data:
+    type: persistentVolumeClaim
+    existingClaim: nfs-media-pvc
+    globalMounts:
+      - path: /data
+        subPath: data
