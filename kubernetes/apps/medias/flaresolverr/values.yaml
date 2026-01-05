@@ -3,8 +3,8 @@ controllers:
     containers:
       app:
         image:
-          repository: 21hsmw/flaresolverr
-          tag: nodriver
+          repository: ghcr.io/flaresolverr/flaresolverr
+          tag: v3.4.6
         env:
           TZ: Europe/Paris
           LOG_LEVEL: info
