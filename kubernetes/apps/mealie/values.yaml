@@ -23,9 +23,10 @@ controllers:
 
         resources:
           requests:
-            cpu: 10m
+            cpu: 100m
+            memory: 300Mi
           limits:
-            memory: 512M
+            memory: 1Gi
 
 service:
   app:
