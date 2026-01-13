@@ -10,4 +10,4 @@ helmCharts:
     repo: https://1password.github.io/connect-helm-charts
     includeCRDs: true
     valuesFile: values.yaml
-    version: 2.1.1
+    version: 2.2.0
