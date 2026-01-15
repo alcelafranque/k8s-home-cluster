@@ -97,7 +97,7 @@ nodes:
   - hostname: w1
     controlPlane: false
     ipAddress: 10.243.2.25
-    installDisk: /dev/sda
+    installDisk: /dev/vda
     networkInterfaces:
       - interface: eth0
         addresses:
@@ -114,10 +114,12 @@ nodes:
       customization:
         systemExtensions:
           officialExtensions:
-            - siderolabs/qemu-guest-agent
-            - siderolabs/nvme-cli
-            - siderolabs/util-linux-tools
+            - siderolabs/amd-ucode
+            - siderolabs/amdgpu
             - siderolabs/iscsi-tools
+            - siderolabs/nvme-cli
+            - siderolabs/qemu-guest-agent
+            - siderolabs/util-linux-tools
 
 worker:
   nodeLabels:
