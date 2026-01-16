@@ -31,7 +31,7 @@ controllers:
 
 defaultPodOptions:
   annotations:
-    backup.velero.io/backup-volumes-excludes: data
+    backup.velero.io/backup-volumes-excludes: data,data2
   securityContext:
     runAsNonRoot: false
     runAsUser: 0
@@ -56,7 +56,13 @@ persistence:
       - path: /config
   data:
     type: persistentVolumeClaim
-    existingClaim: nfs-media-pvc
+    existingClaim: nfs-media-pvc-2
     globalMounts:
       - path: /data
+        subPath: data
+  data2:
+    type: persistentVolumeClaim
+    existingClaim: nfs-media-pvc
+    globalMounts:
+      - path: /data2
         subPath: data
