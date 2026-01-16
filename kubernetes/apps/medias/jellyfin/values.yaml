@@ -6,7 +6,7 @@ image:
   pullPolicy: Always
 
 podAnnotations:
-  backup.velero.io/backup-volumes-excludes: media
+  backup.velero.io/backup-volumes-excludes: media,media2
 
 nodeSelector:
   beta.kubernetes.io/arch: amd64
@@ -53,6 +53,15 @@ persistence:
     enabled: true
     type: pvc
     existingClaim: nfs-media-pvc
+
+volumes:
+  - name: media2
+    persistentVolumeClaim:
+      claimName: nfs-media-pvc-2
+
+volumeMounts:
+  - mountPath: /media2
+    name: media2
 
 # -- Configuration for metrics collection and monitoring
 metrics:
