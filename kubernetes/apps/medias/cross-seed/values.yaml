@@ -4,7 +4,7 @@ controllers:
       app:
         image:
           repository: ghcr.io/cross-seed/cross-seed
-          tag: 6.13.6-2
+          tag: 7.0.0-2
         args:
           - daemon
         env:
