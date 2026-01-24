@@ -101,6 +101,7 @@ config: |
           rarbg.to
           torrent9.to
           la-cale.space
+          torr9.com
     clientGroupsBlock:
       # default will be used, if no special definition for a client name exists
       default:
