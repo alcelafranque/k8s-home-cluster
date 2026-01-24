@@ -1,17 +1,18 @@
+---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: nfs-media-pv
 spec:
   capacity:
-    storage: 10Ti
+    storage: 30Ti
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   storageClassName: nfs-storage
   nfs:
-    server: 10.240.3.19
-    path: /volume1/medias
+    server: 10.243.2.11
+    path: /mnt/data-hdd/medias
   mountOptions:
     - nfsvers=4
     - rw
@@ -32,40 +33,4 @@ spec:
   storageClassName: nfs-storage
   resources:
     requests:
-      storage: 10Ti
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: nfs-media-pv-2
-spec:
-  capacity:
-    storage: 20Ti
-  accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: nfs-storage-2
-  nfs:
-    server: 10.243.2.11
-    path: /mnt/data-hdd/medias
-  mountOptions:
-    - nfsvers=4
-    - rw
-    - noatime
-    - timeo=300
-    - nolock
-    - hard
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: nfs-media-pvc-2
-  annotations:
-    velero.io/exclude-from-backup: true
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: nfs-storage-2
-  resources:
-    requests:
-      storage: 20Ti
+      storage: 30Ti
