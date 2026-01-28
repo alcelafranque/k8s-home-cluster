@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: s3-api-external-service
+  namespace: envoy-gateway-system
+spec:
+  ports:
+  - name: s3-api
+    protocol: TCP
+    port: 30188
+    targetPort: 30188
+  type: ClusterIP
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: s3-api-external-endpoint
+  namespace: envoy-gateway-system
+  labels:
+    kubernetes.io/service-name: s3-api-external-service
+addressType: IPv4
+ports:
+  - name: s3-api
+    port: 30188
+    protocol: TCP
+endpoints:
+  - addresses:
+      - "10.243.2.11"
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: s3-api-external-route
+  namespace: envoy-gateway-system
+spec:
+  parentRefs:
+  - name: one-gateway-for-all
+    namespace: envoy-gateway-system
+    sectionName: https
+  hostnames:
+  - s3-age.lac-coloc.fr
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: s3-api-external-service
+      namespace: envoy-gateway-system
+      port: 30188

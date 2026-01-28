@@ -6,3 +6,4 @@ resources:
   - envoy-gateway.yaml
   - gateway-class.yaml
   - one-gateway-for-all.yaml
+  - manual/st1-age.yaml
