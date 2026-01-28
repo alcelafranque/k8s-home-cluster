@@ -6,7 +6,7 @@ common:
   storage:
     backend: s3
     s3:
-      endpoint: s3-vrc.lac-coloc.fr
+      endpoint: s3-age.lac-coloc.fr
       access_key_id: "${AWS_ACCESS_KEY_ID}"
       secret_access_key: "${AWS_SECRET_ACCESS_KEY}"
 
