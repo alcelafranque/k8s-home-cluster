@@ -64,9 +64,6 @@ config: |
   upstreamTimeout: 2s
   conditional:
     fallbackUpstream: false
-    mapping:
-      int.lac-coloc.fr: 10.243.2.15
-      int.galceran.fr: 10.243.2.15
   # optional: use black and white lists to block queries (for example ads, trackers, adult pages etc.)
   blocking:
     # definition of blacklist groups. Can be external link (http/https) or local file
@@ -108,7 +105,7 @@ config: |
         - ads
         - special
     blockType: zeroIp
-    blockTTL: 1m
+    blockTTL: 10s
     refreshPeriod: 4h
     downloadTimeout: 4m
     downloadAttempts: 5
@@ -117,7 +114,7 @@ config: |
 
   # optional: configuration for caching of DNS responses
   caching:
-    minTime: 1m
+    minTime: 10s
     maxTime: 10m
     maxItemsCount: 0
     prefetching: true
