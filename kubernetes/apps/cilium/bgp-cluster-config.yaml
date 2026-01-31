@@ -10,16 +10,21 @@ spec:
   - name: "instance-65531"
     localASN: 65531
     peers:
-    - name: "peer-65531-dorado"
+    - name: "peer-65531-dorado-ipv4"
       peerASN: 65531
       peerAddress: 10.254.243.1
       peerConfigRef:
-        name: "cilium-peer"
+        name: "cilium-peer-ipv4"
+    - name: "peer-65531-dorado-ipv6"
+      peerASN: 65531
+      peerAddress: 2001:67c:9ec:ffff::243
+      peerConfigRef:
+        name: "cilium-peer-ipv6"
 ---
 apiVersion: cilium.io/v2alpha1
 kind: CiliumBGPPeerConfig
 metadata:
-  name: cilium-peer
+  name: cilium-peer-ipv4
 spec:
   timers:
     holdTimeSeconds: 300
@@ -30,6 +35,16 @@ spec:
       advertisements:
         matchLabels:
           advertise: "bgp"
+---
+apiVersion: cilium.io/v2alpha1
+kind: CiliumBGPPeerConfig
+metadata:
+  name: cilium-peer-ipv6
+spec:
+  timers:
+    holdTimeSeconds: 300
+    keepAliveTimeSeconds: 3
+  families:
     - afi: ipv6
       safi: unicast
       advertisements:

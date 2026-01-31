@@ -1,0 +1,36 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyPatchPolicy
+metadata:
+  name: ipv6-dual-stack-listener
+  namespace: envoy-gateway-system
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: one-gateway-for-all
+  type: JSONPatch
+  jsonPatches:
+  - type: "type.googleapis.com/envoy.config.listener.v3.Listener"
+    name: "envoy-gateway-system/one-gateway-for-all/http"
+    operation:
+      op: replace
+      path: "/address/socket_address/address"
+      value: "::"
+  - type: "type.googleapis.com/envoy.config.listener.v3.Listener"
+    name: "envoy-gateway-system/one-gateway-for-all/http"
+    operation:
+      op: add
+      path: "/address/socket_address/ipv4_compat"
+      value: true
+  - type: "type.googleapis.com/envoy.config.listener.v3.Listener"
+    name: "envoy-gateway-system/one-gateway-for-all/https"
+    operation:
+      op: replace
+      path: "/address/socket_address/address"
+      value: "::"
+  - type: "type.googleapis.com/envoy.config.listener.v3.Listener"
+    name: "envoy-gateway-system/one-gateway-for-all/https"
+    operation:
+      op: add
+      path: "/address/socket_address/ipv4_compat"
+      value: true

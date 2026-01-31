@@ -21,3 +21,13 @@ spec:
     kubernetes:
       envoyDeployment:
         replicas: 2
+      envoyService:
+        type: LoadBalancer
+        patch:
+          type: StrategicMerge
+          value:
+            spec:
+              ipFamilyPolicy: PreferDualStack
+              ipFamilies:
+                - IPv4
+                - IPv6
