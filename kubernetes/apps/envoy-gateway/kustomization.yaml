@@ -6,4 +6,5 @@ resources:
   - envoy-gateway.yaml
   - gateway-class.yaml
   - one-gateway-for-all.yaml
+  - ipv6-listener-patch.yaml
   - manual/st1-age.yaml
