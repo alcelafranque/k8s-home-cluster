@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: syncthing-relay
-        image: syncthing/relaysrv:2.0.13
+        image: syncthing/relaysrv:2.0.14
         command: ["/bin/strelaysrv"]
         args:
           - "-pools=https://relays.syncthing.net/endpoint"
