@@ -50,7 +50,7 @@ data:
                     - imagePullPolicy: IfNotPresent
                       name: envoy-ratelimit
         shutdownManager:
-          image: docker.io/envoyproxy/gateway:v1.6.1
+          image: docker.io/envoyproxy/gateway:v1.7.0
       type: Kubernetes
 ---
 # Source: gateway-helm/templates/envoy-gateway-rbac.yaml
@@ -423,7 +423,7 @@ spec:
               fieldPath: metadata.namespace
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: cluster.local
-        image: docker.io/envoyproxy/gateway:v1.6.1
+        image: docker.io/envoyproxy/gateway:v1.7.0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -641,7 +641,7 @@ spec:
               fieldPath: metadata.namespace
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: cluster.local
-        image: docker.io/envoyproxy/gateway:v1.6.1
+        image: docker.io/envoyproxy/gateway:v1.7.0
         imagePullPolicy: IfNotPresent
         name: envoy-gateway-certgen
         securityContext:
