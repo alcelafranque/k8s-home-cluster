@@ -8,7 +8,7 @@ resources:
 helmCharts:
   - name: blocky
     repo: https://johanneskastl.github.io/helm-charts/
-    version: 11.12.0
+    version: 11.13.0
     releaseName: blocky
     namespace: blocky
     valuesFile: values.yaml
