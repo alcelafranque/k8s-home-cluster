@@ -4,7 +4,7 @@ controllers:
       app:
         image:
           repository: ghcr.io/plexguide/huntarr
-          tag: 9.2.1
+          tag: 9.2.3
         env:
           TZ: Europe/Paris
         probes:
