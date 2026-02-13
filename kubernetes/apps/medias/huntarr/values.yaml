@@ -47,6 +47,6 @@ persistence:
     type: persistentVolumeClaim
     storageClass: ceph-block
     accessMode: ReadWriteOnce
-    size: 1Gi
+    size: 3Gi
     globalMounts:
       - path: /config
