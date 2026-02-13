@@ -13,7 +13,6 @@ controllers:
           repository: ghcr.io/atuinsh/atuin
           tag: v18.12.0
         args:
-          - server
           - start
         env:
           ATUIN_DB_URI: sqlite:///config/atuin.db
