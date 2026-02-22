@@ -99,6 +99,7 @@ config: |
           torrent9.to
           la-cale.space
           torr9.com
+          annas-archive.li
     clientGroupsBlock:
       # default will be used, if no special definition for a client name exists
       default:
