@@ -1,10 +1,10 @@
-initContainers:
-  - name: velero-plugin-for-aws
-    image: velero/velero-plugin-for-aws:v1.13.2
-    imagePullPolicy: IfNotPresent
-    volumeMounts:
-      - mountPath: /target
-        name: plugins
+#initContainers:
+#  - name: velero-plugin-for-aws
+#    image: velero/velero-plugin-for-aws:v1.13.2
+#    imagePullPolicy: IfNotPresent
+#    volumeMounts:
+#      - mountPath: /target
+#        name: plugins
 
 # Extra K8s manifests to deploy
 extraObjects:
@@ -139,7 +139,6 @@ snapshotsEnabled: false
 
 # Whether to deploy the node-agent daemonset.
 deployNodeAgent: true
-
 
 kubectl:
   image:
