@@ -16,56 +16,52 @@ extraObjects:
       namespace: velero
     spec:
       itemPath: "vaults/k8s/items/velero-s3"
+  - apiVersion: onepassword.com/v1
+    kind: OnePasswordItem
+    metadata:
+      name: velero-s3-credentials-clb
+      namespace: velero
+    spec:
+      itemPath: "vaults/k8s/items/velero-s3-clb"
 ##
 configuration:
   # Parameters for the BackupStorageLocation(s). Configure multiple by adding other element(s) to the backupStorageLocation slice.
   # See https://velero.io/docs/v1.6/api-types/backupstoragelocation/
   defaultVolumesToFsBackup: true
   backupStorageLocation:
-    # name is the name of the backup storage location where backups should be stored. If a name is not provided,
-    # a backup storage location will be created with the name "default". Optional.
   - name: default
-    # provider is the name for the backup storage location provider.
     provider: aws
-    # bucket is the name of the bucket to store backups in. Required.
     bucket: backup-k8s-dorado-velero
-    # caCert defines a base64 encoded CA bundle to use when verifying TLS connections to the provider. Optional.
     caCert:
-    # prefix is the directory under which all Velero data should be stored within the bucket. Optional.
     prefix:
-    # default indicates this location is the default backup storage location. Optional.
     default: true
-    # validationFrequency defines how frequently Velero should validate the object storage. Optional.
     validationFrequency:
-    # accessMode determines if velero can write to this backup storage location. Optional.
-    # default to ReadWrite, ReadOnly is used during migrations and restores.
     accessMode: ReadWrite
     credential:
-      # name of the secret used by this backupStorageLocation.
       name: velero-s3-credentials
-      # name of key that contains the secret data to be used.
       key: cloud
-    # Additional provider-specific configuration. See link above
-    # for details of required/optional fields for your provider.
     config:
       region: us-east-1
       s3ForcePathStyle: true
       s3Url: https://s3-mdz.lac-coloc.fr
-    #  kmsKeyId:
-    #  resourceGroup:
-    #  The ID of the subscription containing the storage account, if different from the cluster’s subscription. (Azure only)
-    #  subscriptionId:
-    #  storageAccount:
-    #  publicUrl:
-    #  Name of the GCP service account to use for this backup storage location. Specify the
-    #  service account here if you want to use workload identity instead of providing the key file.(GCP only)
-    #  serviceAccount:
-    #  Option to skip certificate validation or not if insecureSkipTLSVerify is set to be true, the client side should set the
-    #  flag. For Velero client Command like velero backup describe, velero backup logs needs to add the flag --insecure-skip-tls-verify
-    #  insecureSkipTLSVerify:
-
-    # annotations allows adding arbitrary annotations to this BackupStorageLocation resource. Optional.
     annotations: {}
+  - name: clb
+    provider: aws
+    bucket: k8s-age
+    caCert:
+    prefix:
+    default: false
+    validationFrequency:
+    accessMode: ReadWrite
+    credential:
+      name: velero-s3-credentials-clb
+      key: cloud
+    config:
+      region: us-east-1
+      s3ForcePathStyle: true
+      s3Url: http://s3.prod1.clb.int.galceran.fr:30188
+    annotations: {}
+
 
   # Parameters for the VolumeSnapshotLocation(s). Configure multiple by adding other element(s) to the volumeSnapshotLocation slice.
   # See https://velero.io/docs/v1.6/api-types/volumesnapshotlocation/
@@ -158,6 +154,29 @@ schedules:
     template:
       ttl: "720h"
       storageLocation: default
+      excludedNamespaces:
+      - kube-system
+      - kube-public
+      - kube-node-lease
+      - velero
+      - rook-ceph
+      - ceph-system
+      - rook-ceph-system
+      excludedResources:
+      - events
+      - events.events.k8s.io
+      - nodes
+  hourly-incremental-clb:
+    disabled: false
+    labels:
+      backup-type: incremental
+    schedule: "0 * * * *"
+    useOwnerReferencesInBackup: false
+    paused: false
+    skipImmediately: false
+    template:
+      ttl: "120h"
+      storageLocation: clb
       excludedNamespaces:
       - kube-system
       - kube-public
