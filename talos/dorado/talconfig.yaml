@@ -5,7 +5,7 @@ clusterName: &cluster dorado
 endpoint: https://10.243.2.55:6443
 allowSchedulingOnMasters: true
 
-talosVersion: "v1.12.5"
+talosVersion: "v1.12.6"
 kubernetesVersion: "v1.35.2"
 
 clusterPodNets:
