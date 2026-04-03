@@ -31,11 +31,6 @@ spec:
       login: true
       passwordSecret:
         name: jellystat-db-secret
-    - name: domain-locker
-      ensure: present
-      login: true
-      passwordSecret:
-        name: domain-locker-db-secret
   backup:
     barmanObjectStore:
       destinationPath: "s3://backup-k8s-psql-default"
