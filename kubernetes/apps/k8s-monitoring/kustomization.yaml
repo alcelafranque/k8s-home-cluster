@@ -3,7 +3,7 @@ kind: Kustomization
 namespace: monitoring
 
 resources:
-- garage-age-external.yaml
+- garage-external.yaml
 
 helmCharts:
   - name: k8s-monitoring

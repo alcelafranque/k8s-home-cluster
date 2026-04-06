@@ -52,3 +52,57 @@ spec:
   - port: metrics
     interval: 15s
     path: /metrics
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: garage-mdz-external
+  namespace: monitoring
+  labels:
+    app: garage-mdz
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+  - name: metrics
+    port: 30190
+    targetPort: 30190
+    protocol: TCP
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: garage-mdz-external
+  namespace: monitoring
+  labels:
+    app: garage-mdz
+    kubernetes.io/service-name: garage-mdz-external
+addressType: IPv4
+endpoints:
+- addresses:
+  - "10.241.3.11"
+  conditions:
+    ready: true
+    serving: true
+    terminating: false
+ports:
+- name: metrics
+  port: 30190
+  protocol: TCP
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: garage-mdz
+  namespace: monitoring
+  labels:
+    app: garage-mdz
+spec:
+  jobLabel: garage-mdz
+  selector:
+    matchLabels:
+      app: garage-mdz
+  endpoints:
+  - port: metrics
+    interval: 15s
+    path: /metrics
