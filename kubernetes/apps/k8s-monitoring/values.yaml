@@ -11,44 +11,55 @@ destinations:
     url: http://mimir.monitoring.svc.cluster.local/api/v1/push
     tenantId: dorado
 
+# Enable cluster metrics (includes kube-state-metrics, kubelet, cAdvisor)
 clusterMetrics:
   enabled: true
-  node-exporter:
-    jobLabel: node-exporter
-    metricsTuning:
-      useIntegrationAllowList: true
+  collector: alloy-metrics
 
+# Enable cluster events collection
 clusterEvents:
   enabled: true
+  collector: alloy-singleton
 
-podLogs:
+# Enable pod logs collection (renamed from podLogs)
+podLogsViaLoki:
   enabled: true
+  collector: alloy-logs
 
-alloy-metrics:
-  enabled: true
-  enableReporting: false
-
-alloy-singleton:
-  enabled: true
-  enableReporting: false
-
-alloy-logs:
-  enabled: true
-  enableReporting: false
-
+# Enable annotation-based autodiscovery for metrics
 annotationAutodiscovery:
   enabled: true
-  enableReporting: false
+  collector: alloy-metrics
 
-serviceMonitors:
-  enabled: true
-  namespaces: []
-  selector: {}
-
-podMonitors:
-  enabled: true
-  namespaces: []
-  selector: {}
-
+# Enable Prometheus Operator objects (ServiceMonitors, PodMonitors, Probes)
 prometheusOperatorObjects:
   enabled: true
+  collector: alloy-metrics
+
+# Define collectors (required in v4.0.0)
+collectors:
+  # Metrics collector (StatefulSet for cluster metrics, ServiceMonitors, etc.)
+  alloy-metrics:
+    presets: [clustered, statefulset]
+
+  # Logs collector (DaemonSet for pod logs)
+  alloy-logs:
+    presets: [daemonset, filesystem-log-reader]
+
+  # Singleton collector (single replica for cluster events)
+  alloy-singleton:
+    presets: [singleton]
+
+# Deploy supporting services
+telemetryServices:
+  # Deploy kube-state-metrics for cluster state metrics
+  kube-state-metrics:
+    deploy: true
+
+  # Deploy node-exporter for host metrics
+  node-exporter:
+    deploy: true
+
+# Disable self-reporting
+selfReporting:
+  enabled: false
