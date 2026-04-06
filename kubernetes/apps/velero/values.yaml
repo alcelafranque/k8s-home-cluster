@@ -43,7 +43,7 @@ configuration:
     config:
       region: us-east-1
       s3ForcePathStyle: true
-      s3Url: https://s3-mdz.lac-coloc.fr
+      s3Url: https://s3-2-mdz.lac-coloc.fr
     annotations: {}
   - name: clb
     provider: aws
