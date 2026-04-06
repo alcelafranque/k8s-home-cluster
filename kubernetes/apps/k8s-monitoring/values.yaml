@@ -2,14 +2,14 @@ cluster:
   name: dorado
 
 destinations:
-- name: logs
-  type: loki
-  url: http://loki.monitoring.svc.cluster.local/loki/api/v1/push
-  tenantId: dorado
-- name: metrics
-  type: prometheus
-  tenantId: dorado
-  url: http://mimir.monitoring.svc.cluster.local/api/v1/push
+  logs:
+    type: loki
+    url: http://loki.monitoring.svc.cluster.local/loki/api/v1/push
+    tenantId: dorado
+  metrics:
+    type: prometheus
+    url: http://mimir.monitoring.svc.cluster.local/api/v1/push
+    tenantId: dorado
 
 clusterMetrics:
   enabled: true
