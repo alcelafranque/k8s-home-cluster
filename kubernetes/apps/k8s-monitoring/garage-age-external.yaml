@@ -15,20 +15,26 @@ spec:
     targetPort: 30190
     protocol: TCP
 ---
-apiVersion: v1
-kind: Endpoints
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
 metadata:
   name: garage-age-external
   namespace: monitoring
   labels:
     app: garage-age
-subsets:
+    kubernetes.io/service-name: garage-age-external
+addressType: IPv4
+endpoints:
 - addresses:
-  - ip: 10.243.2.11
-  ports:
-  - name: metrics
-    port: 30190
-    protocol: TCP
+  - "10.243.2.11"
+  conditions:
+    ready: true
+    serving: true
+    terminating: false
+ports:
+- name: metrics
+  port: 30190
+  protocol: TCP
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
