@@ -1,0 +1,48 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: garage-age-external
+  namespace: monitoring
+  labels:
+    app: garage-age
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+  - name: metrics
+    port: 30190
+    targetPort: 30190
+    protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: garage-age-external
+  namespace: monitoring
+  labels:
+    app: garage-age
+subsets:
+- addresses:
+  - ip: 10.243.2.11
+  ports:
+  - name: metrics
+    port: 30190
+    protocol: TCP
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: garage-age
+  namespace: monitoring
+  labels:
+    app: garage-age
+spec:
+  jobLabel: garage-age
+  selector:
+    matchLabels:
+      app: garage-age
+  endpoints:
+  - port: metrics
+    interval: 15s
+    path: /metrics
