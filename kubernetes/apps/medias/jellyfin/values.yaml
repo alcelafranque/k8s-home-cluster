@@ -29,17 +29,6 @@ resources:
   requests:
     memory: 1Gi
 
-# -- Configure liveness probe for Jellyfin.
-livenessProbe:
-  initialDelaySeconds: 10
-  tcpSocket:
-    port: http
-
-readinessProbe:
-  initialDelaySeconds: 10
-  tcpSocket:
-    port: http
-
 jellyfin:
   enableDLNA: false
 
