@@ -59,7 +59,7 @@ configuration:
     config:
       region: us-east-1
       s3ForcePathStyle: true
-      s3Url: http://s3.prod1.clb.int.galceran.fr:30188
+      s3Url: http://s3.prod1.clb.int.galceran.fr:9000
     annotations: {}
 
 
