@@ -170,7 +170,7 @@ schedules:
     disabled: false
     labels:
       backup-type: incremental
-    schedule: "0 2 * * *"
+    schedule: "10 * * * *"
     useOwnerReferencesInBackup: false
     paused: false
     skipImmediately: false
