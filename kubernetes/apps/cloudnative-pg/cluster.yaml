@@ -34,7 +34,7 @@ spec:
   backup:
     barmanObjectStore:
       destinationPath: "s3://backup-k8s-psql-default"
-      endpointURL: "https://s3-mdz.lac-coloc.fr"
+      endpointURL: "https://s3-2-mdz.lac-coloc.fr"
       s3Credentials:
         accessKeyId:
           name: s3-psql-default
@@ -51,7 +51,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: immich-default
+  name: default
 spec:
   schedule: "11 12 3 * *"
   backupOwnerReference: self
