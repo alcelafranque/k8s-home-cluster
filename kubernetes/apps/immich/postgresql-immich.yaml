@@ -47,7 +47,7 @@ spec:
   backup:
     barmanObjectStore:
       destinationPath: "s3://backup-k8s-psql-immich"
-      endpointURL: "https://s3-mdz.lac-coloc.fr"
+      endpointURL: "https://s3-2-mdz.lac-coloc.fr"
       s3Credentials:
         accessKeyId:
           name: s3-immich
