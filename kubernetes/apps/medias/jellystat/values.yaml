@@ -4,7 +4,7 @@ controllers:
       app:
         image:
           repository: cyfershepard/jellystat
-          tag: 1.1.9
+          tag: 1.1.10
         env:
           TZ: Europe/Paris
         envFrom:
