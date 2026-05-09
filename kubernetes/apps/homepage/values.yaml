@@ -1,3 +1,6 @@
+defaultPodOptions:
+  automountServiceAccountToken: true
+
 controllers:
   homepage:
     annotations:
