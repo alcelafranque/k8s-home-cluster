@@ -11,5 +11,5 @@ helmCharts:
     releaseName: monitoring
     namespace: monitoring
     valuesFile: values.yaml
-    version: 4.1.1
+    version: 4.1.3
     includeCRDs: true
