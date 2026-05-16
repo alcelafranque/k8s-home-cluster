@@ -102,6 +102,7 @@ config: |
           annas-archive.li
           torr9.xyz
           theoldschool.cc
+          c411.org
     clientGroupsBlock:
       # default will be used, if no special definition for a client name exists
       default:
