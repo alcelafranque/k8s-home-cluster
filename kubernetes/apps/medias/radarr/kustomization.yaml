@@ -8,7 +8,7 @@ resources:
 helmCharts:
   - name: app-template
     repo: https://bjw-s-labs.github.io/helm-charts/
-    version: 5.0.0
+    version: 5.0.1
     releaseName: radarr
     namespace: medias
     valuesFile: values.yaml
