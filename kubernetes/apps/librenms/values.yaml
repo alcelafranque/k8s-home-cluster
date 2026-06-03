@@ -13,7 +13,7 @@ librenms:
     replicas: 1
 
   poller:
-    replicas: 2
+    replicas: 1
     privileged: false
 
   snmp_scanner:
@@ -29,7 +29,7 @@ librenms:
         size: 30Gi
     envs:
     - name: TZ
-      value: "Europe/Amsterdam"
+      value: "Europe/Paris"
     - name: WRITE_JITTER
       value: '1800'
     - name: WRITE_TIMEOUT
