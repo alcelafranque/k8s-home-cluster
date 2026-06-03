@@ -2,8 +2,14 @@ librenms:
   existingSecret: librenms
   timezone: UTC
   configuration: |
+    $config['base_url']                          = 'https://librenms.as62430.net';
     $config['distributed_poller_group']          = '0';
     $config['distributed_poller']                = true;
+  extraEnvs:
+    - name: APP_URL
+      value: https://librenms.as62430.net
+    - name: APP_TRUSTED_PROXIES
+      value: "*"
 
   # Global setting to run components as privileged, set as a bool
   # Optionally, the frontend and pollers can be individually run as privileged
