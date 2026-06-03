@@ -40,9 +40,13 @@ ingress:
 
 mysql:
   enabled: true
+  existingAuthSecret:
+    name: librenms
+    key: mysql-user-password
   auth:
     username: librenms
     database: librenms
+    existingSecret: librenms
 
 redis:
   enabled: true
