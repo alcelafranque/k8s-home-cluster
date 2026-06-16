@@ -4,6 +4,12 @@ kind: HTTPRoute
 metadata:
   name: librenms-https-route
   namespace: librenms
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/icon: librenms.png
+    gethomepage.dev/name: LibreNMS
+    gethomepage.dev/group: Monitoring
+    gethomepage.dev/description: "Network monitoring"
 spec:
   parentRefs:
   - name: one-gateway-for-all

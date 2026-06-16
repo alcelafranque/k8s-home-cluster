@@ -14,10 +14,6 @@ data:
             - icon: bitwarden
               href: https://bw.lac-coloc.fr
               description: "Password manager"
-        - LibreNMS:
-            - icon: librenms
-              href: https://librenms.lac-coloc.fr
-              description: "Network monitoring"
         - Bittorrent:
             - icon: qbittorrent
               href: https://bittorrent.lac-coloc.fr
