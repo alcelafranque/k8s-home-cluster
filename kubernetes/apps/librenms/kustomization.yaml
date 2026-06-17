@@ -9,7 +9,7 @@ resources:
 helmCharts:
   - name: librenms
     repo: https://www.librenms.org/helm-charts
-    version: 8.1.0
+    version: 8.2.0
     releaseName: librenms
     namespace: librenms
     valuesFile: values.yaml
