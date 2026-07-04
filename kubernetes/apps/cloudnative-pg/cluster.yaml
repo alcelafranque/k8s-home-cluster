@@ -53,7 +53,8 @@ kind: ScheduledBackup
 metadata:
   name: default
 spec:
-  schedule: "11 12 3 * *"
+  # CNPG cron has 6 fields (seconds first): daily base backup at 03:12:11
+  schedule: "11 12 3 * * *"
   backupOwnerReference: self
   cluster:
     name: cluster-1

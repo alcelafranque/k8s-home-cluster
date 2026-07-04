@@ -29,6 +29,3 @@ postgresql:
     secretKeys:
       userPasswordKey: AUTHENTIK_POSTGRESQL__PASSWORD
 
-redis:
-  enabled: true
-

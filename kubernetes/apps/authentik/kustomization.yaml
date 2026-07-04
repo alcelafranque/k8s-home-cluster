@@ -5,6 +5,7 @@ namespace: authentik
 resources:
   - secret.yaml
   - ingress.yaml
+  - postgresql-authentik.yaml
 
 helmCharts:
   - name: authentik

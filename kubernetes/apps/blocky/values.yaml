@@ -1,6 +1,20 @@
 env:
   TZ: UTC
 
+controller:
+  replicas: 2
+
+# spread the 2 replicas across nodes so a single node reboot keeps DNS up
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: blocky
+          topologyKey: kubernetes.io/hostname
+
 service:
   main:
     enabled: true

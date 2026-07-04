@@ -1,0 +1,76 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: authentik-postgres
+  namespace: authentik
+spec:
+  instances: 2
+  # pinned to the same major as the bundled postgres (17.10) so the import pg_dump is compatible
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.10
+  enableSuperuserAccess: false
+  primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: switchover
+  bootstrap:
+    initdb:
+      database: authentik
+      owner: authentik
+      secret:
+        name: authentik-db-secret
+      dataChecksums: true
+      # one-shot logical import from the chart's bundled postgres at cluster creation;
+      # the bundled instance must still be running when this cluster is first created
+      import:
+        type: microservice
+        databases:
+          - authentik
+        source:
+          externalCluster: authentik-bundled
+  externalClusters:
+    - name: authentik-bundled
+      connectionParameters:
+        host: authentik-postgresql.authentik.svc.cluster.local
+        user: authentik
+        dbname: authentik
+      password:
+        name: authentik-secret
+        key: AUTHENTIK_POSTGRESQL__PASSWORD
+
+  storage:
+    size: 5Gi
+
+  managed:
+    roles:
+      - name: authentik
+        ensure: present
+        login: true
+        passwordSecret:
+          name: authentik-db-secret
+
+  backup:
+    barmanObjectStore:
+      # same bucket and credentials as cluster-1; barman stores under <bucket>/authentik-postgres/
+      destinationPath: "s3://backup-k8s-psql-default"
+      endpointURL: "https://s3-2-mdz.lac-coloc.fr"
+      s3Credentials:
+        accessKeyId:
+          name: s3-psql-default
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: s3-psql-default
+          key: ACCESS_SECRET_KEY
+      data:
+        compression: bzip2
+      wal:
+        compression: bzip2
+    retentionPolicy: "30d"
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: authentik-postgres
+spec:
+  # CNPG cron has 6 fields (seconds first): daily base backup at 03:42:11
+  schedule: "11 42 3 * * *"
+  backupOwnerReference: self
+  cluster:
+    name: authentik-postgres
