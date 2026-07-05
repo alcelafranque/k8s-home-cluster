@@ -139,11 +139,11 @@ deployNodeAgent: true
 kubectl:
   image:
     repository: docker.io/bitnamilegacy/kubectl
-    tag: latest
+    tag: "1.33"
 
 # Backup schedules to create.
 schedules:
-  daily-incremental:
+  hourly-incremental:
     disabled: false
     labels:
       backup-type: incremental

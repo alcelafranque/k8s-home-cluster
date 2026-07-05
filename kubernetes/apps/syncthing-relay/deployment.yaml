@@ -61,4 +61,5 @@ spec:
           periodSeconds: 10
       volumes:
       - name: relay-keys
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: syncthing-relay-keys

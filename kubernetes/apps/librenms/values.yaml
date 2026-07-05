@@ -17,10 +17,21 @@ librenms:
 
   frontend:
     replicas: 1
+    resources:
+      requests:
+        memory: 256Mi
+      limits:
+        memory: 1Gi
 
   poller:
     replicas: 1
     privileged: false
+    resources:
+      requests:
+        cpu: 50m
+        memory: 256Mi
+      limits:
+        memory: 1Gi
 
   snmp_scanner:
     enabled: false

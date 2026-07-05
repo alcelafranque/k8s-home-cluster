@@ -4,7 +4,7 @@ replicaCount: 1
 image:
   repository: ghcr.io/home-assistant/home-assistant
   tag: "2026.7"
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 
 # Network Configuration
 # hostNetwork: false is recommended when not using auto-discovery

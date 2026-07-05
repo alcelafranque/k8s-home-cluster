@@ -31,6 +31,12 @@ spec:
         envFrom:
           - secretRef:
               name: loki
+        resources:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            memory: 2Gi
         volumeMounts:
         - name: config
           mountPath: /etc/loki
@@ -46,7 +52,18 @@ spec:
           httpGet:
             path: /ready
             port: http-metrics
-          initialDelaySeconds: 300
+          initialDelaySeconds: 120
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: http-metrics
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 6
       volumes:
       - name: config
         configMap:

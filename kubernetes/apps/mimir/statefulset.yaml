@@ -18,13 +18,19 @@ spec:
       containers:
         - name: mimir
           image: docker.io/grafana/mimir:3.1.2
-          args: 
+          args:
             - "-target=all"
             - "-config.file=/etc/mimir/mimir.yaml"
             - "-config.expand-env=true"
           envFrom:
             - secretRef:
                 name: mimir
+          resources:
+            requests:
+              cpu: 200m
+              memory: 1Gi
+            limits:
+              memory: 3Gi
           volumeMounts:
             - name: config
               mountPath: /etc/mimir
@@ -37,15 +43,19 @@ spec:
             httpGet:
               path: /ready
               port: mimir
-            initialDelaySeconds: 15
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 6
           livenessProbe:
             httpGet:
               path: /ready
               port: mimir
-            initialDelaySeconds: 15
+            initialDelaySeconds: 120
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 10
       volumes:
-        - name: tmp
-          emptyDir: {}
         - name: config
           configMap:
             name: mimir-config
