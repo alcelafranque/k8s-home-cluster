@@ -59,3 +59,9 @@ env:
 envFrom:
   - secretRef:
       name: paperless-secret
+
+resources:
+  requests:
+    memory: 256Mi
+  limits:
+    memory: 1500Mi

@@ -27,22 +27,31 @@ immich:
 
 server:
   enabled: true
-  image:
-    repository: ghcr.io/immich-app/immich-server
-    tag: v3.0.1
-    pullPolicy: IfNotPresent
+  # image/env come from the shared top-level controllers block
+  controllers:
+    main:
+      containers:
+        main:
+          resources:
+            requests:
+              memory: 256Mi
+            limits:
+              memory: 2Gi
   ingress:
     main:
       enabled: false
 
 machine-learning:
   enabled: true
-  image:
-    repository: ghcr.io/immich-app/immich-machine-learning
-    tag: v3.0.1
-    pullPolicy: IfNotPresent
-  env:
-    TRANSFORMERS_CACHE: /cache
+  controllers:
+    main:
+      containers:
+        main:
+          resources:
+            requests:
+              memory: 512Mi
+            limits:
+              memory: 4Gi
   persistence:
     cache:
       enabled: true

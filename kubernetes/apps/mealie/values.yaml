@@ -10,7 +10,7 @@ controllers:
           tag: v3.20.1
         env:
           BASE_URL: https://mealie.lafranque.net
-          ALLOW_SIGNUP: true
+          ALLOW_SIGNUP: false
           API_DOCS: false
           TZ: Europe/Paris
           # Default Values

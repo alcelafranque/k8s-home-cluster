@@ -1,6 +1,13 @@
 env:
   TZ: UTC
 
+resources:
+  requests:
+    cpu: 50m
+    memory: 128Mi
+  limits:
+    memory: 512Mi
+
 controller:
   replicas: 2
 

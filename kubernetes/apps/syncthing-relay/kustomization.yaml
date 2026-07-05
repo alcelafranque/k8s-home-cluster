@@ -4,4 +4,5 @@ namespace: syncthing-relay
 
 resources:
   - deployment.yaml
+  - pvc.yaml
   - service.yaml

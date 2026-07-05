@@ -3,13 +3,13 @@ replicaCount: 1
 image:
   repository: docker.io/jellyfin/jellyfin
   tag: 10.11.11
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 
 podAnnotations:
   backup.velero.io/backup-volumes-excludes: media
 
 nodeSelector:
-  beta.kubernetes.io/arch: amd64
+  kubernetes.io/arch: amd64
 
 serviceAccount:
   create: true

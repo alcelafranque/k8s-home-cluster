@@ -14,6 +14,8 @@ controllers:
           requests:
             cpu: 25m
             memory: 50Mi
+          limits:
+            memory: 256Mi
         env:
           LOG_TARGETS: stdout
           HOMEPAGE_ALLOWED_HOSTS: homepage.lac-coloc.fr

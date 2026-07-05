@@ -30,6 +30,12 @@ spec:
       containers:
       - name: grafana
         image: grafana/grafana:13.1.0
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            memory: 512Mi
         volumeMounts:
         - name: config
           mountPath: "/etc/grafana/grafana.ini"
@@ -49,12 +55,17 @@ spec:
             path: /api/health
             port: 3000
           initialDelaySeconds: 60
-          timeoutSeconds: 30
-          failureThreshold: 10
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 5
         readinessProbe:
           httpGet:
             path: /api/health
             port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
       volumes:
       - name: config
         configMap:
