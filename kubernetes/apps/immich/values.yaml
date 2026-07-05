@@ -4,7 +4,7 @@ controllers:
       main:
         image:
           repository: ghcr.io/immich-app/immich-server
-          tag: v2.7.5
+          tag: v3.0.1
         env:
           REDIS_HOSTNAME: dragonfly.dragonfly.svc.cluster.local
           REDIS_PORT: "6379"

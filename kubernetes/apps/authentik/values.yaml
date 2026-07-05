@@ -3,6 +3,12 @@ global:
     - secretRef:
         name: authentik-secret
 
+authentik:
+  postgresql:
+    # CNPG cluster (see postgresql-authentik.yaml); db/user default to "authentik",
+    # password comes from authentik-secret via envFrom
+    host: authentik-postgres-rw.authentik.svc.cluster.local
+
 server:
   ingress:
     enabled: false
@@ -20,12 +26,4 @@ worker:
       memory: 512Mi
     limits:
       memory: 1024Mi
-
-postgresql:
-  enabled: true
-  auth:
-    enablePostgresUser: false
-    existingSecret: authentik-secret
-    secretKeys:
-      userPasswordKey: AUTHENTIK_POSTGRESQL__PASSWORD
 
