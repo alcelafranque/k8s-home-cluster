@@ -50,6 +50,10 @@ spec:
           failureThreshold: 3
         securityContext:
           runAsNonRoot: true
+          # image USER is the name "morphos" (uid 1000): kubelet needs a numeric
+          # uid to verify runAsNonRoot, otherwise CreateContainerConfigError
+          runAsUser: 1000
+          runAsGroup: 1000
           allowPrivilegeEscalation: false
           capabilities:
             drop:
