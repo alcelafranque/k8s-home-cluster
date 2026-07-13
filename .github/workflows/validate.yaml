@@ -30,7 +30,8 @@ jobs:
 
       - name: Install kubeconform
         run: |
-          curl -fsSL "https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz" \
+          curl -fsSL --retry 4 --retry-all-errors \
+            "https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz" \
             | sudo tar -xz -C /usr/local/bin kubeconform
           kubeconform -v
           kustomize version

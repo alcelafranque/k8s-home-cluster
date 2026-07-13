@@ -8,6 +8,8 @@ resources:
   - https://github.com/argoproj/argo-cd//manifests/cluster-install?ref=v3.0.5
   # one Application per app dir + argocd self-management
   - ./apps
+  - ingress.yaml
 
 patches:
   - path: argocd-cm-patch.yaml
+  - path: argocd-cmd-params-cm-patch.yaml

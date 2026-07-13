@@ -1,0 +1,8 @@
+# TLS is terminated at the envoy gateway (wildcard cert): argocd-server must
+# serve plain HTTP or it redirects to its own self-signed HTTPS in a loop.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cmd-params-cm
+data:
+  server.insecure: "true"
