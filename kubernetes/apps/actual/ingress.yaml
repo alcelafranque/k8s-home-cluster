@@ -6,7 +6,7 @@ metadata:
   namespace: actual
   annotations:
     gethomepage.dev/enabled: "false"
-    gethomepage.dev/icon: actual.png
+    gethomepage.dev/icon: actual-budget.png
     gethomepage.dev/name: Actual
 spec:
   parentRefs:
