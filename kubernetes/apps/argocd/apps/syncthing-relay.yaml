@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: syncthing-relay
+spec:
+  destination:
+    namespace: syncthing-relay
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: kubernetes/apps/syncthing-relay
+    repoURL: https://github.com/alcelafranque/k8s-home-cluster.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

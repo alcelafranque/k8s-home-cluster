@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: medias
+spec:
+  destination:
+    namespace: medias
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: kubernetes/apps/medias
+    repoURL: https://github.com/alcelafranque/k8s-home-cluster.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

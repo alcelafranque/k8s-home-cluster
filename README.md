@@ -34,6 +34,15 @@ My cluster runs on a mix of ARM and x86 hardware, optimized for low power consum
   - Running as VMs on a no-name mini PC
   - x86 architecture for workloads that require it
 
+## 🔄 Bootstrap / Disaster Recovery
+
+Everything is GitOps-managed by ArgoCD from `main`. To rebuild from scratch:
+
+1. **Talos**: `cd talos && task config CLUSTER=dorado` then apply the generated configs (`talosctl apply-config`, `talosctl bootstrap`).
+2. **CNI**: the cluster boots without CNI (`cni: none`); sync the Cilium app manually the first time if needed.
+3. **ArgoCD**: `kubectl apply -k kubernetes/apps/argocd` — installs ArgoCD and every `Application`, including ArgoCD itself (self-managed afterwards).
+4. **Secrets**: create the 1Password operator credentials secret by hand (the only secret not in git), then the `1password` app syncs and every `OnePasswordItem` resolves.
+
 ## 📚 Learning Journey
 
 This is a living project where I'm constantly:
