@@ -6,7 +6,7 @@ metadata:
   namespace: argocd
   annotations:
     gethomepage.dev/enabled: "true"
-    gethomepage.dev/icon: argocd.png
+    gethomepage.dev/icon: argo-cd.png
     gethomepage.dev/name: ArgoCD
     gethomepage.dev/group: Tools
     gethomepage.dev/description: "GitOps deployments"
