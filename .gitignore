@@ -2,3 +2,7 @@
 **/.env
 talos/**/clusterconfig/
 talos/**/talenv.yaml
+# charts downloaded by `kustomize build --enable-helm`
+kubernetes/**/charts/
+# local scratch space (never committed)
+scratch/
