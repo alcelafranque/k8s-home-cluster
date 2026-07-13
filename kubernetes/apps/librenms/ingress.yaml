@@ -10,6 +10,9 @@ metadata:
     gethomepage.dev/name: LibreNMS
     gethomepage.dev/group: Monitoring
     gethomepage.dev/description: "Network monitoring"
+    # homepage derives the pod lookup from the route name (librenms-https-route)
+    # which matches nothing — point it at the frontend pod explicitly
+    gethomepage.dev/pod-selector: "app.kubernetes.io/name=librenms,app.kubernetes.io/instance=frontend"
 spec:
   parentRefs:
   - name: one-gateway-for-all
