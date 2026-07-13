@@ -10,6 +10,8 @@ metadata:
     gethomepage.dev/name: ArgoCD
     gethomepage.dev/group: Tools
     gethomepage.dev/description: "GitOps deployments"
+    # upstream pods are labelled argocd-server, not argocd (the route name)
+    gethomepage.dev/pod-selector: "app.kubernetes.io/name=argocd-server"
 spec:
   parentRefs:
   - name: one-gateway-for-all

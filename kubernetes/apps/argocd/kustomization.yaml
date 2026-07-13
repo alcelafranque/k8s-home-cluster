@@ -5,7 +5,7 @@ namespace: argocd
 resources:
   - namespace.yaml
   # upstream cluster-wide install, same source as `kubectl apply -f install.yaml`
-  - https://github.com/argoproj/argo-cd//manifests/cluster-install?ref=v3.0.5
+  - https://github.com/argoproj/argo-cd//manifests/cluster-install?ref=v3.4.5
   # one Application per app dir + argocd self-management
   - ./apps
   - ingress.yaml
