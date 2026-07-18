@@ -17,6 +17,7 @@ spec:
       sectionName: https
   hostnames:
     - plik.lafranque.net
+    - plik-download.lafranque.net
   rules:
     - matches:
         - path:
@@ -38,6 +39,7 @@ spec:
       sectionName: http
   hostnames:
     - plik.lafranque.net
+    - plik-download.lafranque.net
   rules:
     - filters:
         - type: RequestRedirect

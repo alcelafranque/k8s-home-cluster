@@ -39,7 +39,7 @@ dbPersistence:
 
 plikd:
   PlikDomain: https://plik.lafranque.net
-  DownloadDomain: https://plik.lafranque.net
+  DownloadDomain: https://plik-download.lafranque.net
   AssumeHTTPS: true
   SourceIpHeader: X-Forwarded-For
 
