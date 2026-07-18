@@ -13,6 +13,7 @@ resources:
   - cnpg-system.yaml
   - dragonfly.yaml
   - envoy-gateway-system.yaml
+  - external-secrets.yaml
   - grafana.yaml
   - homepage.yaml
   - home.yaml

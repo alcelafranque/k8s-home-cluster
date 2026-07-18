@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+helmCharts:
+  - name: external-secrets
+    repo: https://charts.external-secrets.io
+    version: 2.7.0
+    releaseName: external-secrets
+    namespace: external-secrets
+    includeCRDs: true
+    valuesFile: values.yaml
+
+resources:
+  - openbao-store.yaml
+  - token-review.yaml

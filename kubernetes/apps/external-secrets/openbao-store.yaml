@@ -1,0 +1,21 @@
+apiVersion: external-secrets.io/v1
+kind: ClusterSecretStore
+metadata:
+  name: openbao
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  provider:
+    vault:
+      server: https://openbao.lac-coloc.fr
+      path: kv
+      version: v2
+      auth:
+        kubernetes:
+          mountPath: kubernetes
+          role: external-secrets
+          serviceAccountRef:
+            name: external-secrets
+            namespace: external-secrets
+            audiences:
+              - openbao
