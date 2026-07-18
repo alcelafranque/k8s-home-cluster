@@ -26,6 +26,11 @@ spec:
       login: true
       passwordSecret:
         name: paperless-db-secret
+    - name: plik
+      ensure: present
+      login: true
+      passwordSecret:
+        name: plik-db-secret
     - name: jellystat
       ensure: present
       login: true

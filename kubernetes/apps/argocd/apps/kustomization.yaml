@@ -27,5 +27,6 @@ resources:
   - miniflux.yaml
   - morphos.yaml
   - paperless-ngx.yaml
+  - plik.yaml
   - syncthing-relay.yaml
   - velero.yaml

@@ -1,0 +1,30 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: plik
+
+resources:
+  - ingress.yaml
+  - secrets.yaml
+
+helmCharts:
+  - name: plik
+    repo: https://root-gg.github.io/plik
+    version: 1.4.2
+    releaseName: plik
+    namespace: plik
+    valuesFile: values.yaml
+
+patches:
+  - target:
+      kind: ConfigMap|Secret|Service|PersistentVolumeClaim|Deployment
+    patch: |-
+      - op: add
+        path: /metadata/namespace
+        value: plik
+  - target:
+      kind: PersistentVolumeClaim
+    patch: |-
+      - op: add
+        path: /metadata/annotations
+        value:
+          velero.io/exclude-from-backup: "true"

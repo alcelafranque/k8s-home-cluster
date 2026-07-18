@@ -1,0 +1,60 @@
+kind: Deployment
+
+image:
+  tag: 1.4.2
+
+podAnnotations:
+  backup.velero.io/backup-volumes-excludes: data,db
+
+podSecurityContext:
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+  fsGroupChangePolicy: OnRootMismatch
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  runAsNonRoot: true
+  runAsUser: 1000
+
+resources:
+  requests:
+    cpu: 20m
+    memory: 128Mi
+  limits:
+    memory: 512Mi
+
+persistence:
+  enabled: true
+  storageClassName: ceph-block
+  accessModes:
+    - ReadWriteOnce
+  size: 50Gi
+
+dbPersistence:
+  enabled: false
+
+plikd:
+  PlikDomain: https://plik.lafranque.net
+  DownloadDomain: https://plik.lafranque.net
+  AssumeHTTPS: true
+  SourceIpHeader: X-Forwarded-For
+
+  MaxFileSizeStr: 10GB
+  DefaultTTLStr: 30d
+  MaxTTLStr: 30d
+
+  DataBackend: file
+  DataBackendConfig:
+    Directory: /home/plik/server/files
+
+  MetadataBackendConfig:
+    Driver: postgres
+    ConnectionString: host=cluster-1-rw.cnpg-system.svc.cluster.local user=plik dbname=plik port=5432 sslmode=require
+    Debug: false
+
+secrets:
+  existingSecret: plik-db-secret
