@@ -11,12 +11,10 @@ spec:
       path: kv
       version: v2
       auth:
-        jwt:
-          path: jwt-dorado
-          role: external-secrets
-          kubernetesServiceAccountToken:
-            serviceAccountRef:
-              name: external-secrets
-              namespace: external-secrets
-              audiences:
-                - openbao
+        appRole:
+          path: approle
+          roleId: 96e0139c-f7b5-edaf-2f5a-dbfca83db80b
+          secretRef:
+            name: openbao-approle
+            namespace: external-secrets
+            key: secret-id
