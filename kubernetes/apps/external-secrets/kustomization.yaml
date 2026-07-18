@@ -12,4 +12,3 @@ helmCharts:
 
 resources:
   - openbao-store.yaml
-  - token-review.yaml

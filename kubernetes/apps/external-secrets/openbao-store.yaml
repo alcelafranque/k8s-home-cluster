@@ -11,11 +11,12 @@ spec:
       path: kv
       version: v2
       auth:
-        kubernetes:
-          mountPath: kubernetes
+        jwt:
+          path: jwt-dorado
           role: external-secrets
-          serviceAccountRef:
-            name: external-secrets
-            namespace: external-secrets
-            audiences:
-              - openbao
+          kubernetesServiceAccountToken:
+            serviceAccountRef:
+              name: external-secrets
+              namespace: external-secrets
+              audiences:
+                - openbao
