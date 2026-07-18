@@ -42,6 +42,7 @@ plikd:
   DownloadDomain: https://plik-download.lafranque.net
   AssumeHTTPS: true
   SourceIpHeader: X-Forwarded-For
+  FeatureAuthentication: forced
 
   MaxFileSizeStr: 10GB
   DefaultTTLStr: 30d
