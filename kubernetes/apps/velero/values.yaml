@@ -8,21 +8,38 @@ initContainers:
 
 # Extra K8s manifests to deploy
 extraObjects:
-  # OnePasswordItem
-  - apiVersion: onepassword.com/v1
-    kind: OnePasswordItem
+  - apiVersion: external-secrets.io/v1
+    kind: ExternalSecret
     metadata:
       name: velero-s3-credentials
       namespace: velero
     spec:
-      itemPath: "vaults/k8s/items/velero-s3"
-  - apiVersion: onepassword.com/v1
-    kind: OnePasswordItem
+      refreshInterval: 1h
+      secretStoreRef:
+        kind: ClusterSecretStore
+        name: openbao
+      target:
+        name: velero-s3-credentials
+        creationPolicy: Owner
+      dataFrom:
+        - extract:
+            key: k8s/dorado/applications/velero-s3
+  - apiVersion: external-secrets.io/v1
+    kind: ExternalSecret
     metadata:
       name: velero-s3-credentials-clb
       namespace: velero
     spec:
-      itemPath: "vaults/k8s/items/velero-s3-clb"
+      refreshInterval: 1h
+      secretStoreRef:
+        kind: ClusterSecretStore
+        name: openbao
+      target:
+        name: velero-s3-credentials-clb
+        creationPolicy: Owner
+      dataFrom:
+        - extract:
+            key: k8s/dorado/applications/velero-s3-clb
 ##
 configuration:
   # Parameters for the BackupStorageLocation(s). Configure multiple by adding other element(s) to the backupStorageLocation slice.
