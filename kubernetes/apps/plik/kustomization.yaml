@@ -28,3 +28,15 @@ patches:
         path: /metadata/annotations
         value:
           velero.io/exclude-from-backup: "true"
+  - target:
+      kind: Deployment
+      name: plik
+    patch: |-
+      - op: add
+        path: /spec/template/spec/containers/0/env
+        value:
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: plik-db-secret
+                key: password
