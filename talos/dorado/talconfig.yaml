@@ -6,7 +6,7 @@ endpoint: https://10.243.2.55:6443
 allowSchedulingOnMasters: true
 
 # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-talosVersion: "v1.13.6"
+talosVersion: "v1.13.7"
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
 kubernetesVersion: "v1.36.2"
 
