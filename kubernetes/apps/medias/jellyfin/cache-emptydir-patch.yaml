@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jellyfin
+spec:
+  template:
+    spec:
+      volumes:
+        - name: cache
+          emptyDir:
+            medium: Memory
+            sizeLimit: 4Gi
