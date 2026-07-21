@@ -13,3 +13,9 @@ helmCharts:
     releaseName: jellyfin
     valuesFile: values.yaml
     version: 3.2.0
+
+patches:
+  - path: cache-emptydir-patch.yaml
+    target:
+      kind: Deployment
+      name: jellyfin
