@@ -124,6 +124,7 @@ config: |
           torr9.xyz
           theoldschool.cc
           c411.org
+          tr4ker.net
     clientGroupsBlock:
       # default will be used, if no special definition for a client name exists
       default:
