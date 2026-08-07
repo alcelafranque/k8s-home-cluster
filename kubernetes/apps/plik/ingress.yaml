@@ -6,7 +6,7 @@ metadata:
   namespace: plik
   annotations:
     gethomepage.dev/enabled: "true"
-    gethomepage.dev/icon: plik.png
+    gethomepage.dev/icon: https://plik.lafranque.net/favicon.ico
     gethomepage.dev/name: Plik
     gethomepage.dev/group: Tools
     gethomepage.dev/description: Temporary file sharing
