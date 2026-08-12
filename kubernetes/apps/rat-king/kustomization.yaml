@@ -4,4 +4,6 @@ namespace: rat-king
 
 resources:
   - deployment.yaml
+  - ingress.yaml
   - pvc.yaml
+  - service.yaml
