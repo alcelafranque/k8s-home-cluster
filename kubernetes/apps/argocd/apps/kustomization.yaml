@@ -28,5 +28,6 @@ resources:
   - morphos.yaml
   - paperless-ngx.yaml
   - plik.yaml
+  - rat-king.yaml
   - syncthing-relay.yaml
   - velero.yaml

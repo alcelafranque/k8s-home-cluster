@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rat-king
+  labels:
+    app.kubernetes.io/name: rat-king
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: rat-king
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+      protocol: TCP
