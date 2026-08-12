@@ -6,3 +6,5 @@ talos/**/talenv.yaml
 kubernetes/**/charts/
 # local scratch space (never committed)
 scratch/
+# local Git worktrees (never committed)
+.worktrees/
