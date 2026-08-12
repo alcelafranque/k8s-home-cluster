@@ -183,8 +183,8 @@ Run:
 
 ```bash
 kubectl kustomize kubernetes/apps/rat-king > /tmp/rat-king-rendered.yaml
-yq -e 'select(.kind == "Deployment") | .metadata.namespace == "rat-king" and .spec.replicas == 1 and .spec.template.spec.containers[0].image == "ghcr.io/lac-coloc/rat-king:0.2.3" and .spec.template.spec.containers[0].readinessProbe.httpGet.path == "/readyz" and .spec.template.spec.containers[0].livenessProbe.httpGet.path == "/healthz" and .spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem == true and .spec.template.spec.nodeSelector == null' /tmp/rat-king-rendered.yaml
-yq -e 'select(.kind == "PersistentVolumeClaim") | .spec.storageClassName == "ceph-block" and .spec.accessModes == ["ReadWriteOnce"] and .spec.resources.requests.storage == "1Gi"' /tmp/rat-king-rendered.yaml
+yq -e 'select(.kind == "Deployment") | ((.metadata.namespace == "rat-king") and (.spec.replicas == 1) and (.spec.template.spec.containers[0].image == "ghcr.io/lac-coloc/rat-king:0.2.3") and (.spec.template.spec.containers[0].readinessProbe.httpGet.path == "/readyz") and (.spec.template.spec.containers[0].livenessProbe.httpGet.path == "/healthz") and (.spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem == true) and (.spec.template.spec.nodeSelector == null))' /tmp/rat-king-rendered.yaml
+yq -e 'select(.kind == "PersistentVolumeClaim") | ((.spec.storageClassName == "ceph-block") and (.spec.accessModes[0] == "ReadWriteOnce") and (.spec.resources.requests.storage == "1Gi"))' /tmp/rat-king-rendered.yaml
 ```
 
 Expected: both `yq` commands print `true` and exit `0`.
@@ -313,9 +313,9 @@ Run:
 
 ```bash
 kubectl kustomize kubernetes/apps/rat-king > /tmp/rat-king-rendered.yaml
-yq -e 'select(.kind == "Service" and .metadata.name == "rat-king") | .spec.ports[0].port == 80 and .spec.ports[0].targetPort == "http"' /tmp/rat-king-rendered.yaml
-yq -e 'select(.kind == "HTTPRoute" and .metadata.name == "rat-king") | .metadata.annotations."gethomepage.dev/icon" == "mdi-crown" and .spec.hostnames == ["rat-king.lac-coloc.fr"] and .spec.parentRefs[0].sectionName == "https" and .spec.rules[0].backendRefs[0].port == 80' /tmp/rat-king-rendered.yaml
-yq -e 'select(.kind == "HTTPRoute" and .metadata.name == "rat-king-http-redirect") | .spec.parentRefs[0].sectionName == "http" and .spec.rules[0].filters[0].requestRedirect.scheme == "https" and .spec.rules[0].filters[0].requestRedirect.statusCode == 301' /tmp/rat-king-rendered.yaml
+yq -e 'select(.kind == "Service" and .metadata.name == "rat-king") | ((.spec.ports[0].port == 80) and (.spec.ports[0].targetPort == "http"))' /tmp/rat-king-rendered.yaml
+yq -e 'select(.kind == "HTTPRoute" and .metadata.name == "rat-king") | ((.metadata.annotations."gethomepage.dev/icon" == "mdi-crown") and (.spec.hostnames[0] == "rat-king.lac-coloc.fr") and (.spec.parentRefs[0].sectionName == "https") and (.spec.rules[0].backendRefs[0].port == 80))' /tmp/rat-king-rendered.yaml
+yq -e 'select(.kind == "HTTPRoute" and .metadata.name == "rat-king-http-redirect") | ((.spec.parentRefs[0].sectionName == "http") and (.spec.rules[0].filters[0].requestRedirect.scheme == "https") and (.spec.rules[0].filters[0].requestRedirect.statusCode == 301))' /tmp/rat-king-rendered.yaml
 ```
 
 Expected: all three `yq` commands print `true` and exit `0`.
@@ -385,7 +385,7 @@ Run:
 
 ```bash
 kubectl kustomize kubernetes/apps/argocd/apps > /tmp/argocd-apps-rendered.yaml
-yq -e 'select(.kind == "Application" and .metadata.name == "rat-king") | .spec.destination.namespace == "rat-king" and .spec.source.path == "kubernetes/apps/rat-king" and .spec.syncPolicy.automated.prune == true and .spec.syncPolicy.automated.selfHeal == true and .spec.syncPolicy.syncOptions == ["CreateNamespace=true"]' /tmp/argocd-apps-rendered.yaml
+yq -e 'select(.kind == "Application" and .metadata.name == "rat-king") | ((.spec.destination.namespace == "rat-king") and (.spec.source.path == "kubernetes/apps/rat-king") and (.spec.syncPolicy.automated.prune == true) and (.spec.syncPolicy.automated.selfHeal == true) and (.spec.syncPolicy.syncOptions[0] == "CreateNamespace=true"))' /tmp/argocd-apps-rendered.yaml
 ```
 
 Expected: `yq` prints `true` and exits `0`.
@@ -413,7 +413,7 @@ git commit -m "feat(argocd): deploy Rat King application"
 Run:
 
 ```bash
-git diff --check HEAD~3..HEAD
+git diff --check 1a06062..HEAD
 kubectl kustomize kubernetes/apps/rat-king > /tmp/rat-king-rendered.yaml
 kubectl kustomize kubernetes/apps/argocd/apps > /tmp/argocd-apps-rendered.yaml
 ```
@@ -435,7 +435,7 @@ Expected: `5 resources found - Valid: 5` followed by `OK: all apps validated`.
 Run:
 
 ```bash
-yq -e 'select(.kind == "Deployment" and .metadata.name == "rat-king") | .spec.replicas == 1 and .spec.template.spec.automountServiceAccountToken == false and .spec.template.spec.securityContext.runAsUser == 10001 and .spec.template.spec.securityContext.runAsGroup == 10001 and .spec.template.spec.securityContext.fsGroup == 10001 and .spec.template.spec.securityContext.seccompProfile.type == "RuntimeDefault" and .spec.template.spec.containers[0].securityContext.allowPrivilegeEscalation == false and .spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem == true and .spec.template.spec.containers[0].securityContext.capabilities.drop == ["ALL"] and .spec.template.spec.containers[0].volumeMounts[0].mountPath == "/data" and .spec.template.spec.volumes[0].persistentVolumeClaim.claimName == "rat-king-data" and .spec.template.spec.nodeSelector == null and .spec.template.spec.imagePullSecrets == null' /tmp/rat-king-rendered.yaml
+yq -e 'select(.kind == "Deployment" and .metadata.name == "rat-king") | ((.spec.replicas == 1) and (.spec.template.spec.automountServiceAccountToken == false) and (.spec.template.spec.securityContext.runAsUser == 10001) and (.spec.template.spec.securityContext.runAsGroup == 10001) and (.spec.template.spec.securityContext.fsGroup == 10001) and (.spec.template.spec.securityContext.seccompProfile.type == "RuntimeDefault") and (.spec.template.spec.containers[0].securityContext.allowPrivilegeEscalation == false) and (.spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem == true) and (.spec.template.spec.containers[0].securityContext.capabilities.drop[0] == "ALL") and (.spec.template.spec.containers[0].volumeMounts[0].mountPath == "/data") and (.spec.template.spec.volumes[0].persistentVolumeClaim.claimName == "rat-king-data") and (.spec.template.spec.nodeSelector == null) and (.spec.template.spec.imagePullSecrets == null))' /tmp/rat-king-rendered.yaml
 ```
 
 Expected: `yq` prints `true` and exits `0`.
