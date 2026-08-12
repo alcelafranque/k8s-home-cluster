@@ -62,8 +62,8 @@ Two Gateway API routes will follow the repository convention:
 - the HTTP listener will return a permanent `301` redirect to HTTPS.
 
 The HTTPS route will carry Homepage discovery annotations, display Rat King in
-the `Tools` group, and use the application's own favicon URL for its icon so no
-new dashboard asset is required.
+the `Tools` group, and use Homepage's built-in `mdi-crown` icon so no dashboard
+asset is required.
 
 ## Runtime Flow and Failure Handling
 
