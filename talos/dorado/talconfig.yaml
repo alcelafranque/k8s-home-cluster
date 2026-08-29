@@ -8,7 +8,7 @@ allowSchedulingOnMasters: true
 # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
 talosVersion: "v1.13.9"
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
-kubernetesVersion: "v1.36.4"
+kubernetesVersion: "v1.37.0"
 
 clusterPodNets:
   - 100.64.0.0/16
