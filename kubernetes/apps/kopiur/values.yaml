@@ -1,0 +1,19 @@
+installScope: cluster
+
+features:
+  credentialProjection:
+    enabled: true
+
+controller:
+  replicaCount: 1
+  leaderElection:
+    enabled: true
+
+webhook:
+  enabled: true
+  failurePolicy: Fail
+  tls:
+    mode: self
+
+metrics:
+  enabled: true

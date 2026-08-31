@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kopiur
+spec:
+  destination:
+    namespace: kopiur-system
+    server: https://kubernetes.default.svc
+  project: default
+  sources:
+    - chart: kopiur
+      repoURL: ghcr.io/home-operations/charts
+      targetRevision: 0.10.3
+      helm:
+        releaseName: kopiur
+        valueFiles:
+          - $values/kubernetes/apps/kopiur/values.yaml
+    - repoURL: https://github.com/alcelafranque/k8s-home-cluster.git
+      targetRevision: HEAD
+      ref: values
+    - path: kubernetes/apps/kopiur
+      repoURL: https://github.com/alcelafranque/k8s-home-cluster.git
+      targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true
+      - CreateNamespace=true
