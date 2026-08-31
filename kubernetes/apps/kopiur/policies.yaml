@@ -1,0 +1,397 @@
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: pvc-backups
+  namespace: actual
+spec:
+  repository:
+    kind: ClusterRepository
+    name: dorado
+  sources:
+    - pvc:
+        name: actual-data
+  copyMethod: Snapshot
+  volumeSnapshotClassName: csi-rbdplugin-snapclass
+  retention:
+    keepLatest: 36
+    keepDaily: 30
+    keepWeekly: 8
+  credentialProjection:
+    enabled: true
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotSchedule
+metadata:
+  name: pvc-backups-every-2h
+  namespace: actual
+spec:
+  policyRef:
+    name: pvc-backups
+  schedule:
+    cron: "0 */2 * * *"
+    runOnCreate: false
+    concurrencyPolicy: Forbid
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: pvc-backups
+  namespace: atuin
+spec:
+  repository:
+    kind: ClusterRepository
+    name: dorado
+  sources:
+    - pvc:
+        name: atuin-config
+  copyMethod: Snapshot
+  volumeSnapshotClassName: csi-rbdplugin-snapclass
+  retention:
+    keepLatest: 36
+    keepDaily: 30
+    keepWeekly: 8
+  credentialProjection:
+    enabled: true
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotSchedule
+metadata:
+  name: pvc-backups-every-2h
+  namespace: atuin
+spec:
+  policyRef:
+    name: pvc-backups
+  schedule:
+    cron: "0 */2 * * *"
+    runOnCreate: false
+    concurrencyPolicy: Forbid
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: pvc-backups
+  namespace: home
+spec:
+  repository:
+    kind: ClusterRepository
+    name: dorado
+  sources:
+    - pvc:
+        name: homeassistant-config-pvc
+    - pvc:
+        name: node-red-data
+  copyMethod: Snapshot
+  volumeSnapshotClassName: csi-rbdplugin-snapclass
+  retention:
+    keepLatest: 36
+    keepDaily: 30
+    keepWeekly: 8
+  credentialProjection:
+    enabled: true
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotSchedule
+metadata:
+  name: pvc-backups-every-2h
+  namespace: home
+spec:
+  policyRef:
+    name: pvc-backups
+  schedule:
+    cron: "0 */2 * * *"
+    runOnCreate: false
+    concurrencyPolicy: Forbid
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: pvc-backups
+  namespace: immich
+spec:
+  repository:
+    kind: ClusterRepository
+    name: dorado
+  sources:
+    - pvc:
+        name: immich-library-pvc
+  copyMethod: Snapshot
+  volumeSnapshotClassName: csi-rbdplugin-snapclass
+  retention:
+    keepLatest: 36
+    keepDaily: 30
+    keepWeekly: 8
+  credentialProjection:
+    enabled: true
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotSchedule
+metadata:
+  name: pvc-backups-every-2h
+  namespace: immich
+spec:
+  policyRef:
+    name: pvc-backups
+  schedule:
+    cron: "0 */2 * * *"
+    runOnCreate: false
+    concurrencyPolicy: Forbid
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: pvc-backups
+  namespace: librenms
+spec:
+  repository:
+    kind: ClusterRepository
+    name: dorado
+  sources:
+    - pvc:
+        name: data-librenms-mysql-0
+    - pvc:
+        name: librenms-rrdcached
+  copyMethod: Snapshot
+  volumeSnapshotClassName: csi-rbdplugin-snapclass
+  retention:
+    keepLatest: 36
+    keepDaily: 30
+    keepWeekly: 8
+  credentialProjection:
+    enabled: true
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotSchedule
+metadata:
+  name: pvc-backups-every-2h
+  namespace: librenms
+spec:
+  policyRef:
+    name: pvc-backups
+  schedule:
+    cron: "0 */2 * * *"
+    runOnCreate: false
+    concurrencyPolicy: Forbid
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: pvc-backups
+  namespace: mealie
+spec:
+  repository:
+    kind: ClusterRepository
+    name: dorado
+  sources:
+    - pvc:
+        name: mealie
+  copyMethod: Snapshot
+  volumeSnapshotClassName: csi-rbdplugin-snapclass
+  retention:
+    keepLatest: 36
+    keepDaily: 30
+    keepWeekly: 8
+  credentialProjection:
+    enabled: true
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotSchedule
+metadata:
+  name: pvc-backups-every-2h
+  namespace: mealie
+spec:
+  policyRef:
+    name: pvc-backups
+  schedule:
+    cron: "0 */2 * * *"
+    runOnCreate: false
+    concurrencyPolicy: Forbid
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: pvc-backups
+  namespace: medias
+spec:
+  repository:
+    kind: ClusterRepository
+    name: dorado
+  sources:
+    - pvc:
+        name: bazarr-config
+    - pvc:
+        name: cross-seed-config
+    - pvc:
+        name: jellyfin-config
+    - pvc:
+        name: jellyseerr-config
+    - pvc:
+        name: jellystat-config
+    - pvc:
+        name: lidarr-config
+    - pvc:
+        name: prowlarr-config
+    - pvc:
+        name: radarr-config
+    - pvc:
+        name: sonarr-config
+  copyMethod: Snapshot
+  volumeSnapshotClassName: csi-rbdplugin-snapclass
+  retention:
+    keepLatest: 36
+    keepDaily: 30
+    keepWeekly: 8
+  credentialProjection:
+    enabled: true
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotSchedule
+metadata:
+  name: pvc-backups-every-2h
+  namespace: medias
+spec:
+  policyRef:
+    name: pvc-backups
+  schedule:
+    cron: "0 */2 * * *"
+    runOnCreate: false
+    concurrencyPolicy: Forbid
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: pvc-backups
+  namespace: monitoring
+spec:
+  repository:
+    kind: ClusterRepository
+    name: dorado
+  sources:
+    - pvc:
+        name: storage-grafana-0
+  copyMethod: Snapshot
+  volumeSnapshotClassName: csi-rbdplugin-snapclass
+  retention:
+    keepLatest: 36
+    keepDaily: 30
+    keepWeekly: 8
+  credentialProjection:
+    enabled: true
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotSchedule
+metadata:
+  name: pvc-backups-every-2h
+  namespace: monitoring
+spec:
+  policyRef:
+    name: pvc-backups
+  schedule:
+    cron: "0 */2 * * *"
+    runOnCreate: false
+    concurrencyPolicy: Forbid
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: pvc-backups
+  namespace: paperless-ngx
+spec:
+  repository:
+    kind: ClusterRepository
+    name: dorado
+  sources:
+    - pvc:
+        name: paperless-ngx-consume
+    - pvc:
+        name: paperless-ngx-data
+    - pvc:
+        name: paperless-ngx-media
+  copyMethod: Snapshot
+  volumeSnapshotClassName: csi-rbdplugin-snapclass
+  retention:
+    keepLatest: 36
+    keepDaily: 30
+    keepWeekly: 8
+  credentialProjection:
+    enabled: true
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotSchedule
+metadata:
+  name: pvc-backups-every-2h
+  namespace: paperless-ngx
+spec:
+  policyRef:
+    name: pvc-backups
+  schedule:
+    cron: "0 */2 * * *"
+    runOnCreate: false
+    concurrencyPolicy: Forbid
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: pvc-backups
+  namespace: rat-king
+spec:
+  repository:
+    kind: ClusterRepository
+    name: dorado
+  sources:
+    - pvc:
+        name: rat-king-data
+  copyMethod: Snapshot
+  volumeSnapshotClassName: csi-rbdplugin-snapclass
+  retention:
+    keepLatest: 36
+    keepDaily: 30
+    keepWeekly: 8
+  credentialProjection:
+    enabled: true
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotSchedule
+metadata:
+  name: pvc-backups-every-2h
+  namespace: rat-king
+spec:
+  policyRef:
+    name: pvc-backups
+  schedule:
+    cron: "0 */2 * * *"
+    runOnCreate: false
+    concurrencyPolicy: Forbid
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: pvc-backups
+  namespace: syncthing-relay
+spec:
+  repository:
+    kind: ClusterRepository
+    name: dorado
+  sources:
+    - pvc:
+        name: syncthing-relay-keys
+  copyMethod: Snapshot
+  volumeSnapshotClassName: csi-rbdplugin-snapclass
+  retention:
+    keepLatest: 36
+    keepDaily: 30
+    keepWeekly: 8
+  credentialProjection:
+    enabled: true
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotSchedule
+metadata:
+  name: pvc-backups-every-2h
+  namespace: syncthing-relay
+spec:
+  policyRef:
+    name: pvc-backups
+  schedule:
+    cron: "0 */2 * * *"
+    runOnCreate: false
+    concurrencyPolicy: Forbid
