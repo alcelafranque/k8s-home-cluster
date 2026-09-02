@@ -1,0 +1,65 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: kopiur-repository-credentials
+  namespace: kopiur-system
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: openbao
+  target:
+    name: kopiur-repository-credentials
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      type: Opaque
+      data:
+        AWS_ACCESS_KEY_ID: "{{ .access_key }}"
+        AWS_SECRET_ACCESS_KEY: "{{ .secret_key }}"
+        KOPIA_PASSWORD: "{{ .repository_password }}"
+  dataFrom:
+    - extract:
+        key: k8s/dorado/applications/kopiur
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: ClusterRepository
+metadata:
+  name: dorado
+spec:
+  backend:
+    s3:
+      bucket: backup-k8s-dorado-kopiur
+      endpoint: s3-vrc.lac-coloc.fr
+      region: us-east-1
+      auth:
+        secretRef:
+          name: kopiur-repository-credentials
+          namespace: kopiur-system
+  encryption:
+    passwordSecretRef:
+      name: kopiur-repository-credentials
+      namespace: kopiur-system
+      key: KOPIA_PASSWORD
+  create:
+    enabled: true
+  allowedNamespaces:
+    list:
+      - actual
+      - atuin
+      - home
+      - immich
+      - librenms
+      - mealie
+      - medias
+      - monitoring
+      - paperless-ngx
+      - rat-king
+      - syncthing-relay
+  credentialProjection:
+    allowed: true
+  identityDefaults:
+    hostnameExpr: namespace
+    usernameExpr: namespace + '-' + policyName
+  maintenance:
+    namespace: kopiur-system
