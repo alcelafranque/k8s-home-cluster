@@ -4,3 +4,48 @@ kind: Kustomization
 resources:
   - policies.yaml
   - repository.yaml
+
+# Keep the desired state aligned with the defaults materialized by the Kopiur CRD.
+replacements:
+  - sourceValue: Delete
+    targets:
+      - select:
+          group: kopiur.home-operations.com
+          version: v1alpha1
+          kind: SnapshotPolicy
+        fieldPaths:
+          - spec.defaultDeletionPolicy
+        options:
+          create: true
+  - sourceValue: VolumeGroupSnapshot
+    targets:
+      - select:
+          group: kopiur.home-operations.com
+          version: v1alpha1
+          kind: SnapshotPolicy
+        fieldPaths:
+          - spec.groupBy
+        options:
+          create: true
+  # Writable staging lets the kubelet apply Kopiur's fsGroup to disposable
+  # Snapshot/Clone PVCs, so the non-root mover can read application-owned files.
+  - sourceValue: "false"
+    targets:
+      - select:
+          group: kopiur.home-operations.com
+          version: v1alpha1
+          kind: SnapshotPolicy
+        fieldPaths:
+          - spec.sources.*.readOnly
+        options:
+          create: true
+  - sourceValue: PvcName
+    targets:
+      - select:
+          group: kopiur.home-operations.com
+          version: v1alpha1
+          kind: SnapshotPolicy
+        fieldPaths:
+          - spec.sources.*.sourcePathStrategy
+        options:
+          create: true
