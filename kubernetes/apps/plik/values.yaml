@@ -3,9 +3,6 @@ kind: Deployment
 image:
   tag: 1.4.2
 
-podAnnotations:
-  backup.velero.io/backup-volumes-excludes: data,db
-
 podSecurityContext:
   runAsUser: 1000
   runAsGroup: 1000

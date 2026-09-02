@@ -31,4 +31,3 @@ resources:
   - plik.yaml
   - rat-king.yaml
   - syncthing-relay.yaml
-  - velero.yaml

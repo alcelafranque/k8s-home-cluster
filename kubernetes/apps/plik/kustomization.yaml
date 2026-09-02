@@ -22,13 +22,6 @@ patches:
         path: /metadata/namespace
         value: plik
   - target:
-      kind: PersistentVolumeClaim
-    patch: |-
-      - op: add
-        path: /metadata/annotations
-        value:
-          velero.io/exclude-from-backup: "true"
-  - target:
       kind: Deployment
       name: plik
     patch: |-

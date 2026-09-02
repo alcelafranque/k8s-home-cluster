@@ -5,9 +5,6 @@ image:
   tag: 10.11.11
   pullPolicy: IfNotPresent
 
-podAnnotations:
-  backup.velero.io/backup-volumes-excludes: media
-
 nodeSelector:
   kubernetes.io/arch: amd64
 
