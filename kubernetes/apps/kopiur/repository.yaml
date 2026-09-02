@@ -45,6 +45,7 @@ spec:
     enabled: true
   allowedNamespaces:
     list:
+      - kopiur-system
       - actual
       - atuin
       - home
