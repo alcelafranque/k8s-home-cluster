@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rook-ceph-cluster
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+# No cascading-deletion finalizer for the storage Application.
+spec:
+  destination:
+    namespace: rook-ceph
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: kubernetes/apps/rook-ceph
+    repoURL: https://github.com/alcelafranque/k8s-home-cluster.git
+    targetRevision: main
+  # Intentionally manual: inspect the live diff before adopting existing storage.
+  syncPolicy:
+    syncOptions:
+      - FailOnSharedResource=true

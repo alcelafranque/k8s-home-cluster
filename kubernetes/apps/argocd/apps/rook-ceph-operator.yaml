@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rook-ceph-operator
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+# No cascading-deletion finalizer: this Application includes the storage CRDs.
+spec:
+  destination:
+    namespace: rook-ceph
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: kubernetes/apps/rook-ceph-operator
+    repoURL: https://github.com/alcelafranque/k8s-home-cluster.git
+    targetRevision: main
+  # Adoption is manual: compare CRDs, RBAC and deployments with the live cluster.
+  syncPolicy:
+    syncOptions:
+      - ServerSideApply=true
+      - FailOnSharedResource=true

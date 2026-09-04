@@ -1,0 +1,27 @@
+# Installed Rook image and chart version, from the September 2026 inventory.
+image:
+  repository: docker.io/rook/ceph
+  tag: v1.19.3
+
+# Preserve the observed CSI images instead of adopting the chart's newer defaults.
+# This does not freeze the bundled CSI CRDs/RBAC: review the live diff before sync.
+ceph-csi-operator:
+  controllerManager:
+    manager:
+      image:
+        repository: quay.io/cephcsi/ceph-csi-operator
+        tag: v0.4.1
+
+csi:
+  cephcsi:
+    tag: v3.15.0
+  registrar:
+    tag: v2.13.0
+  provisioner:
+    tag: v5.2.0
+  snapshotter:
+    tag: v8.2.1
+  attacher:
+    tag: v4.8.1
+  resizer:
+    tag: v1.13.2

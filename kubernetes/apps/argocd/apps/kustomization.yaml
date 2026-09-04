@@ -30,4 +30,6 @@ resources:
   - paperless-ngx.yaml
   - plik.yaml
   - rat-king.yaml
+  - rook-ceph-cluster.yaml
+  - rook-ceph-operator.yaml
   - syncthing-relay.yaml

@@ -1,0 +1,17 @@
+# Existing release: rook-ceph-cluster v1.19.2 in rook-ceph.
+operatorNamespace: rook-ceph
+clusterName: rook-ceph
+
+# Keep the running Ceph version explicit during GitOps adoption.
+cephImage:
+  repository: quay.io/ceph/ceph
+  tag: v19.2.3
+
+# The chart otherwise renders modules: null; an empty list has the same intent
+# and passes the repository's CRD schema validation.
+cephClusterSpec:
+  mgr:
+    modules: []
+
+# At this chart version, the default cluster, pools, filesystem, object store
+# and StorageClasses match the inventory. Review their rendered diff on upgrades.
