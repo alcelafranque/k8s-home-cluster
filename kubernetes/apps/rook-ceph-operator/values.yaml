@@ -10,7 +10,7 @@ ceph-csi-operator:
     manager:
       image:
         repository: quay.io/cephcsi/ceph-csi-operator
-        tag: v0.4.1
+        tag: v0.6.0
 
 csi:
   cephcsi:
