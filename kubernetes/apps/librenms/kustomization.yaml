@@ -13,3 +13,8 @@ helmCharts:
     releaseName: librenms
     namespace: librenms
     valuesFile: values.yaml
+
+# Chart 10 changed immutable workload selectors. Keep the installed identities
+# and matching Service selectors so the existing resources can be upgraded.
+patches:
+  - path: legacy-selectors.yaml

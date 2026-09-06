@@ -13,6 +13,8 @@ ceph-csi-operator:
         tag: v0.6.0
 
 csi:
+  # No CephFS volumes: retain only the RBD driver.
+  enableCephfsDriver: false
   cephcsi:
     tag: v3.15.0
   registrar:

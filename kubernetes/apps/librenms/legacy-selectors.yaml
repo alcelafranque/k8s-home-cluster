@@ -1,0 +1,74 @@
+# Preserve the pre-v10 selectors of the installed workloads. MatchLabels and
+# Service selectors must be replaced, not merged with the chart's component key.
+# Keep the new component label on Pods; only the legacy instance value changes.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: librenms-frontend
+spec:
+  selector:
+    matchLabels:
+      $patch: replace
+      app.kubernetes.io/name: librenms
+      app.kubernetes.io/instance: frontend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: frontend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: librenms-rrdcached
+spec:
+  selector:
+    matchLabels:
+      $patch: replace
+      app.kubernetes.io/name: librenms
+      app.kubernetes.io/instance: rrdcached
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: rrdcached
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: librenms-poller
+spec:
+  selector:
+    matchLabels:
+      $patch: replace
+      app.kubernetes.io/name: librenms
+      app.kubernetes.io/instance: librenms
+---
+# Services also need the legacy selectors to reach existing Pods during rollout.
+apiVersion: v1
+kind: Service
+metadata:
+  name: librenms
+spec:
+  selector:
+    $patch: replace
+    app.kubernetes.io/name: librenms
+    app.kubernetes.io/instance: frontend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: librenms-rrdcached
+spec:
+  selector:
+    $patch: replace
+    app.kubernetes.io/name: librenms
+    app.kubernetes.io/instance: rrdcached
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: librenms-rrdcached-headless
+spec:
+  selector:
+    $patch: replace
+    app.kubernetes.io/name: librenms
+    app.kubernetes.io/instance: rrdcached

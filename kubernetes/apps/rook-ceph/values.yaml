@@ -13,5 +13,9 @@ cephClusterSpec:
   mgr:
     modules: []
 
-# At this chart version, the default cluster, pools, filesystem, object store
-# and StorageClasses match the inventory. Review their rendered diff on upgrades.
+# RBD only. Omitting these lists would enable the chart's default CephFS and RGW.
+cephFileSystems: []
+cephObjectStores: []
+
+# Keep the chart's existing cluster and block pool defaults.
+# Review their rendered diff on upgrades.
