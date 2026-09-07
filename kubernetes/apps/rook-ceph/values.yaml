@@ -5,7 +5,7 @@ clusterName: rook-ceph
 # Keep the running Ceph version explicit during GitOps adoption.
 cephImage:
   repository: quay.io/ceph/ceph
-  tag: v19.2.3
+  tag: v19.2.6
 
 # The chart otherwise renders modules: null; an empty list has the same intent
 # and passes the repository's CRD schema validation.
