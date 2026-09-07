@@ -4,7 +4,7 @@ kind: Kustomization
 helmCharts:
   - name: rook-ceph-cluster
     repo: https://charts.rook.io/release
-    version: v1.19.2
+    version: v1.20.7
     releaseName: rook-ceph-cluster
     namespace: rook-ceph
     valuesFile: values.yaml
