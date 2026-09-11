@@ -10,7 +10,7 @@ ceph-csi-operator:
     manager:
       image:
         repository: quay.io/cephcsi/ceph-csi-operator
-        tag: v0.6.0
+        tag: v1.0.5
 
 csi:
   # No CephFS volumes: retain only the RBD driver.
