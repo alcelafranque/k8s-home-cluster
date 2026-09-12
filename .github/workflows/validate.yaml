@@ -4,7 +4,7 @@ on:
   pull_request:
     paths:
       - "kubernetes/**"
-      - "scripts/validate-manifests.sh"
+      - "scripts/**"
       - ".github/workflows/validate.yaml"
   push:
     branches: [main]
@@ -26,7 +26,7 @@ jobs:
       # renovate: datasource=github-releases depName=yannh/kubeconform
       KUBECONFORM_VERSION: v0.8.0
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Install kubeconform
         run: |
@@ -37,5 +37,11 @@ jobs:
           kustomize version
           helm version
 
+      - name: Install CRD schema reader
+        run: python3 -m pip install PyYAML==6.0.3
+
       - name: Validate manifests
         run: ./scripts/validate-manifests.sh
+
+      - name: Check Rook migration invariants
+        run: ./scripts/validate-rook-migration.sh

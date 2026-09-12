@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ceph-csi-drivers
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+# No cascading-deletion finalizer for storage drivers.
+spec:
+  destination:
+    namespace: rook-ceph
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: kubernetes/apps/ceph-csi-drivers
+    repoURL: https://github.com/alcelafranque/k8s-home-cluster.git
+    targetRevision: main
+  # Sync after the Rook operator upgrade; see the migration README.
+  syncPolicy:
+    syncOptions:
+      - ServerSideApply=true
+      - FailOnSharedResource=true

@@ -7,6 +7,7 @@ resources:
   - atuin.yaml
   - authentik.yaml
   - blocky.yaml
+  - ceph-csi-drivers.yaml
   - cert-manager.yaml
   - cillium.yaml
   - cnpg-system.yaml

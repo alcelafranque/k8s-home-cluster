@@ -1,4 +1,4 @@
-# Existing release: rook-ceph-cluster v1.19.2 in rook-ceph.
+# Ceph version intentionally unchanged during the Rook / CSI migration.
 operatorNamespace: rook-ceph
 clusterName: rook-ceph
 

@@ -1,0 +1,9 @@
+# Temporary bridge for the observed Rook 1.19.3 / CSI operator 0.6.0 cluster.
+# Apply only as a strategic patch to the existing Deployment, per README.
+# It deliberately does not replace the CRDs already updated by chart 1.20.7.
+spec:
+  template:
+    spec:
+      containers:
+        - name: rook-ceph-operator
+          image: docker.io/rook/ceph:v1.19.11

@@ -1,0 +1,15 @@
+# Optional second stage: select this path only after Rook / CSI are healthy.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../apps/rook-ceph
+patches:
+  - target:
+      group: ceph.rook.io
+      version: v1
+      kind: CephCluster
+      name: rook-ceph
+    patch: |-
+      - op: replace
+        path: /spec/cephVersion/image
+        value: quay.io/ceph/ceph:v19.2.6

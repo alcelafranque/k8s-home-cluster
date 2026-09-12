@@ -28,6 +28,24 @@ else
   done
 fi
 
+# Prefer the schemas shipped with the selected Rook operator chart. The public
+# catalog can lag behind new Ceph/CSI fields (for example CephX keyType).
+validation_tmp="$(mktemp -d)"
+trap 'rm -rf "$validation_tmp"' EXIT
+for app in "${apps[@]}"; do
+  case "$app" in
+    rook-ceph|rook-ceph-operator|ceph-csi-drivers)
+      kustomize build --enable-helm "${APPS_DIR}/rook-ceph-operator" > "${validation_tmp}/operator.yaml"
+      python3 "${ROOT}/scripts/crd-schemas.py" "${validation_tmp}/operator.yaml" "${validation_tmp}/schemas"
+      KUBECONFORM_ARGS=(
+        -schema-location "${validation_tmp}/schemas/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json"
+        "${KUBECONFORM_ARGS[@]}"
+      )
+      break
+      ;;
+  esac
+done
+
 failed=()
 for app in "${apps[@]}"; do
   dir="${APPS_DIR}/${app}"

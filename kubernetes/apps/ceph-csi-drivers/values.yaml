@@ -1,0 +1,96 @@
+# Rook-compatible defaults, with only the existing RBD driver enabled.
+# Connections and client profiles remain owned by Rook.
+cephConnections: []
+clientProfiles: []
+
+operatorConfig:
+  namespace: rook-ceph
+  driverSpecDefaults:
+    imageSet:
+      name: rook-csi-operator-image-set-configmap
+    clusterName: rook-ceph
+    nodePlugin:
+      # Preserve the priorities observed in the existing Driver.
+      priorityClassName: system-cluster-critical
+      kubeletDirPath: /var/lib/kubelet
+      enableSeLinuxHostMount: false
+    controllerPlugin:
+      priorityClassName: system-node-critical
+      replicas: 2
+      hostNetwork: true
+      deploymentStrategy:
+        type: Recreate
+
+drivers:
+  rbd:
+    enabled: true
+    # Must match the provisioner stored in existing PVs and StorageClasses.
+    name: rook-ceph.rbd.csi.ceph.com
+    clusterName: rook-ceph
+    imageSet:
+      name: rook-csi-operator-image-set-configmap
+    snapshotPolicy: volumeGroupSnapshot
+    controllerPlugin:
+      # Driver-level chart defaults otherwise override OperatorConfig defaults.
+      replicas: 2
+      hostNetwork: true
+      deploymentStrategy:
+        type: Recreate
+      resources:
+        attacher:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        omapGenerator:
+          limits:
+            memory: 1Gi
+          requests:
+            cpu: 250m
+            memory: 512Mi
+        plugin:
+          limits:
+            memory: 1Gi
+          requests:
+            memory: 512Mi
+        provisioner:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        resizer:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        snapshotter:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+    nodePlugin:
+      resources:
+        plugin:
+          limits:
+            memory: 1Gi
+          requests:
+            cpu: 250m
+            memory: 512Mi
+        registrar:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 50m
+            memory: 128Mi
+      updateStrategy:
+        type: RollingUpdate
+  cephfs:
+    enabled: false
+  nfs:
+    enabled: false
+  nvmeof:
+    enabled: false

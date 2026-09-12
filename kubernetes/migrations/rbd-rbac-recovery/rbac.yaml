@@ -1,0 +1,156 @@
+# Temporary RBD node recovery for the observed CSI operator v0.6.0.
+# Rules from ceph/ceph-csi-operator v0.6.0 operator chart, RBD nodeplugin templates.
+# Separate RBAC names avoid modifying bindings owned by either Helm chart.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: rbd-nodeplugin-sa
+  namespace: rook-ceph
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: rook-recovery-rbd-nodeplugin-cr
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+rules:
+- apiGroups:
+  - ''
+  resources:
+  - secrets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ''
+  resources:
+  - persistentvolumes
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - storage.k8s.io
+  resources:
+  - volumeattachments
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - ''
+  resources:
+  - configmaps
+  verbs:
+  - get
+- apiGroups:
+  - ''
+  resources:
+  - serviceaccounts
+  verbs:
+  - get
+- apiGroups:
+  - ''
+  resources:
+  - serviceaccounts/token
+  verbs:
+  - create
+- apiGroups:
+  - ''
+  resources:
+  - nodes
+  verbs:
+  - get
+- apiGroups:
+  - authentication.k8s.io
+  resources:
+  - tokenreviews
+  verbs:
+  - create
+- apiGroups:
+  - ''
+  resources:
+  - events
+  verbs:
+  - list
+  - watch
+  - create
+  - update
+  - patch
+- apiGroups:
+  - ''
+  resources:
+  - persistentvolumeclaims
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: rook-recovery-rbd-nodeplugin-crb
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: rook-recovery-rbd-nodeplugin-cr
+subjects:
+- kind: ServiceAccount
+  name: rbd-nodeplugin-sa
+  namespace: rook-ceph
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: rook-recovery-rbd-nodeplugin-r
+  namespace: rook-ceph
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+rules:
+- apiGroups:
+  - csiaddons.openshift.io
+  resources:
+  - csiaddonsnodes
+  verbs:
+  - get
+  - watch
+  - list
+  - create
+  - update
+  - delete
+- apiGroups:
+  - ''
+  resources:
+  - pods
+  verbs:
+  - get
+- apiGroups:
+  - apps
+  resources:
+  - replicasets
+  verbs:
+  - get
+- apiGroups:
+  - apps
+  resources:
+  - deployments/finalizers
+  - daemonsets/finalizers
+  verbs:
+  - update
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: rook-recovery-rbd-nodeplugin-rb
+  namespace: rook-ceph
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: rook-recovery-rbd-nodeplugin-r
+subjects:
+- kind: ServiceAccount
+  name: rbd-nodeplugin-sa
+  namespace: rook-ceph
