@@ -6,4 +6,4 @@ spec:
     spec:
       containers:
         - name: rook-ceph-operator
-          image: docker.io/rook/ceph:v1.19.11
+          image: docker.io/rook/ceph:v1.20.7
