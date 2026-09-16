@@ -85,7 +85,7 @@ if kubeconform -schema-location "$schema_location" "${validation_tmp}/invalid.ya
   exit 1
 fi
 # Distinguish a real validation failure from a missing schema or download error.
-if ! rg -q 'mon/count|/spec/mon/count' "${validation_tmp}/negative.log"; then
+if ! grep -Eq 'mon/count|/spec/mon/count' "${validation_tmp}/negative.log"; then
   cat "${validation_tmp}/negative.log" >&2
   exit 1
 fi
