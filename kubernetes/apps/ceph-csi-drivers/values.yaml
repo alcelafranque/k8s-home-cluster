@@ -29,7 +29,8 @@ drivers:
     clusterName: rook-ceph
     imageSet:
       name: rook-csi-operator-image-set-configmap
-    snapshotPolicy: volumeGroupSnapshot
+    # The group snapshot v1beta2 API required by the sidecar is unavailable.
+    snapshotPolicy: volumeSnapshot
     controllerPlugin:
       # Driver-level chart defaults otherwise override OperatorConfig defaults.
       replicas: 2

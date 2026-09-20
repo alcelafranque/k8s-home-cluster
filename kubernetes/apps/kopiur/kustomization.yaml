@@ -17,7 +17,8 @@ replacements:
           - spec.defaultDeletionPolicy
         options:
           create: true
-  - sourceValue: VolumeGroupSnapshot
+  # Use per-volume snapshots, matching the Ceph CSI snapshot policy.
+  - sourceValue: None
     targets:
       - select:
           group: kopiur.home-operations.com
