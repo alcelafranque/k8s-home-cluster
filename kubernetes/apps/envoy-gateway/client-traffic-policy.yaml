@@ -9,5 +9,5 @@ spec:
       kind: Gateway
       name: one-gateway-for-all
   proxyProtocol:
-    # IPv4 arrives through the proxy; IPv6 connects directly.
-    optional: true
+    # Every client connection is forwarded by HAProxy with PROXY protocol.
+    optional: false

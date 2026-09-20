@@ -8,7 +8,12 @@ helmCharts:
     version: v1.9.1
     releaseName: eg
     namespace: envoy-gateway-system
-    includeCRDs: true
+    # Gateway API CRDs are managed by the cluster's standard channel.
+    # Do not render Envoy Gateway's bundled experimental CRDs here.
+    includeCRDs: false
+    valuesInline:
+      crds:
+        enabled: false
 
 resources:
   - gateway-class.yaml
