@@ -25,7 +25,7 @@ spec:
 apiVersion: kopiur.home-operations.com/v1alpha1
 kind: ClusterRepository
 metadata:
-  name: dorado
+  name: dorado-backblaze
 spec:
   backend:
     s3:
