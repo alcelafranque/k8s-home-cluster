@@ -4,12 +4,12 @@ metadata:
   name: authentik-postgres
   namespace: authentik
 spec:
-  instances: 2
+  instances: 1
   # pinned to the same major as the bundled postgres (17.10) so the import pg_dump is compatible
   imageName: ghcr.io/cloudnative-pg/postgresql:17.10
   enableSuperuserAccess: false
   primaryUpdateStrategy: unsupervised
-  primaryUpdateMethod: switchover
+  primaryUpdateMethod: restart
   bootstrap:
     initdb:
       database: authentik
@@ -50,7 +50,7 @@ spec:
     barmanObjectStore:
       # same bucket and credentials as cluster-1; barman stores under <bucket>/authentik-postgres/
       destinationPath: "s3://backup-k8s-psql-default"
-      endpointURL: "https://s3-2-mdz.lac-coloc.fr"
+      endpointURL: "https://s3.eu-central-003.backblazeb2.com"
       s3Credentials:
         accessKeyId:
           name: s3-psql-default

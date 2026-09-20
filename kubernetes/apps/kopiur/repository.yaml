@@ -30,8 +30,8 @@ spec:
   backend:
     s3:
       bucket: backup-k8s-dorado-kopiur
-      endpoint: s3-vrc.lac-coloc.fr
-      region: us-east-1
+      endpoint: s3.eu-central-003.backblazeb2.com
+      region: eu-central-003
       auth:
         secretRef:
           name: kopiur-repository-credentials

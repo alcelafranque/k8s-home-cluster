@@ -4,7 +4,8 @@ common:
   storage:
     backend: s3
     s3:
-      endpoint: s3-age.lac-coloc.fr
+      endpoint: s3.eu-central-003.backblazeb2.com
+      region: eu-central-003
       access_key_id: "${AWS_ACCESS_KEY_ID}"
       secret_access_key: "${AWS_SECRET_ACCESS_KEY}"
 
@@ -43,6 +44,7 @@ store_gateway:
     replication_factor: 1
 
 blocks_storage:
+  storage_prefix: blocks
   bucket_store:
     sync_dir: /data/tsdb-sync
   tsdb:
@@ -50,15 +52,17 @@ blocks_storage:
     head_compaction_interval: 15m
     wal_replay_concurrency: 3
   s3:
-    bucket_name: k8s1-mimir-blocks
+    bucket_name: k8s1-mimir
 
 ruler_storage:
+  storage_prefix: ruler
   s3:
-    bucket_name: k8s1-mimir-ruler
+    bucket_name: k8s1-mimir
 
 alertmanager_storage:
+  storage_prefix: alertmanager
   s3:
-    bucket_name: k8s1-mimir-alertmanager
+    bucket_name: k8s1-mimir
 
 server:
   http_listen_port: 9009
