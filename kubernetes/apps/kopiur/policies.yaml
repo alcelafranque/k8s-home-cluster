@@ -305,6 +305,8 @@ spec:
     - pvc:
         name: paperless-ngx-data
     - pvc:
+        name: paperless-ngx-export
+    - pvc:
         name: paperless-ngx-media
   copyMethod: Snapshot
   volumeSnapshotClassName: csi-rbdplugin-snapclass
