@@ -32,6 +32,21 @@ fi
 # catalog can lag behind new Ceph/CSI fields (for example CephX keyType).
 validation_tmp="$(mktemp -d)"
 trap 'rm -rf "$validation_tmp"' EXIT
+
+# Envoy Gateway evolves faster than the public CRD catalog. Validate its
+# extension resources against the schemas shipped by the pinned controller.
+# renovate: datasource=github-releases depName=envoyproxy/gateway
+ENVOY_GATEWAY_VERSION="v1.9.1"
+curl -fsSL --retry 4 --retry-all-errors \
+  "https://github.com/envoyproxy/gateway/releases/download/${ENVOY_GATEWAY_VERSION}/envoy-gateway-crds.yaml" \
+  -o "${validation_tmp}/envoy-gateway-crds.yaml"
+python3 "${ROOT}/scripts/crd-schemas.py" \
+  "${validation_tmp}/envoy-gateway-crds.yaml" "${validation_tmp}/schemas"
+KUBECONFORM_ARGS=(
+  -schema-location "${validation_tmp}/schemas/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json"
+  "${KUBECONFORM_ARGS[@]}"
+)
+
 for app in "${apps[@]}"; do
   case "$app" in
     rook-ceph|rook-ceph-operator|ceph-csi-drivers)

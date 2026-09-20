@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bichon
+  labels:
+    app.kubernetes.io/name: bichon
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: bichon
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: bichon
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: bichon
+          image: rustmailer/bichon:2.0.3
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: BICHON_ROOT_DIR
+              value: /data
+            - name: BICHON_PUBLIC_URL
+              value: https://bichon.lafranque.net
+            - name: BICHON_CORS_ORIGINS
+              value: https://bichon.lafranque.net
+            - name: BICHON_HTTP_PORT
+              value: "15630"
+            - name: BICHON_BIND_IP
+              value: 0.0.0.0
+            - name: BICHON_LOG_TO_FILE
+              value: "false"
+          envFrom:
+            - secretRef:
+                name: bichon
+          ports:
+            - name: http
+              containerPort: 15630
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /api/status
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 6
+          livenessProbe:
+            httpGet:
+              path: /api/status
+              port: http
+            initialDelaySeconds: 20
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 2Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: bichon-data

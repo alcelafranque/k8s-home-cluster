@@ -125,9 +125,10 @@ def main():
                 checks = 0
                 for port, host in cases:
                     for ip in ['82.64.0.1', '8.8.8.8', '2001:67c:9ec::1', '2001:4860:4860::8888', '192.0.2.1']:
+                        restricted_hosts = {'argocd.lac-coloc.fr', 'bichon.lafranque.net'}
                         allowed = (host == 'jellyfin.lac-coloc.fr' or
-                                   (host == 'argocd.lac-coloc.fr' and ip == '2001:67c:9ec::1') or
-                                   (host not in {'jellyfin.lac-coloc.fr', 'argocd.lac-coloc.fr'} and ip in {'82.64.0.1', '2001:67c:9ec::1'}))
+                                   (host in restricted_hosts and ip == '2001:67c:9ec::1') or
+                                   (host not in restricted_hosts | {'jellyfin.lac-coloc.fr'} and ip in {'82.64.0.1', '2001:67c:9ec::1'}))
                         # A fake XFF and fake GeoIP country must never bypass a deny.
                         status = request(port, host, ip)
                         assert status in ({200, 301} if allowed else {403}), (host, ip, status, allowed)

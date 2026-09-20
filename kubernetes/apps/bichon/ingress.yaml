@@ -1,0 +1,63 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: bichon
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/icon: mdi-email-search
+    gethomepage.dev/name: Bichon
+    gethomepage.dev/description: Email archiver
+    gethomepage.dev/group: Tools
+spec:
+  parentRefs:
+    - name: one-gateway-for-all
+      namespace: envoy-gateway-system
+      sectionName: https
+  hostnames:
+    - bichon.lafranque.net
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: bichon
+          port: 15630
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: bichon-http-redirect
+spec:
+  parentRefs:
+    - name: one-gateway-for-all
+      namespace: envoy-gateway-system
+      sectionName: http
+  hostnames:
+    - bichon.lafranque.net
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: bichon-ip-allowlist
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: bichon
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: bichon-http-redirect
+  authorization:
+    defaultAction: Deny
+    rules:
+      - action: Allow
+        principal:
+          clientCIDRs:
+            - 2001:67c:9ec::/48
