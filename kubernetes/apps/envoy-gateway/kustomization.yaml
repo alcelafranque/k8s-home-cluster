@@ -2,6 +2,15 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+configMapGenerator:
+  - name: geoip-updater
+    namespace: envoy-gateway-system
+    files:
+      - update-geoip.py
+generatorOptions:
+  # Referenced by EnvoyProxy, outside Kustomize's built-in name references.
+  disableNameSuffixHash: true
+
 helmCharts:
   - name: gateway-helm
     repo: oci://docker.io/envoyproxy
@@ -19,5 +28,6 @@ resources:
   - gateway-class.yaml
   - one-gateway-for-all.yaml
   - client-traffic-policy.yaml
+  - security-policy.yaml
   - ipv6-listener-patch.yaml
   - manual/st1-age.yaml

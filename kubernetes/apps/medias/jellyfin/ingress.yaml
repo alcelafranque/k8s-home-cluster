@@ -54,3 +54,20 @@ spec:
       requestRedirect:
         scheme: https
         statusCode: 301
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: jellyfin-public
+  namespace: medias
+spec:
+  # Deliberately override the gateway's GeoIP policy, for HTTP and HTTPS.
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: jellyfin
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: jellyfin-http-redirect
+  authorization:
+    defaultAction: Allow

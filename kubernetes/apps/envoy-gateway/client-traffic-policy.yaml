@@ -11,3 +11,13 @@ spec:
   proxyProtocol:
     # Every client connection is forwarded by HAProxy with PROXY protocol.
     optional: false
+  clientIPDetection:
+    # PROXY protocol restores remoteAddress before HTTP/GeoIP processing.
+    # Never trust an X-Forwarded-For header supplied by an Internet client.
+    directSourceIP: {}
+  headers:
+    earlyRequestHeaders:
+      remove:
+        - X-Forwarded-For
+        # An unknown IP must not inherit a client-supplied GeoIP result.
+        - x-eg-internal-geoip-country

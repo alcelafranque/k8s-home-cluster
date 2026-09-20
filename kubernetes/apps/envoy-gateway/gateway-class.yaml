@@ -16,11 +16,64 @@ metadata:
   name: config
   namespace: envoy-gateway-system
 spec:
+  geoIP:
+    provider:
+      type: MaxMind
+      maxMind:
+        countryDbSource:
+          local:
+            path: /etc/envoy/geoip/country.mmdb
   provider:
     type: Kubernetes
     kubernetes:
       envoyDeployment:
         replicas: 2
+        pod:
+          securityContext:
+            fsGroup: 65532
+          volumes:
+            - name: geoip-db
+              emptyDir:
+                sizeLimit: 128Mi
+            - name: geoip-updater
+              configMap:
+                name: geoip-updater
+        container:
+          volumeMounts:
+            - name: geoip-db
+              mountPath: /etc/envoy/geoip
+              readOnly: true
+        initContainers:
+          # Native sidecar: Envoy starts only after the initial download succeeds.
+          - name: geoip-updater
+            image: python:3.13.7-alpine3.22
+            restartPolicy: Always
+            command: [python3, -u, /scripts/update-geoip.py]
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 65532
+              runAsGroup: 65532
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop: [ALL]
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 256Mi
+            startupProbe:
+              exec:
+                command: [python3, -c, "from pathlib import Path; exit(0 if Path('/etc/envoy/geoip/country.mmdb').is_file() else 1)"]
+              periodSeconds: 5
+              failureThreshold: 120
+            volumeMounts:
+              - name: geoip-db
+                mountPath: /etc/envoy/geoip
+              - name: geoip-updater
+                mountPath: /scripts
+                readOnly: true
       envoyService:
         type: LoadBalancer
         patch:

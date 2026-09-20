@@ -47,3 +47,25 @@ spec:
       requestRedirect:
         scheme: https
         statusCode: 301
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: argocd-ip-allowlist
+  namespace: argocd
+spec:
+  # Override the gateway's GeoIP policy with the explicit administration prefix.
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: argocd
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: argocd-http-redirect
+  authorization:
+    defaultAction: Deny
+    rules:
+      - action: Allow
+        principal:
+          clientCIDRs:
+            - 2001:67c:9ec::/48

@@ -54,6 +54,8 @@ metadata:
   name: node-red
   namespace: home
 spec:
+  # Preserve the gateway's France-only authorization alongside Basic Auth.
+  mergeType: JSONMerge
   targetRef:
     group: gateway.networking.k8s.io
     kind: HTTPRoute
