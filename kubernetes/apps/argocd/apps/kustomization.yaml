@@ -5,7 +5,6 @@ resources:
   - actual.yaml
   - argocd.yaml
   - atuin.yaml
-  - authentik.yaml
   - blocky.yaml
   - ceph-csi-drivers.yaml
   - cert-manager.yaml
