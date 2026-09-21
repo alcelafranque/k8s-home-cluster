@@ -46,7 +46,7 @@ spec:
         initContainers:
           # Native sidecar: Envoy starts only after the initial download succeeds.
           - name: geoip-updater
-            image: python:3.13.7-alpine3.22
+            image: python:3.14.5-alpine3.22
             restartPolicy: Always
             command: [python3, -u, /scripts/update-geoip.py]
             securityContext:
