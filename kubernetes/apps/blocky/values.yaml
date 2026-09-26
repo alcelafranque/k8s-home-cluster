@@ -90,18 +90,8 @@ config: |
     # definition of blacklist groups. Can be external link (http/https) or local file
     denylists:
       ads:
-        - https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
         - https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
         - http://sysctl.org/cameleon/hosts
-        - https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt
-        - "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/hosts/pro.txt"
-        - "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/hosts/tif.txt"
-        - "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/wildcard/anti.piracy-onlydomains.txt"
-        - "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/wildcard/popupads.txt"
-        - "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/hosts/native.amazon.txt"
-        - "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/hosts/native.apple.txt"
-        - "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/hosts/native.tiktok.txt"
-        - "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/hosts/native.winoffice.txt"
         - |
           # inline definition with YAML literal block scalar style
           # hosts format
@@ -118,7 +108,6 @@ config: |
           1337x.to
           rarbg.to
           torrent9.to
-          la-cale.space
           torr9.com
           annas-archive.li
           torr9.xyz
