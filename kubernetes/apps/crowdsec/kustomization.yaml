@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: crowdsec
+
+helmCharts:
+  - name: crowdsec
+    repo: https://crowdsecurity.github.io/helm-charts
+    version: 0.24.2
+    releaseName: crowdsec
+    namespace: crowdsec
+    valuesFile: values.yaml
+
+resources:
+  - secrets.yaml

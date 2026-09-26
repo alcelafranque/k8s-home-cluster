@@ -38,6 +38,11 @@ spec:
       login: true
       passwordSecret:
         name: jellystat-db-secret
+    - name: crowdsec
+      ensure: present
+      login: true
+      passwordSecret:
+        name: crowdsec-db-secret
   backup:
     barmanObjectStore:
       destinationPath: "s3://backup-k8s-psql-default"

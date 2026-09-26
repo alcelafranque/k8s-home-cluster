@@ -11,6 +11,7 @@ resources:
   - cert-manager.yaml
   - cillium.yaml
   - cnpg-system.yaml
+  - crowdsec.yaml
   - dragonfly.yaml
   - envoy-gateway-system.yaml
   - external-secrets.yaml
