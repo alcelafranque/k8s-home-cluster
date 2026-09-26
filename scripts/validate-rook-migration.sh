@@ -45,7 +45,7 @@ assert rbd['controllerPlugin']['replicas'] == 2
 assert rbd['controllerPlugin']['hostNetwork'] is True
 assert rbd['controllerPlugin']['deploymentStrategy']['type'] == 'Recreate'
 assert rbd['clusterName'] == 'rook-ceph'
-assert rbd['snapshotPolicy'] == 'volumeGroupSnapshot'
+assert rbd['snapshotPolicy'] == 'volumeSnapshot'
 config = one(drivers, 'OperatorConfig', 'ceph-csi-operator-config')['spec']['driverSpecDefaults']
 assert config['nodePlugin']['kubeletDirPath'] == '/var/lib/kubelet'
 # Referenced image set and service accounts must be supplied by these charts.
