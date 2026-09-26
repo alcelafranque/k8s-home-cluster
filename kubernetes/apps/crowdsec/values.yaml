@@ -1,0 +1,58 @@
+container_runtime: containerd
+
+config:
+  console.yaml: ""
+  config.yaml.local: |
+    api:
+      server:
+        auto_registration:
+          enabled: true
+          token: "${REGISTRATION_TOKEN}"
+          allowed_ranges:
+            - "100.64.0.0/16"
+            - "fd86:d8e7:4cef::/56"
+    db_config:
+      type: postgresql
+      user: crowdsec
+      password: ${DB_PASSWORD}
+      db_name: crowdsec
+      host: cluster-1-rw.cnpg-system.svc.cluster.local
+      port: 5432
+      sslmode: require
+
+lapi:
+  enabled: true
+  replicas: 1
+  env:
+    - name: DB_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: crowdsec-db-secret
+          key: password
+  ingress:
+    enabled: false
+  persistentVolume:
+    data:
+      enabled: false
+  service:
+    type: ClusterIP
+
+secrets:
+  externalSecret:
+    name: crowdsec-lapi-secrets
+    csLapiSecretKey: csLapiSecret
+    registrationTokenKey: registrationToken
+
+agent:
+  enabled: true
+  acquisition:
+    - namespace: envoy-gateway-system
+      podName: envoy-envoy-gateway-system-envoy-gateway-*
+      program: envoy
+      poll_without_inotify: true
+  env:
+    - name: COLLECTIONS
+      value: yanis-kouidri/envoy
+
+appsec:
+  enabled: false
