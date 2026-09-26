@@ -52,3 +52,14 @@ spec:
     name: cluster-1
   name: jellystat
   owner: jellystat
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: crowdsec
+  namespace: cnpg-system
+spec:
+  cluster:
+    name: cluster-1
+  name: crowdsec
+  owner: crowdsec
