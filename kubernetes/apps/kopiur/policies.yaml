@@ -397,3 +397,37 @@ spec:
     cron: "0 */2 * * *"
     runOnCreate: false
     concurrencyPolicy: Forbid
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: pvc-backups
+  namespace: bichon
+spec:
+  repository:
+    kind: ClusterRepository
+    name: dorado-backblaze
+  sources:
+    - pvc:
+        name: bichon-data
+  copyMethod: Snapshot
+  volumeSnapshotClassName: csi-rbdplugin-snapclass
+  retention:
+    keepLatest: 36
+    keepDaily: 30
+    keepWeekly: 8
+  credentialProjection:
+    enabled: true
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotSchedule
+metadata:
+  name: pvc-backups-every-2h
+  namespace: bichon
+spec:
+  policyRef:
+    name: pvc-backups
+  schedule:
+    cron: "0 */2 * * *"
+    runOnCreate: false
+    concurrencyPolicy: Forbid
