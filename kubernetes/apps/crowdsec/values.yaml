@@ -45,11 +45,14 @@ secrets:
 
 agent:
   enabled: true
-  acquisition:
-    - namespace: envoy-gateway-system
-      podName: envoy-envoy-gateway-system-envoy-gateway-*
-      program: envoy
+  additionalAcquisition:
+    - source: file
+      filenames:
+        - /var/log/containers/envoy-envoy-gateway-system-one-gateway-for-all-*_envoy-gateway-system_envoy-*.log
       poll_without_inotify: true
+      labels:
+        type: containerd
+        program: envoy
   env:
     - name: COLLECTIONS
       value: yanis-kouidri/envoy
