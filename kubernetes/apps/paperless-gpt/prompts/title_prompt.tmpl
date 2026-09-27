@@ -1,0 +1,11 @@
+Read the OCR content and suggest a concise, meaningful title for this document.
+Use the language of the document. Do not include an address.
+Include an invoice or order number when present and useful.
+For a payslip ("Bulletin de Paie"), include its month and year in the form "Bulletin de Paie MM/YY".
+Keep only the most important identifying details.
+Respond with the title alone, without JSON or commentary.
+
+<original_title>{{.Title}}</original_title>
+<content>
+{{.Content}}
+</content>

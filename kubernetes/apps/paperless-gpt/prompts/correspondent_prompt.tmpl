@@ -1,0 +1,17 @@
+Identify the sender or institution of this document. For an outgoing document, identify the recipient.
+Prefer a matching correspondent from the existing list.
+Use the shortest recognizable company name, without addresses or legal suffixes: "Amazon" rather than "Amazon EU SARL".
+Never choose a blacklisted correspondent.
+If no correspondent can be identified, respond with "Unknown".
+Respond with the correspondent name alone, without JSON or commentary.
+
+<available_correspondents>
+{{.AvailableCorrespondents | join ", "}}
+</available_correspondents>
+<blacklisted_correspondents>
+{{.BlackList | join ", "}}
+</blacklisted_correspondents>
+<title>{{.Title}}</title>
+<content>
+{{.Content}}
+</content>

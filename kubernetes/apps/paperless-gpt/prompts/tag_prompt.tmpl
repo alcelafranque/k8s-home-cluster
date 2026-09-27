@@ -1,0 +1,22 @@
+Select one to four relevant thematic tags for this document. Use fewer than four when sufficient.
+First inspect the existing tags. Avoid generic, overly specific, or redundant tags.
+Use the language of the document for any new tag.
+Do not suggest a tag that is a street address unless the address itself is directly relevant to the document.
+For documents from EDF or Alpiq about electricity, select or suggest the tag "électricité".
+{{- if .CreateNewTags}}
+Prefer tags in the available list. Suggest a new tag only when no suitable existing tag covers the topic.
+{{- else}}
+Only select tags from the available list.
+{{- end}}
+Respond with the selected tags alone as a comma-separated list, without JSON or commentary.
+
+<available_tags>
+{{.AvailableTags | join ", "}}
+</available_tags>
+<original_tags>
+{{.OriginalTags | join ", "}}
+</original_tags>
+<title>{{.Title}}</title>
+<content>
+{{.Content}}
+</content>

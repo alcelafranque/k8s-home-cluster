@@ -55,6 +55,7 @@ spec:
       - mealie
       - medias
       - monitoring
+      - paperless-gpt
       - paperless-ngx
       - rat-king
       - syncthing-relay

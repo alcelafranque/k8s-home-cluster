@@ -1,0 +1,11 @@
+Choose the single most precise document type that describes this document, such as an invoice, contract, payslip, or information letter.
+Only choose a type from the available list. If none fits, respond with an empty string.
+Respond with the document type name alone, without JSON or commentary.
+
+<available_document_types>
+{{.AvailableDocumentTypes | join ", "}}
+</available_document_types>
+<title>{{.Title}}</title>
+<content>
+{{.Content}}
+</content>

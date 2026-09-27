@@ -1,0 +1,65 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: paperless-gpt
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/icon: paperless-ngx.png
+    gethomepage.dev/name: Paperless GPT
+    gethomepage.dev/group: Tools
+    gethomepage.dev/description: AI document analysis
+spec:
+  parentRefs:
+    - name: one-gateway-for-all
+      namespace: envoy-gateway-system
+      sectionName: https
+  hostnames:
+    - paperless-gpt.lafranque.net
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: paperless-gpt
+          port: 8080
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: paperless-gpt-http-redirect
+spec:
+  parentRefs:
+    - name: one-gateway-for-all
+      namespace: envoy-gateway-system
+      sectionName: http
+  hostnames:
+    - paperless-gpt.lafranque.net
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: paperless-gpt
+spec:
+  # Replace the gateway's private-network exception: this route requires FR GeoIP.
+  mergeType: JSONMerge
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: paperless-gpt
+  basicAuth:
+    users:
+      name: paperless-gpt-auth
+  authorization:
+    defaultAction: Deny
+    rules:
+      - action: Allow
+        principal:
+          clientIPGeoLocations:
+            - country: FR

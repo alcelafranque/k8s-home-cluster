@@ -1,0 +1,7 @@
+Extract the document's own date. If there are several dates, select the most relevant document date rather than a due date or payment date.
+Respond with one valid date in YYYY-MM-DD format, without JSON or commentary.
+If no day is present, use the first day of the month. If no month is present, use January. If the document contains no date, use today's date: {{.Today}}.
+
+<content>
+{{.Content}}
+</content>

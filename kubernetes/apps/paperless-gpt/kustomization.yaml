@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: paperless-gpt
+
+resources:
+  - deployment.yaml
+  - ingress.yaml
+  - pvc.yaml
+  - secrets.yaml
+  - service.yaml
+
+configMapGenerator:
+  - name: paperless-gpt-prompt-seed
+    files:
+      - prompts/title_prompt.tmpl
+      - prompts/tag_prompt.tmpl
+      - prompts/correspondent_prompt.tmpl
+      - prompts/created_date_prompt.tmpl
+      - prompts/document_type_prompt.tmpl

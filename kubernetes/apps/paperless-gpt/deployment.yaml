@@ -1,0 +1,116 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paperless-gpt
+  labels:
+    app.kubernetes.io/name: paperless-gpt
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: paperless-gpt
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: paperless-gpt
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      initContainers:
+        - name: seed-prompts
+          image: busybox:1.37.0
+          command:
+            - /bin/sh
+            - -ec
+            - |
+              for source in /seed/*; do
+                target="/app/prompts/${source##*/}"
+                if [ ! -e "$target" ]; then
+                  cp "$source" "$target"
+                fi
+              done
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: prompt-seed
+              mountPath: /seed
+              readOnly: true
+            - name: prompts
+              mountPath: /app/prompts
+      containers:
+        - name: paperless-gpt
+          image: icereed/paperless-gpt:v0.28.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PAPERLESS_BASE_URL
+              value: https://paperless.lafranque.net
+            - name: PAPERLESS_PUBLIC_URL
+              value: https://paperless.lafranque.net
+            - name: LLM_LANGUAGE
+              value: French
+            - name: CREATE_NEW_TAGS
+              value: "true"
+            - name: TZ
+              value: Europe/Paris
+          envFrom:
+            - secretRef:
+                name: paperless-gpt-config
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              memory: 1Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: config
+              mountPath: /app/config
+            - name: db
+              mountPath: /app/db
+            - name: prompts
+              mountPath: /app/prompts
+      volumes:
+        - name: prompt-seed
+          configMap:
+            name: paperless-gpt-prompt-seed
+        - name: config
+          persistentVolumeClaim:
+            claimName: paperless-gpt-config
+        - name: db
+          persistentVolumeClaim:
+            claimName: paperless-gpt-db
+        - name: prompts
+          persistentVolumeClaim:
+            claimName: paperless-gpt-prompts
