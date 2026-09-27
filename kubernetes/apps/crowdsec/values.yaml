@@ -29,6 +29,13 @@ lapi:
         secretKeyRef:
           name: crowdsec-db-secret
           key: password
+    - name: ENROLL_KEY
+      valueFrom:
+        secretKeyRef:
+          name: crowdsec-lapi-secrets
+          key: enrollKey
+    - name: ENROLL_INSTANCE_NAME
+      value: k8s-home-cluster
   ingress:
     enabled: false
   persistentVolume:
