@@ -15,8 +15,7 @@
   "reviewersFromCodeOwners": true,
   "ignorePaths": [
     "**/*.sops.*",
-    "docker/**/compose.yaml",
-    "kubernetes/migrations/**"
+    "docker/**/compose.yaml"
   ],
   "helm-values": {
     "managerFilePatterns": [
