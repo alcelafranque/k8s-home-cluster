@@ -38,10 +38,28 @@ My cluster runs on a mix of ARM and x86 hardware, optimized for low power consum
 
 Everything is GitOps-managed by ArgoCD from `main`. To rebuild from scratch:
 
-1. **Talos**: `cd talos && task config CLUSTER=dorado` then apply the generated configs (`talosctl apply-config`, `talosctl bootstrap`).
-2. **CNI**: the cluster boots without CNI (`cni: none`); sync the Cilium app manually the first time if needed.
-3. **ArgoCD**: `kubectl apply -k kubernetes/apps/argocd` — installs ArgoCD and every `Application`, including ArgoCD itself (self-managed afterwards).
-4. **Secrets**: create the 1Password operator credentials secret by hand (the only secret not in git), then the `1password` app syncs and every `OnePasswordItem` resolves.
+### Prerequisites (outside the cluster)
+
+- The **SOPS PGP private key** that decrypts `talos/dorado/talsecret.sops.yaml`.
+- **OpenBao** reachable at `https://openbao.lac-coloc.fr` (it is not hosted in this cluster), with the KV v2 data under `kv/k8s/dorado/applications/*`.
+- The **AppRole `secret-id`** for the role referenced in `kubernetes/apps/external-secrets/openbao-store.yaml`.
+- The **external HAProxy** behind the Kubernetes API endpoint `10.243.2.55:6443`, load-balancing to the three control planes (it is not managed in this repo).
+
+### Steps
+
+1. **Talos**: `cd talos && task config CLUSTER=dorado`, then apply the generated configs (`talosctl apply-config`) and run `talosctl bootstrap` once on a single control plane.
+2. **CNI**: the cluster boots without CNI or kube-proxy (`cni: none`, `proxy.disabled: true`). The Cilium chart itself is **not** managed in this repo (only its BGP / LB pool config is), so install Cilium manually with Helm (`kubeProxyReplacement=true`, BGP control plane enabled) before going further.
+3. **ArgoCD**: `kubectl apply --server-side -k kubernetes/apps/argocd`. Server-side apply is required because the ArgoCD CRDs are too large for client-side apply. This installs ArgoCD and every `Application`, including ArgoCD itself (self-managed afterwards).
+4. **Secrets**: create the only secret that is not in git, the OpenBao AppRole secret used by External Secrets:
+
+   ```bash
+   kubectl create namespace external-secrets --dry-run=client -o yaml | kubectl apply -f -
+   kubectl -n external-secrets create secret generic openbao-approle \
+     --from-literal=secret-id='<approle secret-id>'
+   ```
+
+   The `openbao` `ClusterSecretStore` then becomes ready and every `ExternalSecret` resolves.
+5. **Storage and data**: `rook-ceph-operator`, `rook-ceph-cluster` and `ceph-csi-drivers` are synced **manually** (see `kubernetes/migrations/README.md`). PVC data is restored from Kopiur snapshots and PostgreSQL from the CNPG barman backups on Backblaze B2.
 
 ## 📚 Learning Journey
 
