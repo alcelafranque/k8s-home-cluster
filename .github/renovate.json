@@ -58,6 +58,12 @@
       "matchPackageNames": ["rook-ceph", "rook-ceph-cluster", "ceph-csi-drivers"],
       "groupName": "rook-ceph",
       "automerge": false
+    },
+    {
+      "description": "Talos and Kubernetes versions must stay compatible and are rolled out by hand with talosctl",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/siderolabs/installer", "ghcr.io/siderolabs/kubelet"],
+      "automerge": false
     }
   ]
 }
