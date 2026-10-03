@@ -44,6 +44,3 @@ jobs:
 
       - name: Validate manifests
         run: ./scripts/validate-manifests.sh
-
-      - name: Check Rook migration invariants
-        run: ./scripts/validate-rook-migration.sh

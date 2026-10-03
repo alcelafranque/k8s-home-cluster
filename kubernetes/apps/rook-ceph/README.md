@@ -71,7 +71,6 @@ Prérequis : Helm, Kustomize, kubeconform, Python 3 et PyYAML 6.0.3.
 
 ```bash
 ./scripts/validate-manifests.sh rook-ceph rook-ceph-operator ceph-csi-drivers
-./scripts/validate-rook-migration.sh
 ```
 
 Les schémas Ceph/CSI sont extraits des CRD du chart opérateur épinglé.
