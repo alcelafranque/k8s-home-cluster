@@ -15,7 +15,8 @@
   "reviewersFromCodeOwners": true,
   "ignorePaths": [
     "**/*.sops.*",
-    "docker/**/compose.yaml"
+    "docker/**/compose.yaml",
+    "kubernetes/migrations/**"
   ],
   "helm-values": {
     "managerFilePatterns": [
@@ -40,6 +41,23 @@
         "#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(\\s+versioning=(?<versioning>\\S+))?\\s*\\n[^:\\n]+:\\s*[\"']?(?<currentValue>[^\"'\\s]+)[\"']?"
       ],
       "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}docker{{/if}}"
+    }
+  ],
+  "automerge": true,
+  "automergeType": "pr",
+  "packageRules": [
+    {
+      "description": "Ceph data plane: the version is pinned and upgraded by hand during a Ceph migration",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["quay.io/ceph/ceph"],
+      "enabled": false
+    },
+    {
+      "description": "Rook and Ceph CSI charts move together and are always reviewed by hand",
+      "matchDatasources": ["helm"],
+      "matchPackageNames": ["rook-ceph", "rook-ceph-cluster", "ceph-csi-drivers"],
+      "groupName": "rook-ceph",
+      "automerge": false
     }
   ]
 }
