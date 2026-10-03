@@ -1,24 +1,19 @@
 # Cluster Rook-Ceph
 
-Le chart `rook-ceph-cluster` est fixé à **v1.20.7**. Il conserve le CephCluster
+Le chart `rook-ceph-cluster` est épinglé. Il conserve le CephCluster
 `rook-ceph`, le CephBlockPool `ceph-blockpool` et la StorageClass par défaut
 `ceph-block`. CephFS et RGW sont explicitement désactivés par des listes vides.
 Le cluster et le pool bloc gardent leurs paramètres de réplication et de disques
 (`useAllNodes: true`, `useAllDevices: true`).
 
-**Ceph reste en v19.2.3 pendant la migration Rook/CSI.** La mise à jour de sécurité
-v19.2.6 est préparée dans une étape distincte. Le chart 1.20 ajoute les ressources
-du job `cmd-reporter` et conserve les clés CSI de type `aes` pour les clients
-noyau existants.
+**La version de Ceph est épinglée** dans `values.yaml` (`cephImage.tag`) et ne
+suit pas le chart, dont la valeur par défaut peut être une version majeure plus
+récente. Elle se change à la main, indépendamment des mises à jour de Rook.
+Le chart conserve les clés CSI de type `aes` pour les clients noyau existants.
 
 L’Application est manuelle, avec `Prune=false,Delete=false` et sans finalizer de
 suppression en cascade. Ne pas désinstaller les anciennes releases Helm après
 adoption par Argo CD. Ne pas utiliser Force/Replace ni forcer les finalizers.
-
-Voir [la procédure de migration](../../migrations/README.md) pour le palier
-Rook 1.19.11, l’ordre des trois Applications et l’étape Ceph 19.2.6. L’état vivant
-confirmé avant migration était Rook 1.19.3 / CSI operator 0.6.0 / HEALTH_WARN ;
-le rendu valide ne prouve pas que ce warning est résolu.
 
 ## Retrait de CephFS et du stockage objet
 
