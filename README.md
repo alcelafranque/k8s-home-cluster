@@ -43,7 +43,7 @@ Everything is GitOps-managed by ArgoCD from `main`. To rebuild from scratch:
 - The **SOPS PGP private key** that decrypts `talos/dorado/talsecret.sops.yaml`.
 - **OpenBao** reachable at `https://openbao.lac-coloc.fr` (it is not hosted in this cluster), with the KV v2 data under `kv/k8s/dorado/applications/*`.
 - The **AppRole `secret-id`** for the role referenced in `kubernetes/apps/external-secrets/openbao-store.yaml`.
-- The Kubernetes API endpoint `10.243.2.55:6443` must route to the control planes.
+- The **external HAProxy** behind the Kubernetes API endpoint `10.243.2.55:6443`, load-balancing to the three control planes (it is not managed in this repo).
 
 ### Steps
 
