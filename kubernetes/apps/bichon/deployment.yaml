@@ -27,7 +27,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: bichon
-          image: rustmailer/bichon:2.0.3
+          image: rustmailer/bichon:2.1.0
           imagePullPolicy: IfNotPresent
           env:
             - name: BICHON_ROOT_DIR
