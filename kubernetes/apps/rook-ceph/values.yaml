@@ -1,8 +1,8 @@
-# Ceph version intentionally unchanged during the Rook / CSI migration.
 operatorNamespace: rook-ceph
 clusterName: rook-ceph
 
-# Keep the running Ceph version explicit during GitOps adoption.
+# Ceph version is pinned on purpose: it must not follow the chart default
+# and is upgraded by hand.
 cephImage:
   repository: quay.io/ceph/ceph
   tag: v19.2.6

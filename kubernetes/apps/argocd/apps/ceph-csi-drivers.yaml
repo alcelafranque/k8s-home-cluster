@@ -14,7 +14,7 @@ spec:
     path: kubernetes/apps/ceph-csi-drivers
     repoURL: https://github.com/alcelafranque/k8s-home-cluster.git
     targetRevision: main
-  # Sync after the Rook operator upgrade; see the migration README.
+  # Sync after the Rook operator, before the Rook cluster.
   syncPolicy:
     syncOptions:
       - ServerSideApply=true

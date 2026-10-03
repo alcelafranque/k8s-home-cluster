@@ -1,4 +1,4 @@
-# Rook and CSI images follow the pinned rook-ceph chart (v1.20.7).
+# Rook and CSI images follow the pinned rook-ceph chart version.
 # Driver configuration moved to ../ceph-csi-drivers with Rook 1.20.
 # Keep Ceph data-plane upgrades separate, in ../rook-ceph/values.yaml.
 {}

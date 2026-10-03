@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Integration checks for storage identity and the separately staged Ceph upgrade.
+# Integration checks for Rook / Ceph CSI storage identity and Argo CD protections.
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 validation_tmp="$(mktemp -d)"
@@ -7,7 +7,6 @@ trap 'rm -rf "$validation_tmp"' EXIT
 for app in rook-ceph-operator ceph-csi-drivers rook-ceph; do
   kustomize build --enable-helm "${ROOT}/kubernetes/apps/${app}" > "${validation_tmp}/${app}.yaml"
 done
-kustomize build --enable-helm "${ROOT}/kubernetes/migrations/ceph-19.2.6" > "${validation_tmp}/ceph-update.yaml"
 kustomize build "${ROOT}/kubernetes/apps/argocd/apps" > "${validation_tmp}/applications.yaml"
 python3 "${ROOT}/scripts/crd-schemas.py" "${validation_tmp}/rook-ceph-operator.yaml" "${validation_tmp}/schemas"
 python3 - "$validation_tmp" <<'PY'
@@ -64,22 +63,17 @@ for name in ('rook-ceph-operator', 'ceph-csi-drivers', 'rook-ceph-cluster'):
     assert 'FailOnSharedResource=true' in app['spec']['syncPolicy']['syncOptions']
 for obj in operator + drivers + cluster:
     assert obj['metadata']['annotations']['argocd.argoproj.io/sync-options'] == 'Prune=false,Delete=false'
-# The second stage must alter only the Ceph image.
-expected = copy.deepcopy(cluster)
-ceph = one(expected, 'CephCluster', 'rook-ceph')
-# Works both before and after applying the separate 19.2.6 update.
+ceph = one(cluster, 'CephCluster', 'rook-ceph')
 assert ceph['spec']['cephVersion']['image'].startswith('quay.io/ceph/ceph:')
 assert ceph['spec']['security']['cephx']['csi']['keyType'] == 'aes'
-ceph['spec']['cephVersion']['image'] = 'quay.io/ceph/ceph:v19.2.6'
-assert expected == read('ceph-update.yaml')
-# A malformed known field must still be rejected by the new schema path.
+# A malformed known field must still be rejected by the bundled schema.
 invalid = copy.deepcopy(ceph)
 invalid['spec']['mon']['count'] = 'invalid-count'
 (root / 'invalid.yaml').write_text(yaml.safe_dump(invalid))
-print('RBD identity, dependencies, manual sync and isolated Ceph stage: OK')
+print('RBD identity, dependencies and manual sync: OK')
 PY
 schema_location="${validation_tmp}/schemas/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json"
-kubeconform -schema-location "$schema_location" -schema-location default -summary "${validation_tmp}/ceph-update.yaml"
+kubeconform -schema-location "$schema_location" -schema-location default -summary "${validation_tmp}/rook-ceph.yaml"
 if kubeconform -schema-location "$schema_location" "${validation_tmp}/invalid.yaml" > "${validation_tmp}/negative.log" 2>&1; then
   echo 'ERROR: invalid CephCluster was accepted' >&2
   exit 1

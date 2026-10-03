@@ -59,7 +59,7 @@ Everything is GitOps-managed by ArgoCD from `main`. To rebuild from scratch:
    ```
 
    The `openbao` `ClusterSecretStore` then becomes ready and every `ExternalSecret` resolves.
-5. **Storage and data**: `rook-ceph-operator`, `rook-ceph-cluster` and `ceph-csi-drivers` are synced **manually** (see `kubernetes/migrations/README.md`). PVC data is restored from Kopiur snapshots and PostgreSQL from the CNPG barman backups on Backblaze B2.
+5. **Storage and data**: `rook-ceph-operator`, `rook-ceph-cluster` and `ceph-csi-drivers` are synced **manually**, in this order (see their READMEs). PVC data is restored from Kopiur snapshots and PostgreSQL from the CNPG barman backups on Backblaze B2.
 
 ## 📚 Learning Journey
 
