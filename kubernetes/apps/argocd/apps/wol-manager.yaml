@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wol-manager
+spec:
+  destination:
+    namespace: wol-manager
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: kubernetes/apps/wol-manager
+    repoURL: https://github.com/alcelafranque/k8s-home-cluster.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
