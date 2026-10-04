@@ -36,3 +36,4 @@ resources:
   - rook-ceph-cluster.yaml
   - rook-ceph-operator.yaml
   - syncthing-relay.yaml
+  - wol-manager.yaml

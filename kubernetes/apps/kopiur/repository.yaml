@@ -59,6 +59,7 @@ spec:
       - paperless-ngx
       - rat-king
       - syncthing-relay
+      - wol-manager
   credentialProjection:
     allowed: true
   identityDefaults:
