@@ -51,7 +51,7 @@ spec:
               mountPath: /app/prompts
       containers:
         - name: paperless-gpt
-          image: icereed/paperless-gpt:v0.28.0
+          image: icereed/paperless-gpt:v0.29.0
           imagePullPolicy: IfNotPresent
           env:
             - name: PAPERLESS_BASE_URL
