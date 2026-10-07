@@ -38,6 +38,11 @@ spec:
           env:
             - name: DATABASE_PATH
               value: /data/devices.db
+            # Zigbee2MQTT broker; MQTT_USERNAME and MQTT_PASSWORD come from the secret.
+            - name: MQTT_HOST
+              value: 10.243.2.10
+            - name: MQTT_PORT
+              value: "1883"
           resources:
             requests:
               cpu: 10m
