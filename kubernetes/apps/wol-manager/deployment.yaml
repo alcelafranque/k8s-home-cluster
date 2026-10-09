@@ -30,7 +30,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: wol-manager
-          image: ghcr.io/littleengineertt/wol_manager:latest@sha256:5dcf536cc2781f83e5f0a901a275f6fb4ffc467fd6f98db0dcdf0555893140fb
+          image: ghcr.io/littleengineertt/wol_manager:latest@sha256:4657b7be1f208db99b98d21a5e9eb343fd68cc88f088b4f0f039cddb35ba15d8
           imagePullPolicy: IfNotPresent
           envFrom:
             - secretRef:
