@@ -4,9 +4,9 @@ namespace: lsoc
 
 images:
   - name: ghcr.io/alcelafranque/lsoc-backend
-    newTag: __TAG__
+    newTag: sha-e9835898391f2ce4b95a44ce685aaf4015764afa
   - name: ghcr.io/alcelafranque/lsoc-frontend
-    newTag: __TAG__
+    newTag: sha-e9835898391f2ce4b95a44ce685aaf4015764afa
 
 configMapGenerator:
   - name: lsoc-config
