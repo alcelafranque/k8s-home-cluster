@@ -21,19 +21,7 @@ spec:
             - lac-coloc.fr
             - as62430.net
             - gc-photographie.fr
-      # lsoc-volley.fr stays on Infomaniak DNS. Its challenge record is
-      # delegated with a CNAME:
-      #   _acme-challenge.www.lsoc-volley.fr CNAME _acme-challenge.lsoc-volley.lac-coloc.fr
-      # and cert-manager follows it to write the TXT record in Cloudflare.
-      - dns01:
-          cnameStrategy: Follow
-          cloudflare:
-            apiTokenSecretRef:
-              name: cloudflare
-              key: api-token
-        selector:
-          dnsNames:
-            - www.lsoc-volley.fr
+            - lsoc-volley.fr
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
