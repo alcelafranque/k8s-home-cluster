@@ -12,8 +12,8 @@ configMapGenerator:
   - name: lsoc-config
     literals:
       - LSOC_ENVIRONMENT=production
-      - LSOC_FRONTEND_URL=https://lsoc-volley.fr
-      - LSOC_CORS_ORIGINS=["https://lsoc-volley.fr"]
+      - LSOC_FRONTEND_URL=https://www.lsoc-volley.fr
+      - LSOC_CORS_ORIGINS=["https://www.lsoc-volley.fr"]
       - LSOC_COOKIE_SECURE=true
       # PDF des licences : bucket Backblaze B2 public, adressé en style chemin.
       - LSOC_S3_BUCKET=agc-management
