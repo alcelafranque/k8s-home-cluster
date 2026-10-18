@@ -33,7 +33,27 @@ spec:
     - name: lsoc-frontend
       port: 80
 ---
-# HTTP -> HTTPS (301)
+# lsoc-volley.fr -> www.lsoc-volley.fr (301)
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: lsoc-apex-redirect
+  namespace: lsoc
+spec:
+  parentRefs:
+  - name: one-gateway-for-all
+    namespace: envoy-gateway-system
+    sectionName: https
+  hostnames:
+  - lsoc-volley.fr
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        hostname: www.lsoc-volley.fr
+        statusCode: 301
+---
+# HTTP -> HTTPS (301), the apex goes straight to www
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
@@ -45,10 +65,12 @@ spec:
     namespace: envoy-gateway-system
     sectionName: http
   hostnames:
+  - lsoc-volley.fr
   - www.lsoc-volley.fr
   rules:
   - filters:
     - type: RequestRedirect
       requestRedirect:
         scheme: https
+        hostname: www.lsoc-volley.fr
         statusCode: 301
