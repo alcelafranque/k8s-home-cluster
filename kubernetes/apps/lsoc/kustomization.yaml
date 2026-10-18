@@ -1,0 +1,33 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: lsoc
+
+images:
+  - name: ghcr.io/alcelafranque/lsoc-backend
+    newTag: __TAG__
+  - name: ghcr.io/alcelafranque/lsoc-frontend
+    newTag: __TAG__
+
+configMapGenerator:
+  - name: lsoc-config
+    literals:
+      - LSOC_ENVIRONMENT=production
+      - LSOC_FRONTEND_URL=https://lsoc.lac-coloc.fr
+      - LSOC_CORS_ORIGINS=["https://lsoc.lac-coloc.fr"]
+      - LSOC_COOKIE_SECURE=true
+      # PDF des licences : bucket Backblaze B2 public, adressé en style chemin.
+      - LSOC_S3_BUCKET=agc-management
+      - LSOC_S3_REGION=eu-central-003
+      - LSOC_S3_ENDPOINT_URL=https://s3.eu-central-003.backblazeb2.com
+      - LSOC_S3_PUBLIC_URL=https://s3.eu-central-003.backblazeb2.com/agc-management
+      # Only Envoy reaches the API (see network-policy.yaml) and it strips any
+      # client-supplied X-Forwarded-For: the header holds the real client IP,
+      # which the login rate limit relies on.
+      - FORWARDED_ALLOW_IPS=*
+
+resources:
+  - secret.yaml
+  - backend.yaml
+  - frontend.yaml
+  - network-policy.yaml
+  - ingress.yaml

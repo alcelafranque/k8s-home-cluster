@@ -1,0 +1,19 @@
+# The API trusts X-Forwarded-For (FORWARDED_ALLOW_IPS=*): only Envoy may reach it.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: lsoc-api-from-gateway
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: lsoc-api
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: envoy-gateway-system
+      ports:
+        - protocol: TCP
+          port: 8000
