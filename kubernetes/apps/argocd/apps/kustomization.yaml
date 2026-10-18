@@ -23,6 +23,7 @@ resources:
   - kopiur.yaml
   - librenms.yaml
   - loki.yaml
+  - lsoc.yaml
   - mealie.yaml
   - medias.yaml
   - metric-server.yaml

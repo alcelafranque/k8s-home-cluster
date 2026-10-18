@@ -1,0 +1,188 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lsoc-api
+  labels:
+    app.kubernetes.io/name: lsoc-api
+    app.kubernetes.io/part-of: lsoc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: lsoc-api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: lsoc-api
+        app.kubernetes.io/part-of: lsoc
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      initContainers:
+        # Migrations hold a PostgreSQL advisory lock: concurrent pods
+        # (rollout, worker restart) wait for each other instead of clashing.
+        - name: migrate
+          image: ghcr.io/alcelafranque/lsoc-backend
+          imagePullPolicy: IfNotPresent
+          command: ["alembic", "upgrade", "head"]
+          envFrom:
+            - configMapRef:
+                name: lsoc-config
+            - secretRef:
+                name: lsoc
+          resources:
+            requests:
+              cpu: 20m
+              memory: 128Mi
+            limits:
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+      containers:
+        - name: api
+          image: ghcr.io/alcelafranque/lsoc-backend
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: lsoc-config
+            - secretRef:
+                name: lsoc
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 50m
+              memory: 192Mi
+            limits:
+              memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lsoc-worker
+  labels:
+    app.kubernetes.io/name: lsoc-worker
+    app.kubernetes.io/part-of: lsoc
+spec:
+  replicas: 1
+  strategy:
+    # Jobs are locked in PostgreSQL, but one worker is enough.
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: lsoc-worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: lsoc-worker
+        app.kubernetes.io/part-of: lsoc
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      initContainers:
+        - name: migrate
+          image: ghcr.io/alcelafranque/lsoc-backend
+          imagePullPolicy: IfNotPresent
+          command: ["alembic", "upgrade", "head"]
+          envFrom:
+            - configMapRef:
+                name: lsoc-config
+            - secretRef:
+                name: lsoc
+          resources:
+            requests:
+              cpu: 20m
+              memory: 128Mi
+            limits:
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+      containers:
+        - name: worker
+          image: ghcr.io/alcelafranque/lsoc-backend
+          imagePullPolicy: IfNotPresent
+          command: ["lsoc-worker"]
+          envFrom:
+            - configMapRef:
+                name: lsoc-config
+            - secretRef:
+                name: lsoc
+          resources:
+            requests:
+              cpu: 20m
+              memory: 128Mi
+            limits:
+              memory: 384Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lsoc-api
+  labels:
+    app.kubernetes.io/name: lsoc-api
+spec:
+  selector:
+    app.kubernetes.io/name: lsoc-api
+  ports:
+    - name: http
+      port: 8000
+      targetPort: http
