@@ -21,6 +21,7 @@ spec:
             - lac-coloc.fr
             - as62430.net
             - gc-photographie.fr
+            - lsoc-volley.fr
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
