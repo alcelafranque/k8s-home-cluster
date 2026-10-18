@@ -16,21 +16,8 @@ spec:
   - "*.lafranque.fr"
   - "*.as62430.net"
   - "*.gc-photographie.fr"
----
-# Separate certificate so a validation problem on this zone cannot block
-# renewal of the shared wildcard. Envoy picks the certificate by SNI.
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: lsoc-volley-cert
-  namespace: envoy-gateway-system
-spec:
-  secretName: lsoc-volley-tls-cert
-  issuerRef:
-    name: letsencrypt
-    kind: ClusterIssuer
-  dnsNames:
-  - www.lsoc-volley.fr
+  - "*.lsoc-volley.fr"
+  # The wildcard does not match the apex, which redirects to www.
   - lsoc-volley.fr
 ---
 apiVersion: gateway.networking.k8s.io/v1
@@ -58,7 +45,4 @@ spec:
       certificateRefs:
       - kind: Secret
         name: wildcard-tls-cert
-        namespace: envoy-gateway-system
-      - kind: Secret
-        name: lsoc-volley-tls-cert
         namespace: envoy-gateway-system
