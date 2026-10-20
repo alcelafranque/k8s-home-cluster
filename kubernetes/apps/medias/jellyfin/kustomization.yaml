@@ -12,7 +12,7 @@ helmCharts:
     namespace: medias
     releaseName: jellyfin
     valuesFile: values.yaml
-    version: 3.2.0
+    version: 3.4.0
 
 patches:
   - path: cache-emptydir-patch.yaml
