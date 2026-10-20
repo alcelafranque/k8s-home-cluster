@@ -4,9 +4,9 @@ namespace: lsoc
 
 images:
   - name: ghcr.io/littleengineertt/lsoc-backend
-    newTag: sha-6af20a370d4d0c71a0bf3fae85ad73e9e560c920
+    newTag: 0.0.1
   - name: ghcr.io/littleengineertt/lsoc-frontend
-    newTag: sha-6af20a370d4d0c71a0bf3fae85ad73e9e560c920
+    newTag: 0.0.1
 
 configMapGenerator:
   - name: lsoc-config
