@@ -9,7 +9,7 @@ resources:
 helmCharts:
   - name: plik
     repo: https://root-gg.github.io/plik
-    version: 1.4.2
+    version: 1.4.3
     releaseName: plik
     namespace: plik
     valuesFile: values.yaml
