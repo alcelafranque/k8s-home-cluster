@@ -14,7 +14,7 @@ generatorOptions:
 helmCharts:
   - name: gateway-helm
     repo: oci://docker.io/envoyproxy
-    version: 1.9.2
+    version: 1.9.3
     releaseName: eg
     namespace: envoy-gateway-system
     # Gateway API CRDs are managed by the cluster's standard channel.
