@@ -6,7 +6,7 @@ images:
   - name: ghcr.io/littleengineertt/lsoc-backend
     newTag: 0.4.0
   - name: ghcr.io/littleengineertt/lsoc-frontend
-    newTag: 0.4.0
+    newTag: 0.4.1
 
 configMapGenerator:
   - name: lsoc-config
