@@ -1,0 +1,37 @@
+---
+# Ingest queue shared by Calibre-Web and Shelfmark. It sits on the existing
+# NFS export so both pods can mount it read-write from any node; the directory
+# /mnt/data-hdd/medias/calibre-ingest must exist on the server.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-calibre-ingest-pv
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-storage
+  nfs:
+    server: 10.243.2.11
+    path: /mnt/data-hdd/medias/calibre-ingest
+  mountOptions:
+    - nfsvers=4
+    - rw
+    - noatime
+    - timeo=300
+    - nolock
+    - hard
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: calibre-ingest
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nfs-storage
+  resources:
+    requests:
+      storage: 100Gi

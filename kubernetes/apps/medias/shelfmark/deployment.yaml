@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shelfmark
+  labels:
+    app.kubernetes.io/name: shelfmark
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  strategy:
+    # The application stores its state in a SQLite database on a RWO volume.
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: shelfmark
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: shelfmark
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: shelfmark
+          image: ghcr.io/calibrain/shelfmark:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: INGEST_DIR
+              value: /books
+            - name: FLASK_PORT
+              value: "8084"
+            - name: TZ
+              value: Europe/Paris
+          ports:
+            - name: http
+              containerPort: 8084
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            periodSeconds: 5
+            failureThreshold: 60
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 5
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              memory: 2Gi
+          securityContext:
+            # Documented Kubernetes mode: the entrypoint detects a non-root UID
+            # and skips its own privilege drop.
+            runAsUser: 1000
+            runAsGroup: 1000
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            # Books land in the folder Calibre-Web watches, which imports them
+            # into the library and deletes them from the queue.
+            - name: ingest
+              mountPath: /books
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: shelfmark-config
+        - name: ingest
+          persistentVolumeClaim:
+            claimName: calibre-ingest
