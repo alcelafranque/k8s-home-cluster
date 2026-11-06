@@ -13,3 +13,5 @@ resources:
   - ./bazarr
   - ./flaresolverr
   - ./cross-seed
+  - ./calibre
+  - ./shelfmark

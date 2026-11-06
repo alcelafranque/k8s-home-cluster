@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: calibre
+  labels:
+    app.kubernetes.io/name: calibre
+spec:
+  selector:
+    app.kubernetes.io/name: calibre
+  ports:
+    - name: http
+      port: 8083
+      targetPort: http
+      protocol: TCP
