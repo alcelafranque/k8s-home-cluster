@@ -12,6 +12,22 @@ cephImage:
 cephClusterSpec:
   mgr:
     modules: []
+  security:
+    cephx:
+      # Daemons use userspace librados/librbd: aes256k is supported.
+      daemon:
+        keyRotationPolicy: KeyGeneration
+        keyGeneration: 1
+        keyType: aes256k
+      # CSI keys are handed to the kernel (krbd), which rejects aes256k
+      # ("failed to add secret to kernel"). Keep aes until kernel support exists.
+      # Generation 1 was an aes256k attempt; generation 2 rolls back to aes.
+      # keyGeneration must only ever increase.
+      csi:
+        keyRotationPolicy: KeyGeneration
+        keyGeneration: 2
+        keyType: aes
+        keepPriorKeyCountMax: 1
 
 # RBD only. Omitting these lists would enable the chart's default CephFS and RGW.
 cephFileSystems: []
