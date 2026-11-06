@@ -24,7 +24,16 @@ if [[ $# -gt 0 ]]; then
 else
   apps=()
   for dir in "${APPS_DIR}"/*/; do
-    apps+=("$(basename "${dir}")")
+    name="$(basename "${dir}")"
+    if [[ -f "${dir}kustomization.yaml" ]]; then
+      apps+=("${name}")
+    fi
+    # An Application can point at a subdirectory of a group (medias/calibre).
+    for sub in "${dir}"*/; do
+      if [[ -f "${sub}kustomization.yaml" ]]; then
+        apps+=("${name}/$(basename "${sub}")")
+      fi
+    done
   done
 fi
 
