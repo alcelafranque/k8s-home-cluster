@@ -2,6 +2,9 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: calibre-config
+  annotations:
+    # Data volume: never delete it when this resource leaves an Application.
+    argocd.argoproj.io/sync-options: Prune=false
 spec:
   accessModes:
     - ReadWriteOnce
@@ -14,6 +17,8 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: calibre-library
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false
 spec:
   accessModes:
     - ReadWriteOnce
