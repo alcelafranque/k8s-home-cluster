@@ -76,6 +76,9 @@ spec:
               drop:
                 - ALL
           volumeMounts:
+            - name: data
+              mountPath: /data
+              subPath: data
             - name: config
               mountPath: /config
             # Books land in the folder Calibre-Web watches, which imports them
@@ -83,6 +86,9 @@ spec:
             - name: ingest
               mountPath: /books
       volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: nfs-media-pvc
         - name: config
           persistentVolumeClaim:
             claimName: shelfmark-config

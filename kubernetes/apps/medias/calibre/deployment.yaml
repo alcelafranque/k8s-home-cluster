@@ -75,6 +75,9 @@ spec:
             # are not possible here.
             allowPrivilegeEscalation: false
           volumeMounts:
+            - name: data
+              mountPath: /data
+              subPath: data
             - name: config
               mountPath: /config
             - name: library
@@ -82,6 +85,9 @@ spec:
             - name: ingest
               mountPath: /cwa-book-ingest
       volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: nfs-media-pvc
         - name: config
           persistentVolumeClaim:
             claimName: calibre-config
