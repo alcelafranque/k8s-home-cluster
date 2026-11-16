@@ -25,6 +25,30 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
           type: RuntimeDefault
+      initContainers:
+        # Rebuilds the search index when its on-disk format is outdated
+        # (required once by 2.4.2). No-op when the index is already current.
+        - name: reindex
+          image: rustmailer/bichon:2.4.2
+          imagePullPolicy: IfNotPresent
+          command: ["bichon-admin", "reindex", "--yes"]
+          env:
+            - name: BICHON_ROOT_DIR
+              value: /data
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 2Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: data
+              mountPath: /data
       containers:
         - name: bichon
           image: rustmailer/bichon:2.4.2
