@@ -38,5 +38,6 @@ resources:
   - rook-ceph-cluster.yaml
   - rook-ceph-operator.yaml
   - shelfmark.yaml
+  - sms-gateway.yaml
   - syncthing-relay.yaml
   - wol-manager.yaml

@@ -1,0 +1,30 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: sms-gateway
+
+images:
+  - name: ghcr.io/alcelafranque/sms-api-gateway
+    newTag: 0.1.0
+
+configMapGenerator:
+  - name: sms-gateway-config
+    literals:
+      - SMS_GATEWAY__MODEM__KIND=tplink
+      # NE200-Outdoor web UI, routed from the cluster.
+      - SMS_GATEWAY__MODEM__TPLINK__URL=http://192.168.254.1
+      - SMS_GATEWAY__MODEM__TPLINK__USERNAME=user
+      - SMS_GATEWAY__MODEM__TIMEZONE=Europe/Paris
+      - SMS_GATEWAY__SERVER__LISTEN=0.0.0.0:8080
+      # Dedicated, unauthenticated metrics listener: scraped in-cluster only,
+      # never routed through the gateway (see ingress.yaml).
+      - SMS_GATEWAY__METRICS__LISTEN=0.0.0.0:9090
+      - SMS_GATEWAY__SERVER__SWAGGER_UI=false
+      - SMS_GATEWAY__LOG__FORMAT=json
+      - SMS_GATEWAY__VALIDATION__DEFAULT_REGION=FR
+
+resources:
+  - secret.yaml
+  - deployment.yaml
+  - service.yaml
+  - servicemonitor.yaml
+  - ingress.yaml

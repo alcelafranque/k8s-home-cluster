@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sms-gateway
+  labels:
+    app.kubernetes.io/name: sms-gateway
+spec:
+  # The NE200 accepts a single admin session: a second pod, even briefly
+  # during a rolling update, logs in and kicks the first one out. Exactly one
+  # replica, and Recreate so the old pod releases its session before the new
+  # one starts. Never add an HPA.
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sms-gateway
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: sms-gateway
+    spec:
+      automountServiceAccountToken: false
+      # Above server.shutdown_timeout_secs (30): in-flight sends finish and
+      # the device session is released.
+      terminationGracePeriodSeconds: 45
+      securityContext:
+        runAsNonRoot: true
+        # distroless nonroot image user
+        runAsUser: 65532
+        runAsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: sms-gateway
+          image: ghcr.io/alcelafranque/sms-api-gateway
+          imagePullPolicy: IfNotPresent
+          # Migrations run on start (sqlx advisory lock).
+          args: ["serve"]
+          envFrom:
+            - configMapRef:
+                name: sms-gateway-config
+            - secretRef:
+                name: sms-gateway
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: metrics
+              containerPort: 9090
+              protocol: TCP
+          # /healthz for both probes, never /readyz: /readyz fails while the
+          # device is unreachable, so liveness would restart the pod in a loop
+          # without fixing anything, and readiness would remove the only
+          # endpoint, preventing clients from even queueing messages (queueing
+          # only needs the database). Alert on the sms_modem_* metrics instead.
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+          resources:
+            # ~35 MiB RSS measured; the limit leaves room for webhook bursts
+            # and the database pool.
+            requests:
+              cpu: 20m
+              memory: 64Mi
+            limits:
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
