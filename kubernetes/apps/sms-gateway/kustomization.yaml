@@ -18,7 +18,8 @@ configMapGenerator:
       # Dedicated, unauthenticated metrics listener: scraped in-cluster only,
       # never routed through the gateway (see ingress.yaml).
       - SMS_GATEWAY__METRICS__LISTEN=0.0.0.0:9090
-      - SMS_GATEWAY__SERVER__SWAGGER_UI=false
+      # Swagger UI at /docs (assets embedded in the binary, no CDN).
+      - SMS_GATEWAY__SERVER__SWAGGER_UI=true
       - SMS_GATEWAY__LOG__FORMAT=json
       - SMS_GATEWAY__VALIDATION__DEFAULT_REGION=FR
       # The API is exposed: only French numbers can be texted, so a leaked
