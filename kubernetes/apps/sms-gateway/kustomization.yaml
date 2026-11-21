@@ -21,6 +21,9 @@ configMapGenerator:
       - SMS_GATEWAY__SERVER__SWAGGER_UI=false
       - SMS_GATEWAY__LOG__FORMAT=json
       - SMS_GATEWAY__VALIDATION__DEFAULT_REGION=FR
+      # The API is exposed: only French numbers can be texted, so a leaked
+      # API key cannot be used to send international SMS from the SIM.
+      - SMS_GATEWAY__VALIDATION__ALLOWED_PREFIXES=["+33"]
 
 resources:
   - secret.yaml
