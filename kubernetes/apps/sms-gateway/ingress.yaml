@@ -1,6 +1,8 @@
 ---
-# Only the authenticated /v1 API is exposed: /healthz, /readyz, /docs,
-# /openapi.json and the metrics listener stay in-cluster.
+# Exposed: the authenticated /v1 API, plus its documentation (Swagger UI at
+# /docs, OpenAPI document at /openapi.json; trying requests from the UI still
+# needs an API key). /healthz, /readyz and the metrics listener stay
+# in-cluster.
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
@@ -18,6 +20,12 @@ spec:
     - path:
         type: PathPrefix
         value: /v1
+    - path:
+        type: PathPrefix
+        value: /docs
+    - path:
+        type: Exact
+        value: /openapi.json
     backendRefs:
     - name: sms-gateway
       port: 80
