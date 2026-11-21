@@ -4,7 +4,7 @@ namespace: sms-gateway
 
 images:
   - name: ghcr.io/alcelafranque/sms-api-gateway
-    newTag: 0.1.0
+    newTag: 0.1.1
 
 configMapGenerator:
   - name: sms-gateway-config
