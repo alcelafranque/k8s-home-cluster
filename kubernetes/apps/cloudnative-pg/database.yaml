@@ -74,3 +74,14 @@ spec:
     name: cluster-1
   name: lsoc
   owner: lsoc
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: sms-gateway
+  namespace: cnpg-system
+spec:
+  cluster:
+    name: cluster-1
+  name: sms_gateway
+  owner: sms_gateway

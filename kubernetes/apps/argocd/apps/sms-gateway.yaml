@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sms-gateway
+spec:
+  destination:
+    namespace: sms-gateway
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: kubernetes/apps/sms-gateway
+    repoURL: https://github.com/alcelafranque/k8s-home-cluster.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

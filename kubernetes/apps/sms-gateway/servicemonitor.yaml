@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: sms-gateway
+  labels:
+    app.kubernetes.io/name: sms-gateway
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sms-gateway
+  endpoints:
+  - port: metrics
+    interval: 30s
+    path: /metrics

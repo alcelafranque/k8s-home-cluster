@@ -48,6 +48,11 @@ spec:
       login: true
       passwordSecret:
         name: lsoc-db-secret
+    - name: sms_gateway
+      ensure: present
+      login: true
+      passwordSecret:
+        name: sms-gateway-db-secret
   backup:
     barmanObjectStore:
       destinationPath: "s3://backup-k8s-psql-default"
