@@ -49,3 +49,37 @@ spec:
       requestRedirect:
         scheme: https
         statusCode: 301
+---
+# Overrides the gateway's GeoIP policy for this host only.
+# FR-only rule refuses; the browser-facing paths keep the country restriction.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: sms-gateway-allowlist
+  namespace: sms-gateway
+spec:
+  targetRefs:
+  - group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: sms-gateway
+  - group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: sms-gateway-http-redirect
+  authorization:
+    defaultAction: Deny
+    rules:
+    - action: Allow
+      principal:
+        clientIPGeoLocations:
+        - country: FR
+    - action: Allow
+      principal:
+        clientCIDRs:
+        - 10.0.0.0/8
+        - 172.16.0.0/12
+        - 192.168.0.0/16
+    # Val
+    - action: Allow
+      principal:
+        clientCIDRs:
+        - 45.151.156.0/24
