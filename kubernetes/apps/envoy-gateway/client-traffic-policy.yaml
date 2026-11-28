@@ -21,3 +21,15 @@ spec:
         - X-Forwarded-For
         # An unknown IP must not inherit a client-supplied GeoIP result.
         - x-eg-internal-geoip-country
+    # Applied to every response served through this Gateway. No CSP here on
+    # purpose: each application sets its own, a global one would break UIs.
+    lateResponseHeaders:
+      set:
+        - name: Strict-Transport-Security
+          value: "max-age=31536000; includeSubDomains"
+        - name: X-Content-Type-Options
+          value: "nosniff"
+        - name: X-Frame-Options
+          value: "SAMEORIGIN"
+        - name: Referrer-Policy
+          value: "no-referrer"
